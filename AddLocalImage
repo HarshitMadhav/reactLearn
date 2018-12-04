@@ -1,0 +1,49 @@
+import React, {Component} from 'react';
+import {Platform, StyleSheet, Text, View , Button ,Image } from 'react-native';
+
+const Dimensions = require('Dimensions');
+const window = Dimensions.get('window');
+
+type Props = {};
+export default class Home extends Component<Props> {
+  static navigationOptions = {
+    title: 'Home',
+  };
+
+  render() {
+    
+    return (
+      <View >
+
+       <Image style={styles.welcome}
+          source={require('./review.png')} />
+        <Button
+          title="Go to Details"
+          onPress={() => {
+            /* 1. Navigate to the Details route with params */
+            this.props.navigation.navigate('Friends', {
+              itemId: 86,
+              otherParam: 'anything you want here',
+            });
+          }}
+        />
+      </View>
+    );
+  }
+}
+
+
+
+const styles = StyleSheet.create({
+  
+  welcome: {
+
+    width: 30,
+    height: 40,
+    marginLeft : window.width/2 - 30 ,
+    marginTop : 30,
+    
+
+  },
+ 
+});

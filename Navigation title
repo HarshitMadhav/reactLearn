@@ -1,0 +1,3 @@
+static navigationOptions = {
+    title: 'Home',
+  };
