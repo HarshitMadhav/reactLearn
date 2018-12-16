@@ -1,0 +1,13 @@
+In React components, code reuse is primarily achieved through composition rather than inheritance.
+Read about the Components specs and lifecycle in React. RN comes from ReactJS, they have a lot of things in common and understanding things like componentDidMount() or componentWillMount() will help you. 
+
+The Component Lifecycle
+Each component has several “lifecycle methods” that you can override to run code at particular times in the process. You can use this lifecycle diagram as a cheat sheet. In the list below, commonly used lifecycle methods are marked as bold. The rest of them exist for relatively rare use cases.
+
+**Mounting**
+These methods are called in the following order when an instance of a component is being created and inserted into the DOM:
+
+constructor()
+static getDerivedStateFromProps()
+render()
+componentDidMount()
