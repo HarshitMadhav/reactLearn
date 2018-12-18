@@ -11,3 +11,8 @@ constructor()
 static getDerivedStateFromProps()
 render()
 componentDidMount()
+
+--The other unusual thing in this code example is <View><Text>Hello world!</Text></View>. This is JSX - a syntax for embedding XML within JavaScript
+--What are Components?
+A new Component. When you're building a React Native app, you'll be making new components a lot. Anything you see on the screen is some sort of component. A component can be pretty simple - the only thing that's required is a render function which returns some JSX to render.
+
