@@ -1,0 +1,39 @@
+import React, { Component } from 'react'
+import { AppRegistry,View,Text, Image, StyleSheet } from 'react-native'
+
+export default class App extends Component {
+  render() {
+    return (
+      <View>
+      <Image
+        style={styles.image}
+        source={{uri: 'http://www.reactnativeexpress.com/logo.png'}}
+      />
+      <Image
+        style ={{width:150, height:150}}
+        source={{uri: 'https://homepages.cae.wisc.edu/~ece533/images/airplane.png'}}
+      />
+
+      <Image
+      style ={{width:200, height:200}}
+      source ={{uri: 'http://www.appslure.website/boomeducation/images/logo.png'}}
+      />
+
+      <Text
+      style ={{width :500, height: 300}}>Harshit Agrawal</Text>
+
+      </View>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  image: {
+    width: 200,
+    height: 200,
+    padding: 20,
+    alignSelf: 'baseline',
+  },
+})
+
+AppRegistry.registerComponent('App', () => App)
