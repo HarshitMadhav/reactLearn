@@ -1,0 +1,15 @@
+dataSource: [
+        {
+          title: 'Title 1',
+          caption: 'Caption 1',
+          url: require('./resources/launch_screen.png'),
+        }, {
+          title: 'Title 2',
+          caption: 'Caption 2',
+          url: 'https://placeimg.com/640/640/beer',
+        }, {
+          title: 'Title 3',
+          caption: 'Caption 3',
+          url: 'https://placeimg.com/640/640/animals',
+        },
+      ],
