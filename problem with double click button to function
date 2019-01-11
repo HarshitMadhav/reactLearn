@@ -1,0 +1,7 @@
+Add keyboardShouldPersistTaps='always' prop to the component
+
+
+<KeyboardAwareScrollView style={styles.container2}
+keyboardShouldPersistTaps='always'
+    >
+    
