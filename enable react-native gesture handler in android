@@ -75,3 +75,6 @@ handler.postDelayed(new Runnable() {
     }
 }
 
+for more read https://kmagiera.github.io/react-native-gesture-handler/docs/getting-started.html
+and 
+read https://stackoverflow.com/questions/53394982/react-navigation-swipe-on-drawer-does-not-work-in-android
