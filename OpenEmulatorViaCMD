@@ -1,3 +1,6 @@
 C:\Users\UserName\AppData\Local\Android\Sdk\tools>emulator -list-avds
 Nexus_5X_API_28
 C:\Users\UserName\AppData\Local\Android\Sdk\emulator>emulator -avd Nexus_5X_API_28
+
+restart emulator
+emulator @avd_name -no-snapshot-load
