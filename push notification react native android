@@ -7,3 +7,5 @@ Push notifications using Firebase android
   like this line package="com.example"
   use com.example the same package as domain to the new firebase android project (the same app for which we want to get push notifications)
 - 
+https://github.com/zo0r/react-native-push-notification/issues/480
+https://stackoverflow.com/questions/52112770/using-react-native-push-notification-app-crashes-when-receiving-new-fcm-notific
