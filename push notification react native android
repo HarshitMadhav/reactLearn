@@ -1,0 +1,9 @@
+Push notifications using Firebase android
+
+- signup with gmail account
+- go to firebase
+- select add new project in firebase
+- set the domain of new project as mentioned in the androidmanifest.xml
+  like this line package="com.example"
+  use com.example the same package as domain to the new firebase android project (the same app for which we want to get push notifications)
+- 
