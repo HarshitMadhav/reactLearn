@@ -90,7 +90,7 @@ apply plugin: 'com.google.gms.google-services'                         // add th
                       }
                     };
 
-- Now in react native project App.js file do something like this:
+- Now in react native project App.js file do something like this: (Replace gcm with fcm or look at the next App.js after the NotifService.js file)
 
                                 /**
                    * Sample React Native App
