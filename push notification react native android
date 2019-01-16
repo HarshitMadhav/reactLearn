@@ -1,4 +1,4 @@
-Push notifications using Firebase android
+.....................Push notifications using Firebase android.......
 
 - signup with gmail account
 - go to firebase
@@ -6,6 +6,35 @@ Push notifications using Firebase android
 - set the domain of new project as mentioned in the androidmanifest.xml
   like this line package="com.example"
   use com.example the same package as domain to the new firebase android project (the same app for which we want to get push notifications)
-- 
+
+- download the 'google-services.json' after the new project creation on firebase
+- now move the downloaded 'google-services.json' to the path AppName\android\app
+- provide these permissions in androidmanifest.xml
+  <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+- then in android manifest write-- 
+
+        <service android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationRegistrationService"/>
+
+this just above </application> for calling onregister() of react native push-notification library
+    
+    <application>
+      ....
+        <service android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationRegistrationService"/>
+    ....
+    </application>
+
+- add this classpath 'com.google.gms:google-services:4.2.0'  
+      dependencies {
+        classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath 'com.google.gms:google-services:4.2.0'
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+
+:::::::  Refer :::::::
 https://github.com/zo0r/react-native-push-notification/issues/480
 https://stackoverflow.com/questions/52112770/using-react-native-push-notification-app-crashes-when-receiving-new-fcm-notific
