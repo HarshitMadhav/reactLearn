@@ -1,0 +1,93 @@
+import React from 'react';
+import { Text, View,Image, FlatList, TouchableOpacity, Dimensions } from 'react-native';
+import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
+import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
+
+
+const window = Dimensions.get('window');
+
+var radio_props = [
+  {label: 'Male', value: 0 },
+  {label: 'Female', value: 1 }
+];
+
+ 
+class HomeScreen extends React.Component {
+
+ 
+  static navigationOptions = {
+    tabBarLabel: 'Home',
+    // Note: By default the icon is only shown on iOS. Search the showIcon option below.
+    tabBarIcon: ({ tintColor }) => (
+      <Image
+        source={require('./icc.png')}
+        style={{width:20, height:20}}
+      />
+    ),
+  };
+  render() {
+    return (
+      <View style={{ flex: 1,  justifyContent: 'center',backgroundColor:'black', flexDirection:'column'
+                 }}>
+       
+       <Image style={{width:100, height:100}}
+        source={require('./otp.png')}
+       />
+       <Text style={{fontSize:20, color:'white'}}>Forgot Password?</Text>
+
+<Text style={{fontSize:20, color:'white'}}>I am a</Text>
+<RadioForm
+  formHorizontal={true}
+    animation={true}
+  labelHorizontal={true}
+  labelStyle={{paddingRight:40, fontSize:15}}
+buttonOuterColor={'red'}
+selectedButtonColor={'red'}
+buttonColor={'#808080'}
+ selectedLabelColor={'red'}
+buttonInnerColor={'red'}
+          radio_props={radio_props}
+          initial={0}
+          onPress={(value) => {this.setState({value:value})}}
+        />
+       
+      </View>
+    );
+  }
+}
+
+class ProfileScreen extends React.Component {
+  render() {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>Profile!</Text>
+      </View>
+    );
+  }
+}
+
+const TabNavigator = createBottomTabNavigator({
+  Home: HomeScreen,
+  Profile: ProfileScreen,
+},
+
+ {
+    defaultNavigationOptions: ({ navigation }) => ({
+      tabBarIcon: () => (
+      <Image
+        source={require('./ic.png')}
+        style={{width:20, height:20}}
+      />
+      )
+    }),
+    tabBarOptions: {
+      activeTintColor: 'tomato',
+      inactiveTintColor: 'gray',
+      inactiveBackgroundColor:'black',
+      activeBackgroundColor:'red',
+      showIcon:'true'
+    },
+  }
+);
+
+export default createAppContainer(TabNavigator);
