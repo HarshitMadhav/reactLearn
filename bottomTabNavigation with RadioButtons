@@ -1,6 +1,6 @@
 Bottom Tab Navigation with customized colors and icons along with a radio button in one screen.
 --NOTE: this is done in one file only without the use of Navigator.js--
-==== To test this just copy and paste this in App.js ====
+==== To test this just copy and paste this in App.js and run====
 
 import React from 'react';
 import { Text, View,Image, FlatList, TouchableOpacity, Dimensions } from 'react-native';
