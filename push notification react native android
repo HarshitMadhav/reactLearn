@@ -19,7 +19,7 @@
 
         <service android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationRegistrationService"/>
 
-this just above </application> for calling onregister() of react native push-notification library
+this line just above </application> for calling onregister() of react native push-notification library
     
     <application>
       ....
@@ -27,13 +27,49 @@ this just above </application> for calling onregister() of react native push-not
     ....
     </application>
 
-- add this classpath 'com.google.gms:google-services:4.2.0'  
+- add  classpath 'com.google.gms:google-services:4.2.0' in project.gradle file
+
       dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
-        classpath 'com.google.gms:google-services:4.2.0'
+        classpath 'com.google.gms:google-services:4.2.0'   //add this here
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
+
+- add these lines in build.gradle Module:app
+      implementation 'com.google.android.gms:play-services-base:16.1.0'
+      implementation project(':react-native-push-notification')
+      implementation 'com.google.firebase:firebase-core:16.0.6'
+      implementation 'com.google.firebase:firebase-messaging:17.3.4'
+
+  final this block will look like the below and also add **** apply plugin: 'com.google.gms.google-services' ****** at the very end as shown
+  after dependencies block. If we do not add this apply plugin line our app will crash on receiving push notification.
+
+  dependencies {
+    implementation project(':react-native-push-notification')   // add this
+    implementation project(':react-native-device-info')
+    implementation project(':react-native-video')
+    implementation project(':react-native-gesture-handler')
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
+    implementation "com.facebook.react:react-native:+"  // From node_modules
+    implementation 'com.google.android.gms:play-services-base:16.1.0'         // add this
+    implementation 'com.google.firebase:firebase-core:16.0.6'           // add this
+    implementation 'com.google.firebase:firebase-messaging:17.3.4'        // add this
+
+}
+apply plugin: 'com.google.gms.google-services'                         // add this
+
+- dont forget to keep check on versions mismatch of firebase and always use the latest version of firebase to receive notifications.
+- add this to settings.gradle
+    
+    include ':react-native-push-notification'
+    project(':react-native-push-notification').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-push-notification/android')
+
+- now npm install the react-native-push-notification library
+
+
+
 
 :::::::  Refer :::::::
 https://github.com/zo0r/react-native-push-notification/issues/480
