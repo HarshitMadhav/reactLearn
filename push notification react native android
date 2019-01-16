@@ -66,11 +66,31 @@ apply plugin: 'com.google.gms.google-services'                         // add th
     include ':react-native-push-notification'
     project(':react-native-push-notification').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-push-notification/android')
 
-- now npm install the react-native-push-notification library
+- now npm install the react-native-push-notification library and then run link command for the react-native-push-notification library
+    react-native link react-native-push-notification
+    
+- if not linked by the react-native link then link manually in mainapplication.java
+                  import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;  // <--- Import Package 
 
+                  public class MainApplication extends Application implements ReactApplication {
 
+                    private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
+                        @Override
+                        protected boolean getUseDeveloperSupport() {
+                          return BuildConfig.DEBUG;
+                        }
 
+                        @Override
+                        protected List<ReactPackage> getPackages() {
 
+                        return Arrays.<ReactPackage>asList(
+                            new MainReactPackage(),
+                            new ReactNativePushNotificationPackage() // <---- Add the Package 
+                        );
+                      }
+                    };
+
+-
 :::::::  Refer :::::::
 https://github.com/zo0r/react-native-push-notification/issues/480
 https://stackoverflow.com/questions/52112770/using-react-native-push-notification-app-crashes-when-receiving-new-fcm-notific
