@@ -1,0 +1,4 @@
+run these link commands only when mentioned in the library.
+
+what link actually does is that it creates the import and methods in the mainapplication.java class for the particular library that is being used
+i.e it natively does all the import and changes settings.gradle file to import 
