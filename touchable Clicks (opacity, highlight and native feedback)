@@ -1,0 +1,48 @@
+--------------------When to use TouchableNativeFeedback, TouchableHighlight or TouchableOpacity?
+
+TouchableHighlight
+
+• What it does: Darkens or lightens the background of the element when pressed.
+
+• When to use it: On iOS for touchable elements or buttons that have a solid shape or background, and on ListView items.
+
+TouchableOpacity
+
+• What it does: Lightens the opacity of the entire element when pressed.
+
+• When to use it: On iOS for touchable elements that are standalone text or icons with no background color.
+
+TouchableNativeFeedback
+
+• What it does: Adds a ripple effect to the background when pressed.
+
+• When to use it: On Android for almost all touchable elements.
+
+
+import {TouchableOpacity, TouchableNativeFeedback, TouchableHighlight} from 'react-native';
+
+// TouchableNativeFeedback is used in android to provide the ripple effect in android button, image, items clicks etc...
+// If you want the ripple effect using TouchableNativeFeedback use the below code.
+     <TouchableNativeFeedback background={Platform.Version >= 21 ?
+      TouchableNativeFeedback.Ripple('#a71817', true) :
+      TouchableNativeFeedback.SelectableBackground()}
+      delayPressIn={30}
+      onPress={() => this.resPress(itemData.item.id,itemData.item.name)}
+       > 
+      <Image
+      style={{ width: 30, height : 30,marginTop:65 ,position:'absolute',left :window.width/2 - 30  }}
+      source={require('./arrow.png')} />
+
+      </TouchableNativeFeedback>
+       
+      
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('Cart')}>
+                     <Image style={{right:0,height :40,width :40,marginTop :25 ,resizeMode: 'contain'}}
+                           source={require('./cart.png')} />
+                </TouchableOpacity>
+      
+      
+                <TouchableHighlight onPress={() => this.props.navigation.navigate('Cart')}>
+                     <Image style={{right:0,height :40,width :40,marginTop :25 ,resizeMode: 'contain'}}
+                           source={require('./cart.png')} />
+                </TouchableHighlight>
