@@ -1,4 +1,4 @@
---------------------When to use TouchableNativeFeedback, TouchableHighlight or TouchableOpacity?
+--------------------When to use TouchableNativeFeedback, TouchableHighlight, TouchableOpacity or TouchableWithoutFeedback?
 
 TouchableHighlight
 
@@ -18,8 +18,14 @@ TouchableNativeFeedback
 
 • When to use it: On Android for almost all touchable elements.
 
+TouchableWithoutFeedback
 
-import {TouchableOpacity, TouchableNativeFeedback, TouchableHighlight} from 'react-native';
+• Do not use unless you have a very good reason. All elements that respond to press should have a visual feedback when touched.
+
+• TouchableWithoutFeedback supports only one child. If you wish to have several child components, wrap them in a View.
+
+
+import {TouchableOpacity, TouchableNativeFeedback, TouchableHighlight, TouchableWithoutFeedback} from 'react-native';
 
 // TouchableNativeFeedback is used in android to provide the ripple effect in android button, image, items clicks etc...
 // If you want the ripple effect using TouchableNativeFeedback use the below code.
@@ -46,3 +52,8 @@ import {TouchableOpacity, TouchableNativeFeedback, TouchableHighlight} from 'rea
                      <Image style={{right:0,height :40,width :40,marginTop :25 ,resizeMode: 'contain'}}
                            source={require('./cart.png')} />
                 </TouchableHighlight>
+                
+                <TouchableWithoutFeedback onPress={() => this.changeImage()}>
+                     <Image style={{width: 35,height: 35,borderRadius: 50,position:'absolute', right:windowW/2-60,}}
+                            source ={require('./resources/edit.png')}/>
+                </TouchableWithoutFeedback>
