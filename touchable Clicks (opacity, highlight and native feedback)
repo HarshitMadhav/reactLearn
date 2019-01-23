@@ -1,4 +1,5 @@
 --------------------When to use TouchableNativeFeedback, TouchableHighlight, TouchableOpacity or TouchableWithoutFeedback?
+There are total 4 types of Touchables in react native------
 
 TouchableHighlight
 
