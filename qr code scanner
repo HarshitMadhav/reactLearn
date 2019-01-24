@@ -1,4 +1,6 @@
 --------------- react native qr code scanner (Scanner with borders and up and down indicator animation and flashlight.It can be customized)
+react-native-qr-scanner uses react-native-camera at its core to scan the qr code but this react-native-qr-scanner provides additional things
+like border, flashlight,etc.
 
 https://www.npmjs.com/package/react-native-qr-scanner
 
