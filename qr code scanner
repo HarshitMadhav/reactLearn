@@ -1,0 +1,59 @@
+--------------- react native qr code scanner (Scanner with borders and up and down indicator animation and flashlight.It can be customized)
+
+https://www.npmjs.com/package/react-native-qr-scanner
+
+npm install react-native-qr-scanner
+npm install react-native-camera
+
+react-native link react-native-qr-scanner
+react-native link react-native-camera
+
+
+import React, {Component} from 'react';
+import {Platform, StyleSheet, Text, View, TouchableOpacity, Alert} from 'react-native';
+import {QRscanner} from 'react-native-qr-scanner';
+ 
+export default class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      flashMode: false,
+      zoom: 0.2
+    };
+  }
+  render() {
+    return (
+      <View style={styles.container}>
+        <QRscanner onRead={this.onRead} 
+        cornerBorderColor ='#90ba45'
+        cornerRadius={40}
+        cornerBorderRadius={40}
+        cornerColor ='#90ba45'
+        scanBarColor='#90ba45'
+        cornerBorderWidth={10}
+        cornerBorderLength={60}
+        hintText="React native qr code"
+        renderBottomView={this.bottomView} flashMode={this.state.flashMode} zoom={this.state.zoom} finderY={50}/>
+      </View>
+    );
+  }
+  bottomView = ()=>{
+    return(
+    <View style={{flex:1,flexDirection:'row',backgroundColor:'#0000004D'}}>
+      <TouchableOpacity style={{flex:1,alignItems:'center', justifyContent:'center'}} onPress={()=>this.setState({flashMode:!this.state.flashMode})}>
+        <Text style={{color:'#fff'}}>Flashlight on</Text>
+      </TouchableOpacity>
+    </View>
+    );
+  }
+  onRead = (res) => {
+  	Alert.alert(JSON.stringify(res.data));
+    console.log(res);
+  }
+}
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#000'
+  }
+});
