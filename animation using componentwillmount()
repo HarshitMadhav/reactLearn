@@ -1,0 +1,30 @@
+-----------import animated and from react-native and apply animated.view to the component to which you want to animate.
+
+import React, { Component } from 'react';
+import { View, Animated } from 'react-native';
+
+export default class App extends Component {
+
+    componentWillMount() {
+        this.position = new Animated.ValueXY(0, 0);
+        Animated.spring(this.position, {
+            toValue: { x: 225, y: 575 }
+        }).start();
+    }
+
+    render() {
+        return (
+            <Animated.View style={ this.position.getLayout() }>
+                <View style={ styles.square } />
+            </Animated.View>
+        );
+    }
+}
+
+const styles = {
+    square: {
+        width: 120,
+        height: 120,
+        backgroundColor: '#00BCD4'
+    }
+}
