@@ -1,0 +1,37 @@
+source at ===>>>>  https://github.com/joeyschroeder/react-native-simple-animations
+npm at =====>>>>>  https://www.npmjs.com/package/react-native-simple-animations
+
+npm install react-native-simple-animations --save
+
+import { SimpleAnimation } from 'react-native-simple-animations';
+
+Use as follows:
+
+<SimpleAnimation delay={500} duration={1000} fade staticType='zoom'>
+	<Text>Hello, world!</Text>
+</SimpleAnimation>
+
+You can apply the <SimpleAnimation to a single child or multiple childs or to a parent with muliple childs.
+
+Another Example .........
+
+      <TouchableOpacity style = {{marginLeft :window.width - 90,height : 90 ,width :90 }} onPress={() =>  this.props.navigation.navigate('EventList')}>
+  <SimpleAnimation style={{}}
+    delay={500}
+    duration={1000}
+    fade
+    aim="in"
+    staticType='bounce'>
+           <View style = {{height : 90 ,width :90 }}>
+           <Image style={{marginLeft : 30,marginTop : 30,width :35,height:35 , resizeMode: 'contain'}}
+           source={require('./event.png')} />
+
+           <Text style = {{marginTop : 5,textAlign :'center',color :'white',fontSize :20}}>
+
+           Events
+           </Text>
+
+           </View>
+           </SimpleAnimation>
+            </TouchableOpacity>
+            
