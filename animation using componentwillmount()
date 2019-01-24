@@ -28,3 +28,5 @@ const styles = {
         backgroundColor: '#00BCD4'
     }
 }
+
+Save the file and run you can see that the Square is moving from top to bottom as per defined positions.
