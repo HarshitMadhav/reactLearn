@@ -1,3 +1,5 @@
+   ----------------npm install react-native-google-autocomplete firstly and then get the api key and then import LocationItem.js
+
 import React from 'react';
 import {
   StyleSheet,
