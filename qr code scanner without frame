@@ -1,4 +1,5 @@
 ---------- install react-native-camera first
+qr code scanner without frame for qr code. It is a full camera view qr code scanner.
 
 import React, { Component } from "react";
 import {
