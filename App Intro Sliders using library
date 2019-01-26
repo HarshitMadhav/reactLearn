@@ -1,0 +1,91 @@
+
+import React, {Component} from 'react';
+import {Platform, StyleSheet, Text, View, Button} from 'react-native';
+import AppIntroSlider from 'react-native-app-intro-slider';
+
+const styles = StyleSheet.create({
+  image: {
+    width: 200,
+    height: 200,
+    marginTop:-430,
+  },
+  titli:{
+    fontWeight:'bold',
+    marginTop:230
+  },
+  guides:{
+    fontSize: 15,
+    marginBottom:100
+  },
+});
+
+const slides = [
+  {
+    key: 'somethun',
+    text: 'We will guide you to create your profile.\nCreate profile on Boomoverseas is free.',
+    textStyle: styles.guides,
+    image: require('./launch_screen.png'),
+    imageStyle: styles.image,
+    backgroundColor: '#59b2ab',
+    title: 'Create Profile',
+    titleStyle:styles.titli,
+  },
+  {
+    key: 'somethun-dos',
+    title: 'Title 2',
+    text: 'Here a custom renderItem is supplied and the bottomButton-props has been set to true',
+    textStyle: styles.guides,
+    image: require('./images.png'),
+    imageStyle: styles.image,
+    backgroundColor: '#febe29',
+    titleStyle:styles.titli,
+  },
+  {
+    key: 'somethun1',
+    title: 'Rocket guy',
+    text: 'I\'m already out of descriptions\nLorem ipsum bla bla bla',
+    textStyle: styles.guides,
+    image: require('./images1.png'),
+    imageStyle: styles.image,
+    backgroundColor: '#22bcb5',
+    titleStyle:styles.titli,
+  }
+];
+
+export default class App extends React.Component {
+  state = {
+    showRealApp: false
+  }
+  _onDone = () => {
+    this.setState({ showRealApp: true });
+  }
+  render() {
+    if (this.state.showRealApp) {
+      return <App />;
+    } else {
+      return (
+        <View style={{flex:1, flexDirection:'column'}}>
+      <AppIntroSlider 
+      slides={slides} 
+      hideNextButton ='true'
+      hideDoneButton='true'
+      onDone={this._onDone}/>
+
+      <Button style={{ height:60, width:100}}
+          color="#bf80ff"
+          title="Register"
+        >
+        Register</Button>
+
+      <Button style={{ height:60, width:100}}
+          color="#66ff1a"
+          title="Login"
+        >
+        Register</Button>
+        </View>
+
+      );
+    }
+  }
+}
+  
