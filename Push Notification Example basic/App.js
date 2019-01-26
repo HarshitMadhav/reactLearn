@@ -1,3 +1,5 @@
+----------------- Dont forget to install react-native-push-notification
+
 import React, { Component } from 'react';
 import { TextInput, StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
 import NotifService from './NotifService';
