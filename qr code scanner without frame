@@ -1,4 +1,4 @@
----------- install react-native-camera
+---------- install react-native-camera first
 
 import React, { Component } from "react";
 import {
