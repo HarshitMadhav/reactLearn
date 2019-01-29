@@ -21,6 +21,17 @@ like this
       />
       </View>
 
+::::: In order to get the correct result with proper arrangement to the view i.e clear cut and managed <view> do something like this ::::::
+
+     tabBarIcon: ({ tintColor }) =>   
+     <View style={{height:70, width:70, borderRadius:35,backgroundColor: '#90BA45'}}>
+     <Image
+       source={require('./deal.png')}
+       style={{width:70, height:70,alignSelf:'center',resizeMode:'contain'}}
+       />
+    </View>
+
+
 ::::::::: EXAMPLE  :::::::
 
 const TabNavigator = createBottomTabNavigator({
