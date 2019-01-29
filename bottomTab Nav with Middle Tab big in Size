@@ -1,0 +1,72 @@
+-------------------bottomTab Nav with Middle Tab big and circular in Size
+
+Just add this ::::
+            
+          <View style={{height:90, width:90, borderRadius:100,backgroundColor: 'red',
+          padding: 30}}>
+          ...
+          </View>
+
+to tabBarIcon:()
+
+like this
+
+    tabBarIcon: ({ tintColor }) =>
+    <View style={{height:90, width:90, borderRadius:100,backgroundColor: 'red',
+          padding: 30}}>
+
+      <Image
+        source={require('./home.png')}
+        style={{width:20, height:20}}
+      />
+      </View>
+
+::::::::: EXAMPLE  :::::::
+
+const TabNavigator = createBottomTabNavigator({
+  ProfileScr: Profile,
+  Home: { screen:HomeScreen,
+    navigationOptions : {
+    title:'Home',
+    tabBarLabel: 'Home',
+    // Note: By default the icon is only shown on iOS. Search the showIcon option below.
+    tabBarIcon: ({ tintColor }) => 
+    <View style={{height:90, width:90, borderRadius:100,backgroundColor: 'red',
+          padding: 30}}>
+
+      <Image
+        source={require('./home.png')}
+        style={{width:20, height:20}}
+      />
+      </View>
+   } 
+  },
+
+  Venue: Venue,
+  NewArrivals: Arrivals,
+  Profile: ProfileScreen,
+  EditProfile : EditProfile,
+ 
+},
+
+ {
+    defaultNavigationOptions: ({ navigation }) => ({
+      tabBarIcon: () => (
+      <Image
+        source={require('./ic.png')}
+        style={{width:20, height:20}}
+      />
+      )
+    }),
+    tabBarOptions: {
+      activeTintColor: 'tomato',
+      inactiveTintColor: 'gray',
+      inactiveBackgroundColor:'black',
+      activeBackgroundColor:'red',
+      showIcon:'true'
+    },
+
+  }
+);
+
+export default createAppContainer(TabNavigator);
