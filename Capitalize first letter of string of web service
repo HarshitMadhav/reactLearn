@@ -1,0 +1,11 @@
+refer here https://stackoverflow.com/questions/48387180/is-it-possible-to-capitalize-first-letter-of-text-string-in-react-native-how-to
+
+Write a function like this
+
+          Capitalize(str){
+          return str.charAt(0).toUpperCase() + str.slice(1);
+          }
+
+then call it from <Text> tag By passing text as parameter
+
+          <Text>{this.Capitalize(this.state.title)} </Text>
