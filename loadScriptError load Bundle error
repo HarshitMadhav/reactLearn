@@ -11,6 +11,9 @@ If you are using Windows run the commands in the following way, or if you get an
 mkdir android\app\src\main\assets
 react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
 
-react-native run-android
+after these do ----> cd android
+---> gradlew clean
+--> cd..
+-> react-native run-android or npm start
 
             Using npm version 4.3.0 react-native-cli version 2.01 react-native version 0.49.5
