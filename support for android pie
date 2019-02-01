@@ -2,7 +2,8 @@ On Android 9 (API 28), disabling Google Play Protect from play store app worked 
 To disable Google Play Protect ------->
 
 Open "Play Store" application => tap on Menu button => select "Play Protect" option => Disable the options "Scan device for security threats".
-web service http:/ dont work in android pie and only https:/ works 
+
+Moreover, web service http:// dont work in android pie and only https:// works 
 
 do this is manifest
 
