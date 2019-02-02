@@ -1,0 +1,30 @@
+The beauty of the React Native is that it supports lots of JS Librarieis like Moment.js. Using moment.js would be a better/easier way to handle date/time instead coding from scratch
+
+just run this in the terminal..............
+
+npm install moment --save
+
+And in your React Native js page.............
+
+import Moment from 'moment';
+
+render(){
+    Moment.locale('en');
+    var dt = '2016-05-02T00:00:00';
+    return(<View> {Moment(dt).format('d MMM')} </View>) //basically you can do all sorts of the formatting and others
+}
+
+You may check the moment.js offical docs at here https://momentjs.com/docs/
+
+::::::: Example :::::::
+
+render(){
+    Moment.locale('en');
+    var dt = itemData.item.start_date;   // where itemData.item.start_date is the date from web service
+    var ti = Moment(itemData.item.start_time,"hh").format('LT');  // where itemData.item.start_time is the time from web service
+    return(
+    <Text style = {{marginLeft :3,color :'black' ,fontSize : 12,}}>
+       {Moment(dt).format("Do MMM YY")} </Text>
+    <Text style = {{marginLeft : 3,color :'black' ,fontSize : 12}}>{ti}</Text>
+    )
+}
