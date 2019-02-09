@@ -16,3 +16,23 @@ componentDidMount()
 --What are Components?
 A new Component. When you're building a React Native app, you'll be making new components a lot. Anything you see on the screen is some sort of component. A component can be pretty simple - the only thing that's required is a render function which returns some JSX to render.
 
+**** How Does React Native Work?
+          The idea of writing mobile applications in JavaScript feels a little odd. How is it possible
+          to use React in a mobile environment? In order to understand the technical underpinnings
+          of React Native, first we’ll need to recall one of React’s features, the Virtual DOM.
+          In React, the Virtual DOM acts as a layer between the developer’s description of how
+          things ought to look, and the work done to actually render your application onto the page.
+          To render interactive user interfaces in a browser, developers must edit the browser’s
+          DOM, or Document Object Model. This is an expensive step, and excessive writes to the
+          DOM have a significant impact on performance. Rather than directly render changes on
+          the page, React computes the necessary changes by using an in-memory version of the
+          DOM, and rerenders the minimal amount necessary.
+
+          This is all possible because of the “bridge,” which provides React with an interface into
+          the host platform’s native UI elements. React components return markup from their
+          render function, which describes how they should look. With React for the Web, this
+          translates directly to the browser’s DOM. For React Native, this markup is translated to
+          suit the host platform, so a <View> might become an iOS-specific UIView.
+          React Native currently supports iOS and Android. Because of the abstraction layer
+          provided by the Virtual DOM, React Native could target other platforms, too — someone
+          just needs to write the bridge.
