@@ -1,0 +1,62 @@
+Step 1: Define component using JavaScript file
+Create a file for your Custom Component. The best practice is to make one folder of components and create your file over there, as in future if there is need of creating another custom component then you can find all your own made components all in one place (single folder).
+
+For performing this, call ImageHolder.js custom component and import it to its parent screen.
+
+   import ImageHolder from '../../components/ImageHolder';
+   
+Step 2: Continue importing React components and ‘Image’ component of React Native
+Now, you need to import React along with the component that needs to be customized. There can be one or more components even, based on requirements. In this blog, we are considering only one component which is going to be customized on the basis of entered data.
+
+Note: You can make your own custom component by merging one or more components.
+
+  import React, {Component, PropTypes} from 'react';		 	
+  import {Image} from 'react-native';
+  
+Step 3: Class definition of the Custom Component
+Create a class and define the props that are going to pass to the custom component. If local state is required, define it inside the constructor.
+
+  class ImageHolder extends Component { 				 	
+       static propTypes = {									
+	 placeholderSource: PropTypes.any,					
+	 placeholderStyle: PropTypes.any,						
+	 source: PropTypes.any,							
+	 style: PropTypes.any							
+      }; 												
+      constructor(props) {
+	super(props);
+	this.state = {isLoaded: false, isError: false};
+      }
+ }
+ 
+Step 4: Defining several event handlers and render method
+Next step is to add render method to the custom component that is your design and logic. To add-on, the needful functionalities, add necessary methods above render method.
+
+ ...
+onLoadEnd() {
+	this.setState({ isLoaded: true });
+}
+onError() {
+	this.setState({ isError: true });
+}
+render() {
+	return (
+		{this.state.isLoaded &amp;&amp; !this.state.isError ? null :  }
+	);
+}
+The snippet mentioned in this blog is to display image component as per the source provided. Here the code is to display an image. If image comes from API, it is in URI format so need to pass source = {uri : api image source} and if in case imageURI is blank then have to display a placeholder image which is placed locally, so for that source format of the component is like source = {require(‘local image source’)}. There are many situations like low internet speed where this kind of structure is required. So, we had created above ImageHolder component.
+
+Step 5: Exporting component so other code can import it
+After the render method, you just need to export your custom component to make it available to the parent.
+
+export default ImageHolder;
+
+Step 6: Importing component into other code file where we need to use it
+Now, the custom component is created, and use it by displaying it and inserting it in your parent’s render method.
+
+import ImageHolder from '../../components/ImageHolder';
+ 
+<ImageHolder style={styles.image} placeholderStyle={styles.image} source={{ uri: place.image_small }} />
+Style and source can be assigned as the prop types are already being created.
+
+Hereby, the custom component is ready and can be used wherever by importing it. This custom component is created based on a sole purpose, you can create your own as per your necessity.
