@@ -1,0 +1,18 @@
+Whenever we move from A screen to screen B and do some changes on screen B then that changes made on screen B dont update when we move
+back to screen A. The web service dont get updated or the state dont update when we switch back to previous screen.
+
+This is the code that can be used to update the state of every component when returning back to the previous screen.
+
+How to use this.... Call this code in the screen on which you want to update the component states on returning back from some screen
+
+componentDidMount() {
+
+     this.getMoviesFromApiAsync()
+     this.props.navigation.addListener('willFocus',this._handleStateChange);
+
+    }
+    
+   _handleStateChange = state => {
+   alert('hoho')
+   this.getMoviesFromApiAsync()
+ };
