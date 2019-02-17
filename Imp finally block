@@ -1,0 +1,28 @@
+http://thedailywtf.com/articles/My-Tales
+
+Finally!
+Back in the .NET 1.0 days, I interviewed for a contract position at a certain large insurance company around here. It was a technical interview with two senior-level developers. After I finished answering a softball question about how Try-Catch blocks work, one of the interviewers followed up with a question about Finally blocks.
+
+“A Finally is placed after a Try or Try-Catch block,” I answered, “and will execute, in most circumstances, regardless of any executions that occ–”
+
+“Actually,” the interviewer interrupted, “code within a Finally block is guaranteed to execute.”
+
+“Err,” I replied, “yes – but, there are some situations that cause that code to not be—”
+
+“Nope,” the other interviewer quipped, “that’s the whole point of Finally blocks!”
+
+“Well,” I tried to explain further, “not always. A simple example is a stack overflow exception, but it can happen other times, especially in multi-threaded appli—”
+
+“Alex,” the interviewer sternly jumped in, “read the documentation. You’re wrong here.”
+
+“Okay… but, let’s say something catastrophic happens, like the process is terminated.”
+
+“Uh-uh,” he smirked, “actually, the CLR handles that through process marshalling. Can we move on now?”
+
+“All right,” I sighed. As tempting as it was to ask him to describe the just-made-up concept of process marshaling, I decided to concede. And just at that moment, I thought of the perfect rebuttal. “But what if you just, say, pull the plug? A Finally block won’t execute when the computer is turned off!”
+
+I expected the developers to jump back and chastise me for an “unreasonable scenario.” But instead, their faces turned bright white. They slowly turned to look at each other. It was clear that they made the same mistake that many before them had made: believing Try-Finally to be as infallible as things like database transactions.
+
+“And… umm…” I said slowly, breaking the awkward silence, “that’s why… you should… never put critical… business transaction code in finally blocks.”
+
+The interview ended shortly after that. They did end up offering me the job, but I decided to pursue another opportunity.
