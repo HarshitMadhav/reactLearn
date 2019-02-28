@@ -1,0 +1,8 @@
+
+    <View style={{backgroundColor:'white',color :'white',flexDirection:'row' , flex: 1 ,margin: 10, height: 225,borderRadius :6,width : window.width- 20, shadowColor: '#000',
+   shadowOffset: { width: 0, height: 1 },
+   shadowOpacity: 0.6,
+   shadowRadius: 2,
+   elevation: 5 }}>
+   
+   </View>
