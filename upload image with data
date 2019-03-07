@@ -1,5 +1,38 @@
 ................. upload image with data, popups, keyextractor, flatlist, respress (touchableopacity to each flatlist item)
+......................... see the changeImage=()=>{} replace this method by this method id you want to (crop the image after selecting)
+import ImagePicker from 'react-native-image-picker';
+import ImagePickers from 'react-native-image-crop-picker';
 
+changeImage=()=>{
+   ImagePicker.showImagePicker(options, (response) => {
+  console.log('Response = ', response);
+
+  if (response.didCancel) {
+    console.log('User cancelled image picker');
+  } else if (response.error) {
+    console.log('ImagePicker Error: ', response.error);
+  } else {
+        const source = { uri: response.uri };
+ImagePickers.openCropper({
+  path: response.uri,
+
+}).then(image=>{
+   GLOBAL.profile = response.uri
+      // You can also display the image using data:
+      // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+      this.setState({flag :   'Y'})
+    this.setState({image :   GLOBAL.profile})
+      this.setState({
+        avatarSource: source,
+});
+
+    });
+
+  }
+});
+}
+
+............................... full code start from here (without image crop)
 import React, {Component} from 'react';
 import {Animated,ActivityIndicator,Platform,TouchableOpacity,TextInput, TouchableNativeFeedback,StyleSheet,StatusBar,AsyncStorage, Text,Alert, View,Image,Dimensions,FlatList} from 'react-native';
 const window = Dimensions.get('window');
