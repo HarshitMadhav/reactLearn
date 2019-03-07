@@ -1,3 +1,5 @@
+................. upload image with data, popups, keyextractor, flatlist, respress (touchableopacity to each flatlist item)
+
 import React, {Component} from 'react';
 import {Animated,ActivityIndicator,Platform,TouchableOpacity,TextInput, TouchableNativeFeedback,StyleSheet,StatusBar,AsyncStorage, Text,Alert, View,Image,Dimensions,FlatList} from 'react-native';
 const window = Dimensions.get('window');
