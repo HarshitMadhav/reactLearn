@@ -1,0 +1,146 @@
+............................Simple get web service
+
+getMoviesFromApiAsync=()=>{
+       var url=GLOBAL.BASE_URL + GLOBAL.countries
+       var acess = "";
+       fetch(url)
+        .then((response) => response.json())
+        .then((responseJson) => {
+//   alert(JSON.stringify(responseJson))
+      if (responseJson.status == "success"){
+//        alert(JSON.stringify(responseJson.data))
+        this.setState({countrylist:responseJson.data})
+        GLOBAL.globalCountryList=responseJson.data;
+      }
+      else{
+         alert('Unable to process your request Please try again')
+      }
+        })
+        .catch((error) => {
+          console.error(error);
+           this.hideLoading();
+            alert('Unable to process your request Please try again after some time')
+        });
+     }
+
+........................ Multipart web service (upload image also by using this)
+       buttonClickListener=()=>{
+         if (this.state.infname == ''){
+                   alert('Please Enter Father Name')
+                 } else if (this.state.date == ''){
+                    alert('Please Select Date of birth')
+                 }else if (this.state.nantionality == ''){
+                    alert('Please Select Nationality')
+                 }   else {
+                   //this.showLoading()
+         const url = GLOBAL.BASE_URL + GLOBAL.update_user_information
+        const data = new FormData();
+             data.append('_token', '8cP9uTwlYsPcFdUqWcgl9zYAekPbNRc6vAg2dD98awUDsrzUUBxVG4GixEGq');
+             data.append('user_id', '12');
+             data.append('father_name', this.state.infname);
+             data.append('date_of_birth',this.state.date);
+             data.append('nationality_id',this.state.nationality_id)
+             data.append('marital_status_id', this.state.value);
+             // you can append anyone.
+             data.append('image', {
+               uri: GLOBAL.profile,
+               type: 'image/jpeg', // or photo.type
+               name: 'image.png'
+             });
+             fetch(url, {
+               method: 'post',
+               body: data,
+               headers: {
+                   'Content-Type': 'multipart/form-data',
+                 }
+             }).then((response) => response.json())
+                   .then((responseJson) => {
+               //this.hideLoading()
+               alert(JSON.stringify(responseJson))
+              this.props.navigation.navigate('Address')
+             });
+               }
+       }
+
+............................... Multipart web service (without image and with array values passed to a single parameter)
+  buttonClickListener=()=>{
+    if (this.state.industry == ''){
+              alert('Please Select Industry')
+            } else if (this.state.farea == ''){
+               alert('Please Select Functional Area')
+            }else if (this.state.inpstate == ''){
+               alert('Please Enter State')
+            }else if (this.state.inpcity == ''){
+               alert('Please Enter City')
+            }else if (this.state.inpzip == ''){
+               alert('Please Enter Zip Code')
+            }
+               else {
+              //this.showLoading()
+              var CompArray = [];
+              CompArray.push('country',this.state.country_id);
+              CompArray.push('state',this.state.instate);
+              CompArray.push('city',this.state.incity);
+              alert(CompArray)
+    const url = GLOBAL.BASE_URL + GLOBAL.update_user_information
+      const data = new FormData();
+        data.append('_token', '8cP9uTwlYsPcFdUqWcgl9zYAekPbNRc6vAg2dD98awUDsrzUUBxVG4GixEGq');
+        data.append('user_id', '12');
+        data.append('main_industry_id', this.state.industry_id);
+        data.append('functional_area_id',this.state.farea_id);
+        data.append('functional_role_id',this.state.role_id)
+        data.append('desired_job_type', this.state.value);
+        data.append('employment_type', this.state.values);
+        data.append('preferred_job_locations', JSON.stringify(CompArray));
+
+        // you can append anyone.
+
+        fetch(url, {
+          method: 'post',
+          body: data,
+          headers: {
+              'Content-Type': 'multipart/form-data',
+            }
+        }).then((response) => response.json())
+              .then((responseJson) => {
+          //this.hideLoading()
+          alert(JSON.stringify(responseJson))
+         this.props.navigation.navigate('Salinfo')
+        });
+          }
+
+  }
+
+....................................Post web service
+ getMoviesFromApiAsync = () => {
+ this.showLoading();
+       const url = GLOBAL.BASE_URL+ GLOBAL.boothwise_inventory
+
+      fetch(url, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    accessToken: GLOBAL.productid,
+    boxId :GLOBAL.boxId,
+
+
+  }),
+}).then((response) => response.json())
+    .then((responseJson) => {
+        this.hideLoading();
+
+
+       this.setState({ moviesList: responseJson[0].products})
+      this.setState({ menu_image: responseJson[0].menu_image})
+
+
+    })
+    .catch((error) => {
+      console.error(error);
+       this.hideLoading();
+        alert('Unable to process your request Please try again after some time')
+
+    });
+ }
