@@ -1,0 +1,42 @@
+https://stackoverflow.com/questions/46341174/back-button-react-native-exit-app
+
+If you don't want the Alert message to appear in other component/screen but only in one specific component/screen, you can follow this.
+
+import { withNavigationFocus } from 'react-navigation';
+
+class Home extends Component {
+  componentWillMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  handleBackButton = () => {
+    if (this.props.isFocused) {
+      Alert.alert(
+        'Exit App',
+        'Exiting the application?',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel'
+          },
+          {
+            text: 'OK',
+            onPress: () => BackHandler.exitApp()
+          }
+        ],
+        {
+          cancelable: false
+        }
+      );
+      return true;
+    }
+  };
+} 
+
+export default withNavigationFocus(Home);
+The BackHandler that will show an Alert message will only work in TestComponent
