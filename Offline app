@@ -1,0 +1,89 @@
+https://www.npmjs.com/package/react-native-simple-store
+
+use react-native-simple-store to store the data of the app to run the app in offline mode also.
+
+npm install react-native-simple-store
+
+*********************In the Home.js*********************** or whatever.js in which you want to display the offline data do this************
+import store from 'react-native-simple-store';
+
+
+after getting the response from the web service store the response from the api to store using store.update()
+
+store.update('front_main',responseJson)
+
+*************** Example *******************
+getMoviesFromApiAsync = () => {
+   const url = GLOBAL.BASE_URL +  GLOBAL.front_main
+    return fetch(url)
+      .then((response) => response.json())
+      .then((responseJson) => {
+
+
+        store.update('front_main',responseJson)  <<<<<<<---------------
+        
+        this.setState({eventLists:responseJson.events})
+        GLOBAL.info_number =  responseJson.info_number
+        // this will update state to re-render ui
+        return responseJson.movieList;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+  
+  ****************************** Now, import NetInfo in the same file to get connection info whether the device is offline or online******************
+  import NetInfo from react-native;
+  
+ componentDidMount() {
+   this.getMoviesFromApiAsync()
+   this.props.navigation.addListener('willFocus',this._handleStateChange);
+  }
+
+getOFF =(responseJson)=>{
+      // in this getOFF method you set all the states and store all the values that you need to set for the whole screen after responsejson
+      // is method me responsejson se jo bhi data extract karna hai extract it and set it using states and storing in 'var'
+        this.setState({eventLists:responseJson.events})
+        GLOBAL.info_number =  responseJson.info_number
+}
+
+
+_handleStateChange = state => {
+   //alert('hoho')
+       NetInfo.isConnected.fetch().then(isConnected => {
+ // alert('First, is ' + (isConnected ? 'online' : 'offline'));
+  if(isConnected ==false){
+store.get('front_main') .then((res) => this.getOFF(res) )
+
+  }
+
+});
+function handleFirstConnectivityChange(isConnected) {
+ // alert('Then, is ' + (isConnected ? 'online' : 'offline'));
+  NetInfo.isConnected.removeEventListener(
+    'connectionChange',
+    handleFirstConnectivityChange
+  );
+}
+NetInfo.isConnected.addEventListener(
+  'connectionChange',
+  handleFirstConnectivityChange
+);
+
+   this.getMoviesFromApiAsync()
+ };
+
+************************THEORY or Explaination for what's happening**************************
+
+webservice hit hone ke bas ka response we store the response using store.update() in the store and in componentwillmount() or
+componentdidmount() me hum addlistener _handlestatechange ka method laga dete hai jisse ki ya to wo data webservice se load hota hai ya fir
+store.get() se (agar offline hai to store.get se ata hai and online hai to getmoviesapiasync() wale se ata hai.
+getOFF() method me hum wahi work karte hai jo humne getmoviesfromapiasync() wale method me response ane ke bad karte hai.
+
+Basically, ho kya raha hai getmoviesfromapiasync() wale ka pura response store me save ho ra hai and offline mode me humko wahi 
+response se data extract to karna hi padega na! to getOff() wale method me hum wahi sab kam karte hai jo humne getmoviesfromapiasync()
+wale method me response ane ke bad kiya hai... means getOFF() me wahi set state karni padegi ya wahi variables me data store karna padega 
+response ka jese getmoviesfromapiasync() me ane ke bad kiya tha...
+
+Hum kabhi bhi componentWillUnmount() me iske addlistener ko remove nahi karwate hai.
+
