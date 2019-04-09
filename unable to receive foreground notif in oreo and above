@@ -1,0 +1,35 @@
+CHECK OUT THIS LINK https://github.com/zo0r/react-native-push-notification/issues/884
+
+Android >= 8.0 is not receiving notifications in foreground
+
+Statement:----
+
+"Yesterday I notice that devices that are using an Android version greater than 8.0 were not receiving push notifications. When I was debugging it, I notice that it's caused by the null value returned by this.config.getChannelName() on the RNPushNotificationHelper.java file.
+
+A workaround that I found was to make a ternary there in order to set a default value to it if it returns null.
+
+NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, this.config.getChannelName() != null ? this.config.getChannelName() : "rn-push-notification-channel", importance);"
+
+
+***********************DO THIS to resolve this issue**********************************************************
+In RNPushNotificationHelper.java file:::::::::::
+
+NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, this.config.getChannelName() != null ? this.config.getChannelName() : "rn-push-notification-channel", importance);
+
+In androidManifest.xml file:::::::::::::::::::: add these meta tags in between <application>......</application> tag
+        <meta-data  android:name="com.dieam.reactnativepushnotification.notification_channel_name"
+            android:value="rn-push-notification-channel"/>
+
+        <meta-data  android:name="com.dieam.reactnativepushnotification.notification_channel_description"
+            android:value="rn-push-notification-channel"/>
+           
+<Meta-data tag is necessary to display the notification when using channels....
+
+
+************************ Explain to the above code changes********************************************************
+this ChannelName is required starting in Android 8.0 (API level 26); so all notification must be assigned to a channel.
+But there is no specific name we must put there, you can give the name you want to your channel;
+it's used only to group all the notifications of the same app - or type - in order to set some properties on it. So, since we're not setting properties on it,
+I believe that the workaround that I suggested above won't cause any problems to your app
+
+
