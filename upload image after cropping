@@ -2,6 +2,7 @@ import ImagePicker from 'react-native-image-picker';
 import ImagePickers from 'react-native-image-crop-picker';
 
 changeImage=()=>{
+  var source;
    ImagePicker.showImagePicker(options, (response) => {
   console.log('Response = ', response);
 
@@ -10,12 +11,13 @@ changeImage=()=>{
   } else if (response.error) {
     console.log('ImagePicker Error: ', response.error);
   } else {
-        const source = { uri: response.uri };
+        source = { uri: response.uri };
 ImagePickers.openCropper({
-  path: response.uri,
+  path: source.uri,
 
 }).then(image=>{
-   GLOBAL.profile = response.uri
+//  alert(JSON.stringify(image))
+   GLOBAL.profile = image.path
       // You can also display the image using data:
       // const source = { uri: 'data:image/jpeg;base64,' + response.data };
       this.setState({flag :   'Y'})
