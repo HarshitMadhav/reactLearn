@@ -1,0 +1,1 @@
+ setTimeout(() => { this.props.navigation.navigate('HomeScreen'); }, 3000);
