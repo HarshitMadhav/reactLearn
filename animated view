@@ -1,0 +1,5 @@
+import * as Animatable from 'react-native-animatable';
+
+<Animatable.Image style={{width:25, height:25,marginLeft:80, marginTop:-50, marginBottom:5, resizeMode:'contain'}}
+                 animation="bounceIn" iterationCount={'infinite'}
+                 source={require('./new_section.png')}/>
