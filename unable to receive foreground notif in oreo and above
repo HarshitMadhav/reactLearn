@@ -17,6 +17,22 @@ In RNPushNotificationHelper.java file:::::::::::
 NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, this.config.getChannelName() != null ? this.config.getChannelName() : "rn-push-notification-channel", importance);
 
 In androidManifest.xml file:::::::::::::::::::: add these meta tags in between <application>......</application> tag
+        <service android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationRegistrationService"/>
+        <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationPublisher" />
+        <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationBootEventReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <service
+                    android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationListenerServiceGcm"/>
+        <service
+            android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationListenerService"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
         <meta-data  android:name="com.dieam.reactnativepushnotification.notification_channel_name"
             android:value="rn-push-notification-channel"/>
 
