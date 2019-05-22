@@ -41,6 +41,49 @@ In androidManifest.xml file:::::::::::::::::::: add these meta tags in between <
            
 <Meta-data tag is necessary to display the notification when using channels....
 
+************************************ in NotifService.js *********************************
+
+provide pushnotification.configure props : 
+
+                foreground: true,
+                userInteraction: true,
+                show_in_foreground: true,
+
+to all methods like this 
+
+            configure(onRegister, onNotification, fcm = "") {
+              PushNotification.configure({
+                // (optional) Called when Token is generated (iOS and Android)
+                onRegister: onRegister, //this._onRegister.bind(this),
+
+                // (required) Called when a remote or local notification is opened or received
+                onNotification: onNotification, //this._onNotification,
+
+                // ANDROID ONLY: GCM Sender ID (optional - not required for local notifications, but is need to receive remote push notifications)
+                senderID: '802370951476',     // paste the serverId here from the firebase
+
+                // IOS ONLY (optional): default: all - Permissions to register.
+                permissions: {
+                  alert: true,
+                  badge: true,
+                  sound: true
+                },
+
+                // Should the initial notification be popped automatically
+                // default: true
+                popInitialNotification: true,
+                foreground: true,
+                userInteraction: true,
+                show_in_foreground: true,
+
+                /**
+                  * (optional) default: true
+                  * - Specified if permissions (ios) and token (android and ios) will requested or not,
+                  * - if not, you must call PushNotificationsHandler.requestPermissions() later
+                  */
+                requestPermissions: true,
+              });
+            }
 
 ************************ Explain to the above code changes********************************************************
 this ChannelName is required starting in Android 8.0 (API level 26); so all notification must be assigned to a channel.
