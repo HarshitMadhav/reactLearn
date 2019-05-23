@@ -1,0 +1,16 @@
+   <TextInput style  = {{fontSize : 14,marginLeft : 5,marginRight: 20,marginTop: 30,width : width - 95,height : 40 ,borderBottomWidth:2 ,borderBottomColor :'#f3f3f3'}}
+   placeholder = {this.state.mobile}
+   keyboardType={'numeric'}
+   maxLength={10}
+   value={this.state.inmobile}
+   onChangeText={(text) => this.setState({inmobile:text.replace(/[^0-9]/g, '')})}
+   placeholderTextColor = '#4c4c4c'
+   />
+   
+   <TextInput style  = {{marginLeft : 20,marginRight: 20,marginTop: 32,width : width - 40,height : 40 ,borderBottomWidth:2 ,borderBottomColor :'#f3f3f3'}}
+   placeholder = {this.state.email}
+   autoCapitalize = 'none'
+   value={this.state.inemail}
+   onChangeText={(text) => this.setState({inemail:text.replace(/\s+/g,'')})}
+   placeholderTextColor = '#4c4c4c'
+   />
