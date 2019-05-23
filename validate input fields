@@ -14,3 +14,9 @@
    onChangeText={(text) => this.setState({inemail:text.replace(/\s+/g,'')})}
    placeholderTextColor = '#4c4c4c'
    />
+
+then in buttonclicklistener() do this 
+         let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ ;
+if (this.state.email != '' && reg.test(this.state.email) === false){
+      alert('Please Enter Valid Email')
+    }
