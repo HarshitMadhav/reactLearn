@@ -31,7 +31,7 @@ export default class App extends React.Component {
         <Animated.Image
           style={{
             width: 200,
-            height: 200,
+            height: 200,resizeMode:'contain',
             transform: [{ rotate: RotateData }],
           }}
           source={{
