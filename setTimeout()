@@ -1,0 +1,3 @@
+this.timeoutCheck = setTimeout(() => {
+   this.setTimePassed();
+   }, 400);
