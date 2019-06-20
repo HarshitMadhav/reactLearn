@@ -1,4 +1,11 @@
 // textinput growing from top
+  constructor(props) {
+    super(props);
+    this.state = {
+    height:0,
+      newMessage:''
+    };
+  }
 
 <ScrollView automaticallyAdjustContentInsets={false}
           keyboardDismissMode="on-drag"
