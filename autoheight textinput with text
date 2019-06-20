@@ -1,0 +1,42 @@
+// textinput growing from top
+
+<ScrollView automaticallyAdjustContentInsets={false}
+          keyboardDismissMode="on-drag"
+          keyboardShouldPersistTaps={false}
+          showsVerticalScrollIndicator={false}
+          ref='scrollView'
+          contentContainerStyle={styles.container}>
+
+          <TextInput
+    multiline={true}
+    onContentSizeChange={(event) => {
+    this.setState({height: event.nativeEvent.contentSize.height});
+    }}
+
+
+    style={[{height: 40,borderWidth: 0.5,borderColor: '#0f0f0f',fontSize: 13,padding: 4,width:100,}, {height: Math.max(40, this.state.height)}]}
+    defaultValue={this.state.value}
+    />
+                     </ScrollView>
+
+//textinput growing from bottom
+
+
+<ScrollView automaticallyAdjustContentInsets={false}
+          keyboardDismissMode="on-drag"
+          keyboardShouldPersistTaps={false}
+          showsVerticalScrollIndicator={false}
+          ref='scrollView'
+          contentContainerStyle={styles.container}>
+<Text >this is it</Text>
+          <TextInput
+    multiline={true}
+    onContentSizeChange={(event) => {
+    this.setState({height: event.nativeEvent.contentSize.height});
+    }}
+
+
+    style={[{height: 40,borderWidth: 0.5,borderColor: '#0f0f0f',fontSize: 13,padding: 4,width:100,position:'absolute', bottom:0}, {height: Math.max(40, this.state.height)}]}
+    defaultValue={this.state.value}
+    />
+                     </ScrollView>
