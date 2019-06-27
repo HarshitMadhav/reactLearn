@@ -1,1 +1,9 @@
-just ask the backend developer to send payload or response with `image:'imageurl'`
+just ask the backend developer to send payload or response with "image":"imageurl",
+
+ $message = array( "title"=> ltrim($this->input->post('subject')),
+             "body"=> $this->input->post('message'),
+             "sound"=> "default",
+             "color"=> "#910818",
+             "userInteraction"=>false,
+              "image"=>$path,
+             "icon"=> "ic_launcher");
