@@ -1,0 +1,20 @@
+Refer : https://stackoverflow.com/questions/43873546/react-native-textalign-justify
+
+React-native textAlign justify
+
+Android does not support text justification. textAlign enum('auto', 'left', 'right', 'center', 'justify') : Specifies text alignment. The value 'justify' is only supported on iOS and fallbacks to left on Android.
+
+A workaround for this limitation is to use a React Native WebView component. The content of the WebView can be an HTML code with the justified text. Like this:
+
+<View style={{flex: 1}}>
+    <WebView
+        source={{ html: "<p style='text-align: justify;'>Justified text here</p>" }}
+    />
+</View>
+
+More sample code
+
+      <WebView style={{backgroundColor:'black'}}
+              source={{ html: "<p style='text-align: justify;color:white;'>1. To know more about the same, kindly drop and email at</p>"+"<p style='text-align: justify;color:white;'>2. This in case there is a genuine user request.</p>"+"<p style='text-align: justify;color:white;'>3. In addition to and not a substitution/ replacement for the.</p>"+"<p style='text-align: justify;color:white;'>4. Arising in relation hereto which shall be subject.</p>" }}
+          />
+
