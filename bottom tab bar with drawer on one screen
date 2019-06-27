@@ -1,0 +1,200 @@
+Navigator.js
+
+import { createStackNavigator ,createAppContainer ,createDrawerNavigator,createBottomTabNavigator} from 'react-navigation';
+
+import Home from './Home.js';
+import Splash from './Splash.js';
+import CreatePlaylist from './CreatePlaylist.js';
+import ProfileInfo from './ProfileInfo.js';
+import Music from './Music.js';
+import Shop from './Shop.js';
+import Drawer from './Drawer.js';
+import ProfileStore from './ProfileStore.js';
+import SelectDevice from './SelectDevice.js';
+import Inferno from './Inferno.js';
+import Support from './Support.js';
+import ProfileMusic from './ProfileMusic.js';
+import Notification from './Notification.js';
+import Recommended from './Recommended.js';
+
+import {NavigationActions} from 'react-navigation';
+import React, {Component} from 'react';
+
+import {Platform, StyleSheet,TouchableOpacity,Image, Text, View ,Button, Share} from 'react-native';
+
+const DrawerNavigator = createDrawerNavigator({
+  Home:{
+      screen: Home ,
+}
+
+},{
+  initialRouteName: 'Home',
+  contentComponent: Drawer,
+  drawerWidth: 300
+});
+
+const TabNavigator = createBottomTabNavigator({
+            Music: { screen: Music,
+            navigationOptions : {
+    title:'',
+
+    tabBarLabel: '',
+    // Note: By default the icon is only shown on iOS. Search the showIcon option below.
+    tabBarIcon: ({ tintColor,focused }) =>{
+      const image = focused
+      ? require('./active_buds.png')
+              : require('./inactive_buds.png')
+  return(
+    <Image
+      source={image}
+      style={{width:20, height:20}}
+    />
+
+  )
+          }
+    }
+
+       },
+           DrawerNavigator: { screen: DrawerNavigator ,
+                navigationOptions : {
+    title:'',
+    tabBarLabel: '',
+    // Note: By default the icon is only shown on iOS. Search the showIcon option below.
+    tabBarIcon: ({ tintColor, focused }) =>{
+      const image = focused
+      ? require('./active_home.png')
+              : require('./inactive_home.png')
+  return(
+    <Image
+      source={image}
+      style={{width:20, height:20}}
+    />
+
+  )
+
+    }
+      }
+    },
+
+    Inferno: { screen: Inferno ,
+          navigationOptions : {
+    title:'',
+    tabBarLabel: '',
+    // Note: By default the icon is only shown on iOS. Search the showIcon option below.
+    tabBarIcon: ({ tintColor, focused }) =>
+
+
+
+      <Image
+        source={require('./music.png')}
+        style={{width:90, height:90,alignSelf:'center',resizeMode:'contain', marginBottom:18}}
+        />
+
+
+      }},
+
+    Notification: { screen: Notification ,
+          navigationOptions : {
+    title:'',
+    tabBarLabel: '',
+    // Note: By default the icon is only shown on iOS. Search the showIcon option below.
+    tabBarIcon: ({ tintColor, focused }) =>{
+    const image = focused
+    ? require('./active_notification.png')
+            : require('./inactive_notification.png')
+
+
+return(
+  <Image
+    source={image}
+    style={{width:20, height:20,alignSelf:'center',resizeMode:'contain'}}
+    />
+
+)
+
+}
+      }
+    },
+
+
+           ProfileInfo: { screen: ProfileInfo ,
+                navigationOptions : {
+    title:'',
+    tabBarLabel: '',
+    // Note: By default the icon is only shown on iOS. Search the showIcon option below.
+    tabBarIcon: ({ tintColor, focused }) =>{
+
+    const image = focused
+    ? require('./active_prof.png')
+            : require('./inactive_prof.png')
+
+return(
+  <Image
+    source={image}
+    style={{width:20, height:20}}
+  />
+
+)
+      }
+    }
+    },
+
+  },
+
+
+ {
+    defaultNavigationOptions: ({ navigation }) => ({
+
+      tabBarIcon: () => (
+      <Image
+        source={require('./radio.png')}
+        style={{width:20, height:20}}
+      />
+      )
+    }),
+    tabBarOptions: {
+      activeTintColor: '#90BA45',
+      showLabel:false,
+      inactiveTintColor: 'white',
+      inactiveBackgroundColor:'white',
+      activeBackgroundColor:'white',
+      showIcon:'true'
+    },
+
+  }
+);
+
+
+const StackNavigator = createStackNavigator({
+
+
+  
+  Splash :{screen:Splash},
+
+  TabNavigator: { screen: TabNavigator },
+
+  Home: { screen: Home
+
+
+  },
+  DrawerNavigator:{screen:DrawerNavigator},
+
+  SelectDevice:{screen:SelectDevice},
+  CreatePlaylist:{screen:CreatePlaylist},
+  ProfileInfo:{screen:ProfileInfo},
+  ProfileStore:{screen:ProfileStore},
+  ProfileMusic:{screen:ProfileMusic},
+  Notification:{screen:Notification},
+  Recommended:{screen:Recommended},
+  Support :{screen:Support},
+  Inferno:{screen:Inferno},
+  Shop:{screen:Shop},
+},
+  {headerMode :'none'}
+
+  );
+
+
+
+
+export default createAppContainer(StackNavigator);
