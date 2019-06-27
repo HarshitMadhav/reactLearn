@@ -1,0 +1,179 @@
+Refer here : https://stackoverflow.com/questions/53964144/images-in-tabbar-navigator
+
+
+For the image, try setting it up this way
+
+Icon in tabBarNavigator
+
+tabBarIcon: ({ focused }) => {
+        const image = focused
+        ? require('./image/HomeActive.png')
+        : require('./image/HomeInactive.png')
+        return (
+            <Image
+                source={image}
+                style={{height:36, width:24}}
+            />
+        )
+    }
+and set activeTintColor and inactiveTintColor under tabBarOptions
+
+What I did sample code (for individual screen):
+
+Music: { screen: Music,
+            navigationOptions : {
+    title:'',
+
+    tabBarLabel: '',
+    // Note: By default the icon is only shown on iOS. Search the showIcon option below.
+    tabBarIcon: ({ tintColor,focused }) =>{
+      const image = focused
+      ? require('./active_buds.png')
+              : require('./inactive_buds.png')
+  return(
+    <Image
+      source={image}
+      style={{width:20, height:20}}
+    />
+
+  )
+          }
+    }
+
+       },
+
+
+What I did whole code (Bottom tab navigator with drawer navigator)
+
+
+const TabNavigator = createBottomTabNavigator({
+            Music: { screen: Music,
+            navigationOptions : {
+    title:'',
+
+    tabBarLabel: '',
+    // Note: By default the icon is only shown on iOS. Search the showIcon option below.
+    tabBarIcon: ({ tintColor,focused }) =>{
+      const image = focused
+      ? require('./active_buds.png')
+              : require('./inactive_buds.png')
+  return(
+    <Image
+      source={image}
+      style={{width:20, height:20}}
+    />
+
+  )
+          }
+    }
+
+       },
+           DrawerNavigator: { screen: DrawerNavigator ,
+                navigationOptions : {
+    title:'',
+    tabBarLabel: '',
+    // Note: By default the icon is only shown on iOS. Search the showIcon option below.
+    tabBarIcon: ({ tintColor, focused }) =>{
+      const image = focused
+      ? require('./active_home.png')
+              : require('./inactive_home.png')
+  return(
+    <Image
+      source={image}
+      style={{width:20, height:20}}
+    />
+
+  )
+
+    }
+      }
+    },
+
+    Inferno: { screen: Inferno ,
+          navigationOptions : {
+    title:'',
+    tabBarLabel: '',
+    // Note: By default the icon is only shown on iOS. Search the showIcon option below.
+    tabBarIcon: ({ tintColor, focused }) =>
+
+
+
+      <Image
+        source={require('./music.png')}
+        style={{width:90, height:90,alignSelf:'center',resizeMode:'contain', marginBottom:18}}
+        />
+
+
+      }},
+
+    Notification: { screen: Notification ,
+          navigationOptions : {
+    title:'',
+    tabBarLabel: '',
+    // Note: By default the icon is only shown on iOS. Search the showIcon option below.
+    tabBarIcon: ({ tintColor, focused }) =>{
+    const image = focused
+    ? require('./active_notification.png')
+            : require('./inactive_notification.png')
+
+
+return(
+  <Image
+    source={image}
+    style={{width:20, height:20,alignSelf:'center',resizeMode:'contain'}}
+    />
+
+)
+
+}
+      }
+    },
+
+
+           ProfileInfo: { screen: ProfileInfo ,
+                navigationOptions : {
+    title:'',
+    tabBarLabel: '',
+    // Note: By default the icon is only shown on iOS. Search the showIcon option below.
+    tabBarIcon: ({ tintColor, focused }) =>{
+
+    const image = focused
+    ? require('./active_prof.png')
+            : require('./inactive_prof.png')
+
+return(
+  <Image
+    source={image}
+    style={{width:20, height:20}}
+  />
+
+)
+      }
+    }
+    },
+
+  },
+
+
+ {
+    defaultNavigationOptions: ({ navigation }) => ({
+
+      tabBarIcon: () => (
+      <Image
+        source={require('./radio.png')}
+        style={{width:20, height:20}}
+      />
+      )
+    }),
+    tabBarOptions: {
+      activeTintColor: '#90BA45',
+      showLabel:false,
+      inactiveTintColor: 'white',
+      inactiveBackgroundColor:'white',
+      activeBackgroundColor:'white',
+      showIcon:'true'
+    },
+
+  }
+);
+
