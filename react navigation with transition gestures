@@ -1,0 +1,96 @@
+Refer here: https://github.com/react-navigation/react-navigation/issues/2393
+
+React navigation with left to right stack navigation (Simpler Left-to-right Stack Navigation transitions)
+
+
+In navigator.js
+
+const StackNavigator = createStackNavigator({
+
+    Splash: {screen: Splash},
+    TabNavigators: {screen: TabNavigators},
+    DrawerNavigator :{screen:DrawerNavigator},
+    About: {screen: About},
+    NewsDetail:{screen:NewsDetail},
+    MemberList: {screen: MemberList},
+        MyVideo: {screen: MyVideo},
+    Forgot :{screen:Forgot},
+    AddMember: {screen: AddMember},
+    CreateGroup: {screen: CreateGroup},
+    Profile: {screen: Profile},
+    DiscoverDetail: {screen: DiscoverDetail},
+    Discover: {screen: Discover},
+    Videos: {screen: Videos},
+    Home: {screen: Home},
+        GroupList: {screen: GroupList},
+        Bookmark: {screen: Bookmark},
+        Otp: {screen: Otp},
+    Chat: {screen: Chat},
+        Setting:{screen:Setting},
+        Password:{screen:Password},
+    Login: {screen: Login},
+    Signup: {screen: Signup},
+        Recent: {screen: Recent},
+        ChatGroup: {screen: ChatGroup},
+        Topic: {screen: Topic},
+        GroupAddMember: {screen: GroupAddMember},
+    VideoList: {screen: VideoList},
+        EditProfile: {screen: EditProfile},
+        Wallet: {screen: Wallet},
+        Search: {screen: Search},
+        SingleChat: {screen: SingleChat},
+        MyComment: {screen: MyComment},
+        History: {screen: History},
+        SingleGroupChat: {screen: SingleGroupChat},
+        MyChatGroup: {screen: MyChatGroup},
+        AnotherProfile: {screen: AnotherProfile},
+        AnotherHistory: {screen: AnotherHistory},
+        ApniChat: {screen: ApniChat},
+        AnotherNews: {screen: AnotherNews},
+},{
+  headerMode :'none',
+  mode: 'card',
+  navigationOptions: params => ({
+    gesturesEnabled: true,
+    gesturesDirection: 'inverted',
+  }),
+  transitionConfig: () => ({
+    screenInterpolator: sceneProps => {
+      const { layout, position, scene } = sceneProps;
+      const { index } = scene;
+      const width = layout.initWidth;
+
+      return {
+        opacity: position.interpolate({
+          inputRange: [index - 1, index, index + 1],
+          outputRange: [ 0, 1, 0],
+        }),
+        transform: [{
+          translateX: position.interpolate({
+            inputRange: [index - 1, index, index + 1],
+            outputRange: [-width, 0, width],
+          }),
+        }]
+      };
+    },
+    headerTitleInterpolator: sceneProps => {
+      const { layout, position, scene } = sceneProps;
+      const { index } = scene;
+
+      return {
+        opacity: position.interpolate({
+          inputRange: [index - 1, index, index + 1],
+          outputRange: [ 0, 1, 0],
+        }),
+        transform: [{
+          translateX: position.interpolate({
+            inputRange: [index - 1, index, index + 1],
+            outputRange: [-50, 0, 50],
+          }),
+        }]
+      };
+    },
+  }),
+
+
+});
