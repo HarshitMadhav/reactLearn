@@ -1,0 +1,58 @@
+Refer here: https://stackoverflow.com/questions/52107583/react-native-change-navigation-direction-i-e-from-right-to-left
+
+React navigation with right to left stack navigation (Simpler right-to-left Stack Navigation transitions)
+
+react native - change navigation direction (i.e, from right to left)
+
+const StackNavigator = createStackNavigator({
+
+    Splash: {screen: Splash},
+    Home: {screen: Home},
+    ApniChat: {screen: ApniChat},
+
+},{
+  headerMode :'none',
+  mode: 'card',
+  navigationOptions: params => ({
+    gesturesEnabled: true,
+    gesturesDirection: 'inverted',
+  }),
+  transitionConfig: () => ({
+    screenInterpolator: sceneProps => {
+      const {layout, position, scene} = sceneProps;
+               const {index} = scene;
+
+               const width = layout.initWidth;
+               const translateX = position.interpolate({
+                   inputRange: [index - 1, index, index + 1],
+                   outputRange: [width, 0, 0],
+               });
+
+               const opacity = position.interpolate({
+                   inputRange: [index - 1, index - 0.99, index],
+                   outputRange: [0, 1, 1],
+               });
+
+               return {opacity, transform: [{translateX: translateX}]};
+    },
+    headerTitleInterpolator: sceneProps => {
+      const { layout, position, scene } = sceneProps;
+      const { index } = scene;
+
+      return {
+        opacity: position.interpolate({
+          inputRange: [index - 1, index, index + 1],
+          outputRange: [ 0, 1, 0],
+        }),
+        transform: [{
+          translateX: position.interpolate({
+            inputRange: [index - 1, index, index + 1],
+            outputRange: [-50, 0, 50],
+          }),
+        }]
+      };
+    },
+  }),
+
+
+});
