@@ -1,0 +1,134 @@
+In specific screen in order to open a new screen on swipe do this :
+
+Example: (Main screen on which on swipe to open a new screen with transition is Home.js)
+
+install this library react-native-swipe-gestures:
+
+import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+
+
+    onSwipeUp(gestureState) {
+        this.setState({myText: 'You swiped up!'});
+      }
+
+      onSwipeDown(gestureState) {
+        this.setState({myText: 'You swiped down!'});
+      }
+
+      onSwipeLeft(gestureState) {
+        this.props.navigation.navigate('ApniChat')
+
+        this.setState({myText: 'You swiped left!'});
+      }
+    onSwipeRight(gestureState) {
+//      alert('swiped right')
+    this.setState({myText: 'You swiped right!'});
+  }
+
+  onSwipe(gestureName, gestureState) {
+    const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
+    this.setState({gestureName: gestureName});
+    switch (gestureName) {
+      case SWIPE_UP:
+        this.setState({backgroundColor: 'red'});
+        break;
+      case SWIPE_DOWN:
+        this.setState({backgroundColor: 'green'});
+        break;
+      case SWIPE_LEFT:
+        this.setState({backgroundColor: 'blue'});
+        break;
+      case SWIPE_RIGHT:
+        this.setState({backgroundColor: 'yellow'});
+        break;
+    }
+  }
+
+
+In render() do this:
+      const config = {
+            velocityThreshold: 0.3,
+            directionalOffsetThreshold: 80
+          };
+
+In return() do this (Make GestureRecognizer as parent element)
+return(
+          <GestureRecognizer
+        onSwipe={(direction, state) => this.onSwipe(direction, state)}
+        onSwipeUp={(state) => this.onSwipeUp(state)}
+        onSwipeDown={(state) => this.onSwipeDown(state)}
+        onSwipeLeft={(state) => this.onSwipeLeft(state)}
+        onSwipeRight={(state) => this.onSwipeRight(state)}
+        config={config}
+        style={{
+          flex: 1,
+          backgroundColor: this.state.backgroundColor
+        }}
+        >
+                    <View style={styles.container}>
+                    </View>
+        </GestureRecognizer>
+
+)
+
+
+And in Navigator.js create stacknavigator like this:
+
+const StackNavigator = createStackNavigator({
+
+    Splash: {screen: Splash},
+    TabNavigators: {screen: TabNavigators},
+    DrawerNavigator :{screen:DrawerNavigator},
+    Home: {screen: Home},
+    ApniChat: {screen: ApniChat},
+
+},{
+  headerMode :'none',
+  mode: 'card',
+  navigationOptions: params => ({
+    gesturesEnabled: true,
+    gesturesDirection: 'inverted',
+  }),
+  transitionConfig: () => ({
+    screenInterpolator: sceneProps => {
+      const { layout, position, scene } = sceneProps;
+      const { index } = scene;
+      const width = layout.initWidth;
+
+      return {
+        opacity: position.interpolate({
+          inputRange: [index - 1, index, index + 1],
+          outputRange: [ 0, 1, 0],
+        }),
+        transform: [{
+          translateX: position.interpolate({
+            inputRange: [index - 1, index, index + 1],
+            outputRange: [-width, 0, width],
+          }),
+        }]
+      };
+    },
+    headerTitleInterpolator: sceneProps => {
+      const { layout, position, scene } = sceneProps;
+      const { index } = scene;
+
+      return {
+        opacity: position.interpolate({
+          inputRange: [index - 1, index, index + 1],
+          outputRange: [ 0, 1, 0],
+        }),
+        transform: [{
+          translateX: position.interpolate({
+            inputRange: [index - 1, index, index + 1],
+            outputRange: [-50, 0, 50],
+          }),
+        }]
+      };
+    },
+  }),
+
+
+});
+
+
+
