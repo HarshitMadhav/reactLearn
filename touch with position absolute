@@ -1,0 +1,10 @@
+Add a zIndex to the touchable opacity to allow it to receive touch events first.
+
+zIndex : 1 means in front
+zIndex : 0 means in back
+
+zIndex: -1 means back
+
+<TouchableOpacity style={{position:'absolute', left:20, top:40,zIndex:1,}}onPress={()=> this.props.navigation.goBack()}>
+      <Image style={{width:30, height:30, resizeMode:'contain',}} source={require('./assets_myplaylist/images/shape-12-copy-2.png')}/>
+</TouchableOpacity>
