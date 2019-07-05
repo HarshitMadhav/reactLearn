@@ -1,0 +1,8 @@
+onClickRateApp=()=>{
+  var link ="https://play.google.com/store/apps/details?id=com.packagename"
+    Linking.canOpenURL(link).then(supported => {
+        supported && Linking.openURL(link);
+    }, (err) => console.log(err));
+
+}
+
