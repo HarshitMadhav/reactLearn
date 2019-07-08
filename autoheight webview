@@ -1,0 +1,24 @@
+install link https://www.npmjs.com/package/react-native-autoheight-webview
+install link for native web view https://www.npmjs.com/package/react-native-webview
+
+
+import AutoHeightWebView from 'react-native-autoheight-webview'
+
+
+
+
+<AutoHeightWebView style = {{width:window.width-20,justifyContent:'center' }}
+                                originWhitelist={['*']}
+                                source={{html: htmlResponse}}
+                                mixedContentMode={'compatibility'}
+                                domStorageEnabled={true}
+                                javaScriptEnabled={true}
+                                scalesPageToFit={false}
+                                injectedJavaScript={`const meta = document.createElement('meta'); meta.setAttribute('content', 'width=width-20 ,initial-scale=0.5, maximum-scale=0.5, user-scalable=2.0'); meta.setAttribute('name', 'viewport'); document.getElementsByTagName('head')[0].appendChild(meta); `}
+                                onLoadEnd={this._onLoadEnd}
+                                automaticallyAdjustContentInsets={true}
+                                startInLoadingState={false}
+                                scrollEnabled={true}
+
+                            />
+
