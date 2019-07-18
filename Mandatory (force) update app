@@ -1,4 +1,4 @@
-// force a user to update the current version of app
+// force a user to update the current version of app from play store
 
 import React, {Component} from 'react';
 import { StyleSheet,TextInput,Text, View,Image, Linking,Button ,Alert,AsyncStorage,Dimensions ,TouchableOpacity,Animated,  Easing} from 'react-native';
@@ -58,7 +58,7 @@ export default class Splash extends Component {
 
       if(VersionNumber.appVersion < appVersion){
         this.setState({show:true})
-//        Alert.alert("Newsmen Update required", appVersion);
+//        Alert.alert("App Update required", appVersion);
 
       }
       else{
