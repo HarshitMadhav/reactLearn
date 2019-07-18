@@ -1,0 +1,236 @@
+// force a user to update the current version of app
+
+import React, {Component} from 'react';
+import { StyleSheet,TextInput,Text, View,Image, Linking,Button ,Alert,AsyncStorage,Dimensions ,TouchableOpacity,Animated,  Easing} from 'react-native';
+const window = Dimensions.get('window');
+const GLOBAL = require('./Global');
+import {
+  SCLAlert,
+  SCLAlertButton
+} from 'react-native-scl-alert'
+type Props = {};
+import VersionNumber from 'react-native-version-number';
+
+import { getAppstoreAppVersion } from "react-native-appstore-version-checker";
+
+export default class Splash extends Component {
+    constructor(props) {
+
+        super(props)
+        this.state = {
+            moviesList: [],
+            eventLists :[],
+            brandLists: [],
+            moviesLists: [],
+            beer: [],
+            show:false,
+            count : "0",
+            oldpass:'',
+            newpass:'',
+            confpass:'',
+        }
+        this.RotateValueHolder = new Animated.Value(0);
+
+    }
+    static navigationOptions = ({ navigation }) => {
+        return {
+            header: () => null,
+            animations: {
+                setRoot: {
+                    waitForRender: false
+                }
+            }
+        }
+    }
+
+
+    handleOpen = () => {
+        this.setState({ show: true })
+      }
+
+      handleClose = () => {
+        this.setState({ show: false })
+      }
+
+    componentWillMount(){
+      getAppstoreAppVersion("com.example") //put any apps packageId here
+  .then(appVersion => {
+
+      if(VersionNumber.appVersion < appVersion){
+        this.setState({show:true})
+//        Alert.alert("Newsmen Update required", appVersion);
+
+      }
+      else{
+        this.timeoutCheck = setTimeout(() => {
+
+          var values =  AsyncStorage.getItem('name');
+          values.then((e)=>{
+              if (e == '' || e == null ){
+
+
+
+              }else {
+                  GLOBAL.myname = e;
+              }
+
+          })
+
+
+
+          var value =  AsyncStorage.getItem('userID');
+          value.then((e)=>{
+              if (e == '' || e == null ){
+
+
+                  this.props.navigation.replace('Login')
+              }else {
+                  GLOBAL.user_id = e;
+                  this.props.navigation.replace('TabNavigators')
+              }
+
+          })
+
+ //         this.setTimePassed();
+ }, 2000);
+
+      }
+  })
+  .catch(err => {
+    console.log("error occurred", err);
+  });
+
+
+// if removed (uncommented) it will lead to open app without mandatory update of app
+//   this.timeoutCheck = setTimeout(() => {
+//
+//     var values =  AsyncStorage.getItem('name');
+//     values.then((e)=>{
+//         if (e == '' || e == null ){
+//
+//
+//
+//         }else {
+//             GLOBAL.myname = e;
+//         }
+//
+//     })
+//
+//
+//
+//     var value =  AsyncStorage.getItem('userID');
+//     value.then((e)=>{
+//         if (e == '' || e == null ){
+//
+//
+//             this.props.navigation.replace('Login')
+//         }else {
+//             GLOBAL.user_id = e;
+//             this.props.navigation.replace('TabNavigators')
+//         }
+//
+//     })
+//
+// //         this.setTimePassed();
+// }, 2000);
+//
+
+//  alert(VersionNumber.appVersion);
+  //alert(VersionNumber.buildVersion);
+//  alert(VersionNumber.bundleIdentifier);
+
+    }
+
+
+handleClose=()=>{
+  var link ="https://play.google.com/store/apps/details?id=com.example"
+
+    Linking.canOpenURL(link).then(supported => {
+        supported && Linking.openURL(link);
+    }, (err) => console.log(err));
+
+}
+
+
+    StartImageRotateFunction() {
+        this.RotateValueHolder.setValue(0);
+        Animated.timing(this.RotateValueHolder, {
+            toValue: 1,
+            duration: 3000,
+            easing: Easing.linear,
+        }).start(() => this.StartImageRotateFunction());
+    }
+
+    render() {
+        const RotateData = this.RotateValueHolder.interpolate({
+            inputRange: [0, 1],
+            outputRange: ['0deg', '30deg'],
+        });
+        return (
+            <View style={styles.container}>
+                <Image style = {{width :window.width ,height : window.height}}
+                       source={require('./sp.png')}/>
+                <Image
+                    style={{
+                        width: 225,
+                        height: 225,
+                        alignSelf:'center',
+                        resizeMode:'contain',
+                        marginTop :- window.height/2 - 100,
+
+
+                    }}
+                    source={require('./logo.png')}
+                />
+                <SCLAlert
+                          show={this.state.show}
+                          onRequestClose={this.handleClose}
+                          theme="warning"
+                          cancellable={false}
+                          title="Update Required!"
+                          subtitle="A New Update is Now Available. Please update from the Play Store."
+
+                        >
+                        <SCLAlertButton theme="warning" onPress={this.handleClose}>Update</SCLAlertButton>
+
+        </SCLAlert>
+            </View>
+        );
+    }
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+    welcome: {
+        fontSize: 20,
+        textAlign: 'center',
+        margin: 10,
+    },
+    button: {
+        borderWidth: 1,
+        borderColor: "#000000",
+        margin: 5,
+        padding: 5,
+        width: "70%",
+        backgroundColor: "#DDDDDD",
+        borderRadius: 5,
+    },
+    textField: {
+        borderWidth: 1,
+        borderColor: "#AAAAAA",
+        margin: 5,
+        padding: 5,
+        width: "70%"
+    },
+    spacer: {
+        height: 10,
+    },
+
+    title: {
+        fontWeight: "bold",
+        fontSize: 20,
+        textAlign: "center",
+    }
+});
