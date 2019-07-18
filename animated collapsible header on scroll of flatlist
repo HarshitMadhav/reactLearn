@@ -4,6 +4,7 @@
 
 // this example has collapsible header on scroll and also guest login special alerts , material tabs, polls, videos
 
+
 import React, {Component} from 'react';
 import {
     StyleSheet,
@@ -26,6 +27,7 @@ import {
 } from 'react-native';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+import LinearGradient from 'react-native-linear-gradient';
 
 const realWidth = ExtraDimensions.getRealWindowWidth()
 
@@ -292,6 +294,15 @@ export default class Home extends Component {
             }
         );
     }
+
+    componentWillReceiveProps() {
+//        alert('rerender here')
+        //this.yourFunction()
+        this.setState({selectedTab:0})
+        this.categorySelect(0)
+
+    }
+
     componentWillUnmount() {
         NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectionChange);
     }
@@ -487,71 +498,63 @@ export default class Home extends Component {
                     )}
 
                     {item.item.is_poll == 1 && (
-                        <View style = {{margin :10 ,backgroundColor:'white',height:'auto',padding:5,alignSelf: 'center',shadowColor: 'black',width:window.width - 20,
-                            }}>
-
-
-                            <Text style = {{marginLeft:5,fontSize: 22,color:'black',marginTop:8,fontWeight: 'bold'}}>
+                        <LinearGradient colors={['#ebc0c3', '#f0717a', '#ed0e1e']} style = {{margin :10 ,backgroundColor:'white',height:'auto',alignSelf: 'center',shadowColor: 'black',width:window.width - 20}}>
+                            <Text style = {{fontSize: 22,color:'black',backgroundColor:'transparent',marginTop:8,fontWeight: 'bold', width:'95%', textAlign:'left', marginBottom:10, marginTop:30, marginLeft:10, marginRight:10}}>
                                 {item.item.question}
                             </Text>
-
-
-
-
-
-
                             {item.item.answer_array.map((prop, key) => {
                               //alert(a)
                                 var k = prop.option_percentile /100.0
-                                var commonHtml = ` ${prop.option_percentile} %`;
+                                var commonHtml = ` ${prop.option_percentile}%`;
 
                                 return (
-                                    <View>
+                                    <View style={{marginTop:5}}>
                                     {a == false && (
+
                                         <TouchableOpacity
                                             onPress={() => this.submitPoll(item.item.poll_id,prop.option,item.index)}>
-                                    <View style = {{width:window.width - 30,height:30,borderRadius:20,borderWidth:2,borderColor:prop.color,color:'white',margin:2,marginBottom:10}} >
+                                    <View style = {{width:'97%',height:50,borderWidth:2,borderColor:'white',
+                                      color:'white',alignSelf:'center',
+                                    margin:2,marginBottom:10, flexDirection:'column', justifyContent:'center',}} >
 
 
-                                        <Text style = {{color:prop.color,fontSize:16,textAlign:'center',padding:2}} >
+                                        <Text style = {{color:'white',fontSize:17,textAlign:'left', marginLeft:20,}} >
                                             {prop.option}
                                         </Text>
 
 
                                     </View>
                                         </TouchableOpacity>
-                                        )}
+)}
                                         { a != false && (
 
-                                            <View style = {{flexDirection:'row',width:window.width - 30,borderRadius:20,borderWidth:0,borderColor:'#c13e44',color:'white',margin:2,marginBottom:10}} >
+                                            <View style = {{flexDirection:'row',width:'97%',borderRightWidth:2,borderRightColor:'white',color:'white',
+                                            marginBottom:10, height:50, alignItems:'center', alignSelf:'center',
+                                          borderTopColor:'white', borderTopWidth:2, borderBottomWidth:2, borderBottomColor:'white'}} >
 
-                                                <Progress.Bar  borderRadius ={20} progress={k} width={window.width - 70} unfilledColor ={'grey'} showsText = {true} formatText = {'he'} borderColor = {prop.color} height = {20} color = {prop.color}/>
-                                                <Text style = {{color:prop.color,fontSize:12,textAlign:'center',padding:3,marginLeft:-5}} >
+                                                <Progress.Bar  progress={k} width={window.width - 70} unfilledColor ={'white'} showsText = {true} formatText = {'he'} height = {48} borderColor={'white'}borderRadius={0}color = {'#c43b42'}/>
+                                                <Text style = {{color:'white',fontSize:12,textAlign:'center',marginLeft:2, fontWeight:'bold'}} >
                                                     {commonHtml}
                                                 </Text>
-                                                <Text style = {{color:'white',fontSize:12,padding:4,width:window.width - 30,height:20,position:'absolute',top:0,alignSelf:'center',marginLeft:15}} >
+                                                <Text style = {{color:'black',fontSize:17,width:window.width - 30,height:50,position:'absolute',top:'25%',alignSelf:'center',marginLeft:15,}} >
                                                     {prop.option}
                                                 </Text>
                                             </View>
 
                                         )}
                                     </View>
-
-
-
-
                                 );
                             })}
 
-                            <View style = {{flexDirection:'row'}}>
+                            <View style = {{flexDirection:'row', marginLeft:5, width:'30%'}}>
                                 <Image style = {{width :20 ,height : 20 ,resizeMode:'contain'}}
                                        source={require('./information.png')}/>
-                            <Text style = {{color:'black',fontSize:12,textAlign:'left',padding:8,width:window.width - 30,height:30,marginTop:-5}} >
+                            <Text style = {{color:'white',fontSize:12,textAlign:'left',width:window.width - 30,height:30,marginLeft:5, marginTop:2}} >
                                Sponsored Poll
                             </Text>
                             </View>
 
-                        </View>
+                        </LinearGradient>
 
                     )}
 
