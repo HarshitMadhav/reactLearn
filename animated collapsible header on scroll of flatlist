@@ -1,5 +1,8 @@
 // on scroll of flatlist collapse the header something like this https://stackoverflow.com/questions/44071308/react-native-animate-shrinking-header-with-tabs?rq=1
+
 //and this https://medium.com/@andi.gu.ca/a-collapsing-navbar-with-tabs-in-react-native-e80790588830
+
+// this example has collapsible header on scroll and also guest login special alerts , material tabs, polls, videos
 
 import React, {Component} from 'react';
 import {
