@@ -1,0 +1,972 @@
+import React, {Component} from 'react';
+import {
+    StyleSheet,
+    Text,
+    Platform,
+    TextInput,
+    FlatList,
+    View,
+    Image,
+    Alert,
+    ScrollView,
+    AsyncStorage,
+    Dimensions,
+    TouchableOpacity,
+    NetInfo,
+    ActivityIndicator,
+    SafeAreaView,
+    Linking,
+    Animated
+} from 'react-native';
+import ExtraDimensions from 'react-native-extra-dimensions-android';
+import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+
+const realWidth = ExtraDimensions.getRealWindowWidth()
+
+//alert(realWidth)
+const window = Dimensions.get('window');
+import HTML from 'react-native-render-html';
+import MaterialTabs from 'react-native-material-tabs';
+import Video from 'react-native-video';
+import Button from 'react-native-button';
+import * as Progress from 'react-native-progress';
+const GLOBAL = require('./Global');
+import { createStackNavigator ,createAppContainer ,createDrawerNavigator} from 'react-navigation';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import {
+  SCLAlert,
+  SCLAlertButton
+} from 'react-native-scl-alert'
+
+type Props = {};
+var catid = "1";
+export default class Home extends Component {
+    state = {
+        text: '',
+        passwordtext :'',
+        isSecure : true,show:false,
+        username: '',
+        password: '',
+        status :'',
+        ipAdd : '',
+        loading:'',
+        states:'',
+        upward:false,
+        results: [],
+        selectedTab:0,
+        answer : true,
+        movieList:[],
+        array :[
+            {
+                title :'News',
+                selected:'Y',
+                color :'red'
+            },
+            {
+                title :'High Flyer',
+                selected:'',
+                color :'blue'
+            },
+            {
+                title :'View Point',
+                selected:'',
+                color :'#c13e44'
+            },
+            {
+                title :'Entertain Me',
+                selected:'',
+                color :'purple'
+            },
+            {
+                title :'Hign School News',
+                selected:'',
+                color :'orange'
+            },
+
+
+
+
+        ],
+        newsHeading :[],
+        news :[],
+        selected :[],
+
+    };
+
+    static navigationOptions = ({ navigation }) => {
+        return {
+            header: () => null,
+            animations: {
+                setRoot: {
+                    waitForRender: false
+                }
+            }
+        }
+    }
+
+
+    showLoading() {
+        this.setState({loading: true})
+    }
+
+    onSwipeUp(gestureState) {
+        this.setState({myText: 'You swiped up!'});
+      }
+
+      onSwipeDown(gestureState) {
+        this.setState({myText: 'You swiped down!'});
+      }
+
+      onSwipeLeft(gestureState) {
+        this.props.navigation.navigate('ApniChat')
+
+        this.setState({myText: 'You swiped left!'});
+      }
+    onSwipeRight(gestureState) {
+//      alert('swiped right')
+    this.setState({myText: 'You swiped right!'});
+  }
+
+  onSwipe(gestureName, gestureState) {
+    const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
+    this.setState({gestureName: gestureName});
+    switch (gestureName) {
+      case SWIPE_UP:
+        this.setState({backgroundColor: 'red'});
+        break;
+      case SWIPE_DOWN:
+        this.setState({backgroundColor: 'green'});
+        break;
+      case SWIPE_LEFT:
+        this.setState({backgroundColor: 'blue'});
+        break;
+      case SWIPE_RIGHT:
+        this.setState({backgroundColor: 'yellow'});
+        break;
+    }
+  }
+
+    submitPoll(poll_id,answer,index){
+      if(GLOBAL.user_id ==''){
+        this.setState({show:true})
+//        alert('Please login first to continue..')
+      }else{
+        const url = GLOBAL.BASE_URL +  'submit_poll'
+
+        this.showLoading()
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                user_id : GLOBAL.user_id,
+                poll_id: poll_id,
+                answer:answer
+            }),
+        }).then((response) => response.json())
+            .then((responseJson) => {
+                this.hideLoading()
+                if (responseJson.status == true) {
+                    let { news } = this.state;
+                    let targetPost = news[index];
+
+                    targetPost = responseJson.poll_detail;
+                    news[index] = targetPost;
+                    this.setState({ news: news})
+
+                }else {
+                    alert('Something went wrong!')
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+
+      }
+            }
+
+    getNewsIntially(){
+
+
+        const url = GLOBAL.BASE_URL +  'home_api'
+
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                user_id : GLOBAL.user_id,
+                limit_from: '0',
+                category_id:catid
+            }),
+        }).then((response) => response.json())
+            .then((responseJson) => {
+
+
+                if (responseJson.result == true) {
+
+                   this.setState({array:responseJson.category})
+
+                    var my = [];
+                    {responseJson.category.map((message) =>
+                        my.push(message.name)
+
+                    )
+                    }
+
+                    this.setState({movieList:my})
+
+                    this.setState({news:responseJson.news})
+
+                }else {
+                    alert('No News Found')
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+    getNewsUpdate(){
+        const url = GLOBAL.BASE_URL +  'home_api'
+
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                user_id : GLOBAL.user_id,
+                limit_from: '0',
+                category_id:catid
+            }),
+        }).then((response) => response.json())
+            .then((responseJson) => {
+
+                if (responseJson.result == true) {
+
+
+                    this.setState({news:responseJson.news})
+
+                }else {
+                    alert('No News Found')
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+
+    }
+    getNewsUpdateMore(){
+
+
+    }
+
+    componentWillMount() {
+        this.getNewsIntially()
+        NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectionChange);
+
+        NetInfo.isConnected.fetch().done(
+            (isConnected) => { this.setState({ status: isConnected });
+
+            }
+        );
+    }
+    componentWillUnmount() {
+        NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectionChange);
+    }
+
+    handleConnectionChange = (isConnected) => {
+
+        this.setState({ status: isConnected });
+        if (this.state.status == false){
+            alert('You are not connected to Internet')
+        }
+        console.log(`is connected: ${this.state.status}`);
+    }
+
+
+
+    change = () =>{
+        this.setState({answer:!this.state.answer})
+    }
+
+    hideLoading() {
+        this.setState({loading: false})
+    }
+    renderButtons = () => {
+        const views = [];
+        for ( var i =0; i<5; i++){
+            views.push(
+                <Button
+                    key={i}
+                    onPress={onPressLearnMore}
+                    title="Learn More"
+                    color="#841584"
+                    accessibilityLabel="Learn more about this purple button"
+                />);
+        } // % buttons are created.
+
+        return views;
+    }
+    _handleCategorySelect = (item,index) => {
+
+        let { array } = this.state;
+        for(let i = 0; i < array.length; i++){
+            array[i].selected = "0";
+        }
+
+
+        let targetPost = array[index];
+        catid =  array[index].category_id
+        this.getNewsIntially()
+        // Flip the 'liked' property of the targetPost
+        targetPost.selected = "1";
+
+        array[index] = targetPost;
+
+        // Then update targetPost in 'posts'
+        // You probably don't need the following line.
+        // posts[index] = targetPost;
+
+        // Then reset the 'state.posts' property
+
+        this.setState({ array: array})
+
+
+
+
+    }
+
+    _videoPress = (video) => {
+        GLOBAL.video = video
+        this.props.navigation.navigate('MyVideo')
+        //newsid
+    }
+
+    newsPress = (video) => {
+        GLOBAL.newsid = video
+        this.props.navigation.navigate('NewsDetail')
+        //newsid
+    }
+
+
+    _renderItemCategs = (item,index)=> {
+
+
+
+            var a ;
+            if (item.index == 2) {
+
+            }
+
+                if (item.item.poll_answer == 1) {
+                    a = true;
+                } else {
+                    a = false;
+                }
+
+
+
+            return (
+                <View>
+                    <TouchableOpacity
+                        onPress={() => this.newsPress(item.item.news_id)}>
+                    {item.item.is_poll == 0 && item.item.file_type == "image"  && (
+                        <View style = {{margin :10 ,backgroundColor:'white',padding:0,alignSelf: 'center',width:window.width - 20,
+                           }}>
+
+
+                            <Image style = {{width :window.width ,marginLeft:-10  ,height : 220 }}
+                                   source={{uri :item.item.image}}/>
+
+
+                            <Text style = {{marginLeft:5,fontSize: 22,color:'black',marginTop:8,fontWeight: 'bold'}}>
+                                { item.item.news_title}
+                            </Text>
+
+
+
+                            <Text style = {{marginLeft:5,fontSize: 16,color:'#757272',marginTop:8,}}>
+                                { item.item.news_subheading}
+                            </Text>
+
+
+                                                        <View style = {{marginLeft:5,flexDirection:'row',justifyContent:'space-between',marginTop:7}}>
+                                                         <Text style = {{color:'#cdcdcd'}}>
+                                                             { item.item.news_category}
+                                                         </Text>
+                                                            <TouchableOpacity>
+                                                            <View style = {{marginRight: 10,flexDirection:'row'}}>
+                                                                <Image style = {{width :20 ,height : 20 ,resizeMode:'contain'}}
+                                                                       source={require('./chats.png')}/>
+                                                                <Text style = {{marginLeft:7,color:'#cdcdcd',marginTop:-1}}>
+                                                                    { item.item.total_comments}
+                                                                </Text>
+                                                            </View>
+                                                            </TouchableOpacity>
+
+                                                        </View>
+
+
+                        </View>
+                    )}
+                    </TouchableOpacity>
+                    {item.item.is_poll == 0 && item.item.file_type == "video"  && (
+                      <View>
+                        <View style = {{margin :10 ,backgroundColor:'white',height:'auto',padding:5,alignSelf: 'center',width:window.width - 20,
+                          }}>
+                            <TouchableOpacity
+                                onPress={() => this._videoPress(item.item.image)}>
+                        <View style = {{height:200,width:window.width - 30}}>
+
+                            <Video
+                                source={{uri: item.item.image}}
+                                ref={(ref) => {
+                                    this._player = ref
+                                }}
+                                rate={1.0}
+                                paused={true}
+                                volume={1.0}
+                                isMuted={false}
+                                resizeMode="cover"
+                                shouldPlay
+                                style={styles.video}/>
+
+                            <Image style = {{width :50 ,height :50  ,position:'absolute',top:70,left:window.width/2 - 35}}
+                                   source={require('./play.png')}/>
+
+
+                        </View>
+
+                            </TouchableOpacity>
+                            <Text style = {{marginLeft:5,fontSize: 22,color:'black',marginTop:8,}}>
+                                { item.item.news_title}
+                            </Text>
+
+                            <Text style = {{marginLeft:5,fontSize: 16,color:'#757272',marginTop:8,}}>
+                                { item.item.news_subheading}
+                            </Text>
+                        </View>
+                        <View style = {{flexDirection:'row',justifyContent:'space-between',marginTop:7,marginBottom:10, marginRight:5 }}>
+                    <Text style = {{color:'#cdcdcd', marginLeft:5}}>
+                        { item.item.news_category}
+                    </Text>
+
+                    <View style = {{marginRight: 10,flexDirection:'row'}}>
+                    <Image style = {{width :20 ,height : 20 ,resizeMode:'contain'}}
+                    source={require('./chats.png')}/>
+                    <Text style = {{marginLeft:7,color:'#cdcdcd'}}>
+                        { item.item.total_comments}
+                    </Text>
+                    </View>
+
+                    </View>
+</View>
+
+                    )}
+
+                    {item.item.is_poll == 1 && (
+                        <View style = {{margin :10 ,backgroundColor:'white',height:'auto',padding:5,alignSelf: 'center',shadowColor: 'black',width:window.width - 20,
+                            }}>
+
+
+                            <Text style = {{marginLeft:5,fontSize: 22,color:'black',marginTop:8,fontWeight: 'bold'}}>
+                                {item.item.question}
+                            </Text>
+
+
+
+
+
+
+                            {item.item.answer_array.map((prop, key) => {
+                              //alert(a)
+                                var k = prop.option_percentile /100.0
+                                var commonHtml = ` ${prop.option_percentile} %`;
+
+                                return (
+                                    <View>
+                                    {a == false && (
+                                        <TouchableOpacity
+                                            onPress={() => this.submitPoll(item.item.poll_id,prop.option,item.index)}>
+                                    <View style = {{width:window.width - 30,height:30,borderRadius:20,borderWidth:2,borderColor:prop.color,color:'white',margin:2,marginBottom:10}} >
+
+
+                                        <Text style = {{color:prop.color,fontSize:16,textAlign:'center',padding:2}} >
+                                            {prop.option}
+                                        </Text>
+
+
+                                    </View>
+                                        </TouchableOpacity>
+                                        )}
+                                        { a != false && (
+
+                                            <View style = {{flexDirection:'row',width:window.width - 30,borderRadius:20,borderWidth:0,borderColor:'#c13e44',color:'white',margin:2,marginBottom:10}} >
+
+                                                <Progress.Bar  borderRadius ={20} progress={k} width={window.width - 70} unfilledColor ={'grey'} showsText = {true} formatText = {'he'} borderColor = {prop.color} height = {20} color = {prop.color}/>
+                                                <Text style = {{color:prop.color,fontSize:12,textAlign:'center',padding:3,marginLeft:-5}} >
+                                                    {commonHtml}
+                                                </Text>
+                                                <Text style = {{color:'white',fontSize:12,padding:4,width:window.width - 30,height:20,position:'absolute',top:0,alignSelf:'center',marginLeft:15}} >
+                                                    {prop.option}
+                                                </Text>
+                                            </View>
+
+                                        )}
+                                    </View>
+
+
+
+
+                                );
+                            })}
+
+                            <View style = {{flexDirection:'row'}}>
+                                <Image style = {{width :20 ,height : 20 ,resizeMode:'contain'}}
+                                       source={require('./information.png')}/>
+                            <Text style = {{color:'black',fontSize:12,textAlign:'left',padding:8,width:window.width - 30,height:30,marginTop:-5}} >
+                               Sponsored Poll
+                            </Text>
+                            </View>
+
+                        </View>
+
+                    )}
+
+
+                    <View style = {{height:1,backgroundColor :'#eaeaea',width:window.width-30 ,marginTop :0,marginLeft:15}}>
+                    </View>
+
+                </View>
+
+            )
+        }
+
+    _renderItemCateg = (item,index)=>{
+
+
+        return (
+            <TouchableOpacity
+                onPress={() => this._handleCategorySelect(item.item,item.index)}>
+
+                {item.item.selected == '1' && (
+        <View style = {{margin :10 ,height :36,backgroundColor:'white',padding:5,alignSelf: 'center',shadowColor: 'black',
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.8,
+            shadowRadius: 2,}}>
+
+            <Text style = {{fontSize: 19,color:'#c13e44'}}>
+                {item.item.name}
+            </Text>
+
+        </View>
+
+                )}
+
+                {item.item.selected != '1' && (
+                    <Text style = {{margin :10 ,fontSize: 18,height :36,backgroundColor:'white',padding:5,alignSelf: 'center'} }>
+
+
+                            {item.item.name}
+
+
+                    </Text>
+
+                )}
+        </TouchableOpacity>
+        )
+    }
+
+    handleOpen = () => {
+    this.setState({ show: true })
+  }
+
+  handleClose = () => {
+    this.setState({ show: false })
+  }
+
+  handleCloseDone=()=>{
+    this.setState({show :false})
+    this.props.navigation.navigate('Login')
+  }
+
+
+    handleOpenURL = (event) => { // D
+
+        const route = event.replace(/.*?:\/\//g, '');
+        GLOBAL.newsid = route
+        this.props.navigation.navigate('NewsDetail')
+    }
+
+    _handleStateChange = state => {
+        const url = GLOBAL.BASE_URL +  'home_api'
+
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                user_id : GLOBAL.user_id,
+                limit_from: '0',
+                category_id:catid
+            }),
+        }).then((response) => response.json())
+            .then((responseJson) => {
+
+                if (responseJson.result == true) {
+
+
+
+                    this.setState({array:responseJson.category})
+
+                    var my = [];
+                    {responseJson.category.map((message) =>
+                        my.push(message.name)
+
+                    )
+                    }
+
+                    this.setState({movieList:my})
+
+                    this.setState({news:responseJson.news})
+
+                }else {
+                    alert('No News Found')
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+
+    };
+    componentDidMount(){
+        this.props.navigation.addListener('willFocus',this._handleStateChange);
+        Linking.getInitialURL()
+            .then(url => {
+                this.handleOpenURL(url)
+            })
+            .catch(err => {
+                console.warn('Deeplinking error', err)
+            })
+
+        Linking.addListener('url', e => {
+            this.handleOpenURL(e.url)
+        })
+    }
+    categorySelect = (index) =>{
+
+
+        catid =  this.state.array[index].category_id
+
+
+        this.setState({ selectedTab: index })
+        this.getNewsIntially()
+
+    }
+
+    onScroll = (event) => {
+
+    var currentOffset = event.nativeEvent.contentOffset.y;
+     var direction = currentOffset > this.offset ? 'down' : 'up';
+    // this.offset = currentOffset;
+
+
+        if (currentOffset > 60.0){
+            this.setState({upward :true})
+        }else{
+            this.setState({upward :false})
+        }
+
+}
+
+    handleLoadMore = () => {
+
+
+
+        const url = GLOBAL.BASE_URL +  'home_api'
+
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                user_id : GLOBAL.user_id,
+                limit_from: this.state.news.length + 1,
+                category_id:catid
+            }),
+        }).then((response) => response.json())
+            .then((responseJson) => {
+
+
+
+                if (responseJson.result == true) {
+
+                    const interest = [...this.state.news, ...responseJson.news];
+
+                    this.setState({news:interest})
+
+                }else {
+                    alert('No News Found')
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+
+        // setTimeout(
+        //     ()=>{this.setState({
+        //         news: this.state.news,
+        //     })},
+        //     2000);
+
+        if (!this.state.loading) {
+            this.page = this.page + 1; // increase page by 1
+           // method for API call
+        }
+    };
+    renderFooter = () => {
+        //it will show indicator at the bottom of the list when data is loading otherwise it returns null
+        if (!this.state.loading) return null;
+        return (
+            <ActivityIndicator
+                style={{ color: '#000' }}
+            />
+        );
+    };
+
+
+    ones = ()=> {
+      if(GLOBAL.user_id ==''){
+        this.setState({show:true})
+//        alert('Please login first to continue..')
+      }
+      else{
+        this.props.navigation.navigate('CreateGroup')
+      }
+
+    }
+
+    oness =() =>{
+      if(GLOBAL.user_id == ''){
+        this.setState({show:true})
+
+//        alert('Please login first to continue..')
+      }else{
+        this.props.navigation.navigate('ApniChat')
+
+      }
+    }
+
+    onesss=()=>{
+      if(GLOBAL.user_id == ''){
+        this.setState({show:true})
+
+//        alert('Please login first to continue..')
+      }else{
+        this.props.navigation.navigate('GroupList')
+      }
+    }
+
+    render() {
+      const config = {
+            velocityThreshold: 1,
+            directionalOffsetThreshold: 80
+          };
+
+        if(this.state.loading){
+            return(
+                <View style={styles.container}>
+
+
+
+                    <ActivityIndicator style = {styles.loading}
+                                       size="small" color='#c13e44' />
+                </View>
+            )
+        }
+
+        return (
+          <GestureRecognizer
+        onSwipe={(direction, state) => this.onSwipe(direction, state)}
+        onSwipeUp={(state) => this.onSwipeUp(state)}
+        onSwipeDown={(state) => this.onSwipeDown(state)}
+        onSwipeLeft={(state) => this.onSwipeLeft(state)}
+        onSwipeRight={(state) => this.onSwipeRight(state)}
+        config={config}
+        style={{
+          flex: 1,
+          backgroundColor: this.state.backgroundColor
+        }}
+        >
+            <View style={styles.container}>
+            <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+
+
+
+{this.state.upward == false &&(
+
+  <View style = {{flexDirection:'row',width:window.width}}>
+
+
+
+      <TouchableOpacity style = {{width :50 ,height : 50 }}
+                        onPress={() =>this.props.navigation.toggleDrawer()}>
+          <Image style = {{width :25 ,height : 25 ,marginLeft: 12,resizeMode: 'contain',marginTop:15}}
+                 source={require('./menu.png')}/>
+      </TouchableOpacity>
+
+  <Image style = {{marginTop: 5,width :60 ,height : 60 ,marginLeft: 9,resizeMode: 'contain'}}
+         source={require('./logo.png')}/>
+
+   <View style = {{flexDirection:'row',marginRight:10,marginTop:9,marginLeft:window.width - 250}}>
+       <TouchableOpacity style = {{width :30 ,height : 30,marginLeft: 10 }}
+           onPress={() => this.ones()}>
+
+       <Image style = {{width :30 ,height : 30 ,marginLeft: 0,resizeMode: 'contain'}}
+              source={require('./plus.png')}/>
+       </TouchableOpacity>
+       <TouchableOpacity style = {{width :30 ,height : 30,marginLeft: 10, }}
+                         onPress={() => this.oness()}>
+       <Image style = {{width :30 ,height : 30 ,resizeMode: 'contain',marginTop:0}}
+              source={require('./chat.png')}/>
+       </TouchableOpacity>
+       <TouchableOpacity style = {{width :30 ,height : 30,marginLeft: 10 }}
+                         onPress={() => this.onesss()}>
+       <Image style = {{width :30 ,height : 30 ,resizeMode: 'contain'}}
+              source={require('./profile.png')}/>
+       </TouchableOpacity>
+
+
+   </View>
+
+  </View>
+
+) }
+                <MaterialTabs
+                    items={this.state.movieList}
+                    scrollable = {true}
+                    barColor = 'white'
+                    selectedIndex={this.state.selectedTab}
+                    indicatorColor = '#c43b42'
+                    activeTextColor = 'black'
+                    inactiveTextColor = 'black'
+                    allowFontScaling ={true}
+                    textStyle ={ {fontSize:15}}
+
+
+                    onChange={index =>
+
+                        this.categorySelect(index)
+                    }
+                />
+{this.state.news.length==0 && (
+  <View style={{marginTop:20}}>
+    <Image style={{alignSelf:'center', width:80, height:80, resizeMode:'contain'}} source={require('./no_news.png')}/>
+
+      <Text style={{width:100, fontWeight:'bold', fontSize:18, alignSelf:'center',textAlign:'center',color:'#cdcdcd'}}>No News Found</Text>
+    </View>
+)}
+
+{this.state.news.length!=0 &&(
+
+
+
+                  <FlatList style= {{flexGrow:0,marginTop:5}}
+                            data={this.state.news}
+                            bounces={false}
+                            onScroll={this.onScroll}
+
+                            showsHorizontalScrollIndicator={false}
+                            keyExtractor = { (item, index) => index.toString() }
+                            extraData={this.state}
+                            renderItem={this._renderItemCategs}
+                            ListFooterComponent={this.renderFooter.bind(this)}
+                            onEndReachedThreshold={0.4}
+                            onEndReached={this.handleLoadMore.bind(this)}
+                  />
+
+)}
+
+
+
+            </SafeAreaView>
+            <SCLAlert
+      show={this.state.show}
+      onRequestClose={this.handleClose}
+      theme="danger"
+      title="Hello Guest User!"
+      subtitle="Please Login First to Continue.."
+
+    >
+      <SCLAlertButton theme="danger" onPress={this.handleCloseDone}>Okay</SCLAlertButton>
+      <SCLAlertButton theme="default" onPress={this.handleClose}>Cancel</SCLAlertButton>
+    </SCLAlert>
+
+    </View>
+    </GestureRecognizer>
+        );
+    }
+}
+
+const styles = StyleSheet.create({
+    wrapper: {
+    },
+    loading: {
+        position: 'absolute',
+        left: window.width/2 - 30,
+
+        top: window.height/2,
+
+        opacity: 0.5,
+
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    container: {
+        flex: 1,
+
+    },
+    slide1: {
+
+        marginLeft : 50,
+
+        width: window.width - 50,
+        height:300,
+        resizeMode:'contain',
+        marginTop : window.height/2 - 200
+
+
+    },
+    slide2: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    slide3: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#92BBD9',
+    },
+    text: {
+        color: '#fff',
+        fontSize: 30,
+        fontWeight: 'bold',
+    },
+    video: {
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+    },
+})
