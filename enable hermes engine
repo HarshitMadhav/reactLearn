@@ -1,0 +1,16 @@
+Refer here : https://facebook.github.io/react-native/docs/next/hermes
+
+Edit your android/app/build.gradle file and make the change illustrated below:
+
+  project.ext.react = [
+      entryFile: "index.js",
+-     enableHermes: false  // clean and rebuild if changing
++     enableHermes: true  // clean and rebuild if changing
+  ]
+  
+  Next, if you've already built your app at least once, clean the build:
+
+$ cd android && ./gradlew clean
+That's it! You should now be able to develop and deploy your app as normal:
+
+$ react-native run-android
