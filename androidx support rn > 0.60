@@ -1,0 +1,42 @@
+React native now supports androidx from versions 0.60 and above
+It uses jetifier
+In order to build project on androidx make sure that the library itself supports androidx if not, wait for the maintainers to update it for
+androidx support.
+
+---------> In the meantime, you can work around this by using the Jetifier.
+
+If your RN project is configured to use AndroidX, but some of your deps are not (like react-native-gesture-handler) follow these steps:
+
+Install Jetifier npm install --save-dev jetifier or yarn add -D jetifier
+Edit your package.json and add a postinstall script: "postinstall": "npx jetify", like so:
+"scripts": {
+    "postinstall": "npx jetify"
+   ...
+}    
+Run npm install or yarn
+At the end of install you should see something like:
+$ npx jetify
+Jetifier found N file(s) to forward-jetify. Using X workers...`. 
+This means it's working. The project should compile fine now.
+This way jetfier will "upgrade" all deps to use AndroidX. This step has to be repeated after each installation, hence the "postinstall" step.
+
+See: https://github.com/mikehardy/jetifier
+Refer here : https://github.com/facebook/react-native/issues/25483
+
+
+-----------------------Example package.json after changes-----------
+
+{
+  "name": "AppName",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "react-native start",
+    "test": "jest",
+    "lint": "eslint .",
+    "postinstall": "npx jetify"
+  },
+  
+  
+------------------------Make sure to run npm install everytime before running link command or before linking any library so that it can
+be converted to androidx by jetify and after that it can be linked to the project.------   
