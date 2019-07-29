@@ -1,0 +1,20 @@
+Refer here: https://github.com/facebook/react-native/issues/25697
+
+
+For those who are using react-native version > 0.60 , 'rnpm' is deprecated and custom fonts will not work.
+
+Now, in order to add custom font in react-native version > 0.60 you will have to :
+
+1- Create a file named react-native.config.js in the root folder of your project.
+
+2- add this in that new file
+
+module.exports = {
+project: {
+    ios: {},
+    android: {},
+},
+assets: ['./assets/fonts']
+};
+3- run react-native link command in the root project path.
+then run react-native run-android command
