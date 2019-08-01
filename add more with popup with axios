@@ -159,12 +159,17 @@ if(this.state.service_id == ''){
                 <KeyboardAwareScrollView keyboardShouldPersistTaps='always'>
 
 {added_buttons_goes_here}
-                <TouchableOpacity style={{alignSelf:'flex-end', width:100, height:35,marginRight:20, marginTop:20}}
+                <TouchableOpacity style={{alignSelf:'flex-end', width:117, height:35,marginRight:20, marginTop:20}}
         onPress={() => this.addMore()}
        >
-             <View style={{alignSelf:'flex-end', width:100, height:35,padding:8,borderRadius:4, backgroundColor:'black', flexDirection:'row'}}>
+             <View style={{alignSelf:'flex-end', width:117, height:35,padding:8,borderRadius:4, backgroundColor:'black', flexDirection:'row'}}>
              <Image style={{width:15, height:15,resizeMode:'contain', marginTop:3}} source={require('./plus.png')}/>
-             <Text style={{color:'white', fontSize:13,marginLeft:5, }}>Add More</Text>
+{this.state.selectedCategory.length == 0 && (
+  <Text style={{color:'white', fontSize:13,marginLeft:5, }}>Add Services</Text>
+)}
+{this.state.selectedCategory.length!=0 && (
+  <Text style={{color:'white', fontSize:13,marginLeft:5, }}>Add More</Text>
+)}
              </View>
       </TouchableOpacity>
 
