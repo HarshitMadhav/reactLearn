@@ -1,0 +1,95 @@
+It's where [`state`][1] shining of,
+
+for example:
+
+<!-- language-all: lang-js -->
+
+    constructor(props) {
+       super(props);
+    
+       this._handleAddButton = this._handleAddButton.bind(this);
+    
+       this.state = {    /* initial your state. without any added component */
+          data: []
+       }
+    }
+    
+    _handleAddButton() {
+    	let newly_added_data = { title: 'new title', content: 'new content goes here' };
+    
+    	this.setState({
+    		data: [...this.state.data, newly_added_data]
+    	});
+    }
+    
+    render() {
+    	let added_buttons_goes_here = this.state.data.map( (data, index) => {
+    		return (
+    			<MyComponent key={index} pass_in_data={data} />
+    		)
+    	});
+    
+    	return (
+    		<View>
+    			<Button title="Add more" onPress={this._handleAddButton} />
+    			{added_buttons_goes_here}
+    		</View>
+    	);
+    }
+
+So every time you click the button,
+
+ 1. _handleAddButton get called
+ 2. a new data is added, update with [setState()][2]
+ 3. [render()][3] get triggered.
+ 4. more `<MyComponent>` added into View and show
+
+================
+
+
+if you want to further delete `<MyComponent>`, the prop [`key`][4] should be taken care of. The `key` act as change detector for react framework, an auto-increment key would suit your case. example:
+
+    _handleAddButton() {
+        let newly_added_data = {
+            /* psedo code to simulate key auto increment */
+            key: this.state.data[this.state.data.length-1].key+1,
+            title: 'new title',
+            content: 'new content goes here'
+        };
+    
+        this.setState({
+            data: [...this.state.data, newly_added_data]
+        });
+    }
+
+    _handleRemoveButton(key) {
+        let result = this.state.data.filter( (data) => data.key !== key );
+
+        this.setState({
+            data: result,
+        });
+    }
+
+    render() {
+        let added_buttons_goes_here = this.state.data.map( (data, index) => {
+            return (
+                <MyComponent key={data.key} pass_in_data={data}>
+                    /// psedo code of pass-in remove button as a children
+                    <Button title="Remove" onPress={ () => this._handleRemoveButton(data.key) } />
+                </MyComponent>
+            )
+        });
+
+        return (
+            <View>
+                <Button title="Add more" onPress={this._handleAddButton} />
+                {added_buttons_goes_here}
+            </View>
+        );
+    }
+
+
+  [1]: https://facebook.github.io/react-native/docs/state.html
+  [2]: https://facebook.github.io/react/docs/react-component.html#setstate
+  [3]: https://facebook.github.io/react/docs/react-component.html#render
+  [4]: https://facebook.github.io/react/docs/lists-and-keys.html#keys
