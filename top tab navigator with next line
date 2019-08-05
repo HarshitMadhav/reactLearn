@@ -1,0 +1,134 @@
+Top tab navigator using react-navigation
+along with tabBarLabel with new line *******  tabBarLabel: `Score`+`\n`+`card`,
+
+
+-----------------------------In Navigator.js-------------------
+import { createStackNavigator ,createAppContainer ,createDrawerNavigator,createBottomTabNavigator,createMaterialTopTabNavigator} from 'react-navigation';
+
+const StackNavigator = createStackNavigator({
+        Splash: { screen: Splash },
+        Slider: { screen: Slider },
+        TabNavigator: { screen: TabNavigator , navigationOptions: ({ navigation }) => ({
+                title: GLOBAL.match,
+                headerTintColor: 'white', // YAY! Proper format!
+                headerTitleStyle: { color: 'white' },
+                headerBackground: (
+                    <Image
+                        style={{width : window.width,height:64}}
+                        source={require('./header.png')}/>
+                ),
+                headerStyle: {
+                    backgroundColor: '#001739',
+                    titleStyle:{color:'white'},
+                },
+            }),
+        },
+},);
+
+const TabNavigator = createMaterialTopTabNavigator({
+        Scorecard: { screen: Scorecard,
+            navigationOptions : {
+                title:'Live Match',
+
+                tabBarLabel: 'Match',
+
+                swipeEnabled: true,
+                gesturesEnabled: false,
+                // Note: By default the icon is only shown on iOS. Search the showIcon option below.
+
+            }
+        },
+        Chat: { screen: Chat ,
+            navigationOptions : {
+                title:'Chat',
+                tabBarLabel: 'Chat',
+                swipeEnabled: true,
+                gesturesEnabled: false,
+                // Note: By default the icon is only shown on iOS. Search the showIcon option below.
+
+            }
+        },
+        Squad: { screen: Squad ,
+            navigationOptions : {
+                title:'Squad',
+                tabBarLabel: 'Squad',
+                swipeEnabled: true,
+                gesturesEnabled: false,
+                // Note: By default the icon is only shown on iOS. Search the showIcon option below.
+
+            }
+        },
+        Info: { screen: Info ,
+            navigationOptions : {
+                title:'Info',
+                tabBarLabel: 'Info',
+                swipeEnabled: true,
+                gesturesEnabled: false,
+                // Note: By default the icon is only shown on iOS. Search the showIcon option below.
+
+            }
+        },
+        FullScorecard: { screen: FullScorecard ,
+            navigationOptions : {
+                title:'Scorecard',
+                tabBarLabel: `Score`+`\n`+`card`,
+                swipeEnabled: true,
+                gesturesEnabled: false,
+                // Note: By default the icon is only shown on iOS. Search the showIcon option below.
+
+            }
+        },
+
+
+
+    },
+
+
+    {
+        defaultNavigationOptions: ({ navigation }) => ({
+            title: 'MY TITLE',
+            headerStyle: {
+                backgroundColor: '#f4511e',
+            },
+
+
+            headerTintColor: 'white',
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+            swipeEnabled: true,
+            gesturesEnabled: false,
+
+
+        }),
+        tabBarOptions: {
+            labelStyle: {
+                fontSize: 12,
+                marginTop:10,
+                height:50,
+                fontFamily :'Quantico',
+            },
+            indicatorStyle: {
+                backgroundColor: 'red',
+                borderBottomColor: 'white',
+                borderBottomWidth: 2
+            },
+            tabStyle: { height: 60 },
+            style: {
+                backgroundColor: '#001739',
+            },
+            headerBackground: (
+                <Image
+                    style={{width : window.width,height:20}}
+                    source={require('./header.png')}/>
+            ),
+            swipeEnabled: true,
+            gesturesEnabled: false,
+            activeTintColor: 'white',
+            inactiveTintColor: 'white',
+            inactiveBackgroundColor:'red',
+            activeBackgroundColor:'red',
+            showIcon:'false'
+        },
+    }
+);
