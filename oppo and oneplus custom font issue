@@ -1,0 +1,25 @@
+Refer here : https://github.com/facebook/react-native/issues/25481
+
+Refer here : https://github.com/facebook/react-native/issues/15114
+
+
+In oppo and oneplus devices custom font does not get proper width when fontWeight:'bold' is provided to text component
+
+Workarounds are :
+
+1-- apply fontFamily to the text component
+<Text style = {{margin :10  ,marginTop : 2,color :'grey',fontFamily:'graphica' ,fontSize :14}}>
+Got Signup Bonus
+</Text>
+
+2-- do something like this to the text component => set borderWidth:2 and borderColor:'transparent'
+
+<Text style = {{margin :10  ,marginTop : 2,color :'grey',borderWidth:2, borderColor:'transparent' ,fontSize :14}}>
+Paid for Order
+</Text>
+
+
+3-- provide width to the text component.
+
+Width measures of Text components using a custom font are wrong
+
