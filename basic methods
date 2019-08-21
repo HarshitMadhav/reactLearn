@@ -1,0 +1,20 @@
+************** parseInt(this.state.anystring) // convert string to int
+
+************** // initialize array
+var arr = [
+  "Hi",
+  "Hello",
+  "Bonjour"
+];
+
+// append new value to the array
+arr.push("Hola");
+
+console.log(arr);
+
+************** //append any value to the start of an array that means to the first index then you can use Array.prototype.unshift for this purpose.
+var arr = [1, 2, 3];
+arr.unshift(0);
+console.log(arr);
+
+************* //
