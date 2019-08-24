@@ -1,3 +1,7 @@
+// If youtube controls dont appear then,
+// Refer here https://github.com/inProgress-team/react-native-youtube/issues/131
+
+
 import React, {Component} from 'react';
 import {
     StyleSheet,
