@@ -1,0 +1,32 @@
+check for internet connection in app and display not connected to internet when app is open and when the wifi or net is disabled
+
+realtime consistently check for internet connection in app
+
+
+    state={
+      status:'',
+    }
+    
+    componentDidMount() {
+        NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectionChange);
+
+        NetInfo.isConnected.fetch().done(
+            (isConnected) => { this.setState({ status: isConnected });
+
+            }
+        );
+    }
+    componentWillUnmount() {
+        NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectionChange);
+    }
+
+    handleConnectionChange = (isConnected) => {
+
+        this.setState({ status: isConnected });
+        if (this.state.status == false){
+            alert('You are not connected to Internet')
+        }
+        console.log(`is connected: ${this.state.status}`);
+    }
+
+
