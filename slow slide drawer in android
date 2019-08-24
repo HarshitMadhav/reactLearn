@@ -1,0 +1,15 @@
+Use set timeout to open drawer fast.
+
+
+toggDrawer=()=>{
+  this.timeoutCheck = setTimeout(() => {
+    this.props.navigation.toggleDrawer()
+   }, 40);
+}
+
+
+      <TouchableOpacity style = {{width :50 ,height : 50 }}
+                        onPress={() =>this.toggDrawer()}>
+          <Image style = {{width :25 ,height : 25 ,marginLeft: 12,resizeMode: 'contain',marginTop:15}}
+                 source={require('./menu.png')}/>
+      </TouchableOpacity>
