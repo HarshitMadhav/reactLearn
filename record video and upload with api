@@ -1,0 +1,260 @@
+import React, {Component} from 'react';
+import { StyleSheet,Text,TextInput, View,Image ,Alert,FlatList,Dimensions ,TouchableOpacity,ActivityIndicator,SafeAreaView} from 'react-native';
+const window = Dimensions.get('window');
+import Button from 'react-native-button';
+import { TextField } from 'react-native-material-textfield';
+type Props = {};
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import stringsoflanguages from './Local';
+import axios from 'react-native-axios';
+const GLOBAL = require('./Global');
+import DateTimePicker from "react-native-modal-datetime-picker";
+import { Dropdown } from 'react-native-material-dropdown';
+var moment = require('moment');
+import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
+import Dialog, {DialogContent} from "react-native-popup-dialog";
+import MaterialTabs from 'react-native-material-tabs';
+import { RNCamera } from 'react-native-camera';
+var type = 0;
+var count:'';
+var tomorrow;
+export default class AttendanceVideo extends Component {
+    state = {
+        name :'',
+        email:'',
+        phone :'',
+        company :'',
+        selectedTab:0,
+        data:[],
+        recording:false,
+        isDateTimePickerVisible: false,
+        startDate:'',
+        processing:false,
+        endDate:'',
+        date :new Date(),
+        mystart :'',
+        value:1,
+        values:1,
+        visible:false,
+        pop:'',
+        done:false,
+
+    };
+
+    static navigationOptions = ({ navigation }) => {
+        return {
+            header: () => null,
+            animations: {
+                setRoot: {
+                    waitForRender: false
+                }
+            }
+        }
+    }
+
+
+    hideLoading() {
+        this.setState({loading: false})
+    }
+
+
+    showLoading() {
+        this.setState({loading: true})
+    }
+
+
+
+
+    componentDidMount(){
+    }
+
+
+    async startRecording() {
+        this.setState({ recording: true });
+        // default to mp4 for android as codec is not set
+        const { uri, codec = "mp4" } = await this.camera.recordAsync();
+        this.setState({ recording: false, processing: true });
+        const type = `video/${codec}`;
+
+//        alert(uri)
+        var url = GLOBAL.BASE_URL + 'approve_attendence';
+
+        this.showLoading()
+
+        const data = new FormData();
+        data.append('user_id', GLOBAL.userID);
+        data.append('id', GLOBAL.aid );
+
+
+        // you can append anyone.
+        data.append('file', {
+            uri: uri,
+            type: type, // or photo.type
+            name: 'video'
+        });
+        fetch(url, {
+            method: 'post',
+            body: data,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            }
+
+        }).then((response) => response.json())
+            .then((responseJson) => {
+                this.hideLoading()
+                alert('Approved successfully!')
+          
+                this.props.navigation.goBack()
+          //      alert(JSON.stringify(responseJson))
+
+
+
+            });
+        this.setState({ processing: false });
+    }
+
+    stopRecording() {
+
+        this.camera.stopRecording();
+    }
+
+
+
+
+
+    render() {
+        if(this.state.loading){
+            return(
+                <View style={styles.container}>
+                    <ActivityIndicator style = {styles.loading}
+
+                                       size="large" color='#006FA5' />
+                </View>
+            )
+        }
+        const { recording, processing } = this.state;
+
+        let button = (
+          <TouchableOpacity style={{ position:'absolute',bottom:100,height:100,width:100,borderRadius:50,alignSelf: 'center'}}
+              onPress={this.startRecording.bind(this)}
+
+          >
+          <View style={{flexDirection: 'row', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center',backgroundColor:'white',borderRadius:50}}>
+              <Text style={{ fontSize: 20,alignSelf:'center',width:'100%',textAlign: 'center'}}> RECORD </Text>
+              </View>
+          </TouchableOpacity>
+        );
+
+        if (recording) {
+            button = (
+              <TouchableOpacity style={{ fontSize: 25,position:'absolute',bottom:100 ,alignSelf:'center',height:100,width:100,borderRadius: 50,}}
+                  onPress={this.stopRecording.bind(this)}
+
+              >
+              <View style={{flexDirection: 'row', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center',backgroundColor:'white',borderRadius:50}}>
+                  <Text style={{fontSize: 20,alignSelf:'center',textAlign: 'center', width:'100%',}}> STOP </Text>
+                  </View>
+              </TouchableOpacity>
+
+            );
+        }
+
+        if (processing) {
+            button = (
+                <View style={{width:'100%',height:'100%'}}>
+                    <ActivityIndicator animating size={18} />
+                </View>
+            );
+        }
+        return (
+
+            <SafeAreaView>
+                <View style={styles.container}>
+
+
+                    <View style = {{width:'100%',height:70,borderRadius:12,marginTop:20}}>
+                        <Text style = {{fontSize : 14,color :'#77869E', height:'auto',fontFamily:'AvenirLTStd-Medium',marginLeft:4,marginBottom:3}}>
+                            {stringsoflanguages.message}
+
+                        </Text>
+
+                        <Text style = {{fontSize : 20,color :'#042C5C', height:'auto',fontFamily:'AvenirLTStd-Medium',marginLeft:4,marginBottom:3}}>
+                           I am {GLOBAL.name} approving your attendance request on screen.
+
+                        </Text>
+
+                    </View>
+
+
+
+
+                    <RNCamera
+                        ref={ref => {
+                            this.camera = ref;
+                        }}
+                        style={{width:'100%',height:window.height - 70}}
+                        type={RNCamera.Constants.Type.front}
+                        flashMode={RNCamera.Constants.FlashMode.on}
+
+                    />
+                    <View
+                        style={{alignSelf: 'center', alignItems: 'center',justifyContent: 'center',flexDirection: 'row'}}
+                    >
+                        {button}
+                    </View>
+                </View>
+            </SafeAreaView>
+
+
+        );
+    }
+}
+
+const styles = StyleSheet.create({
+    wrapper: {
+    },
+    container: {
+
+
+
+
+    },
+    loading: {
+        position: 'absolute',
+        left: window.width/2 - 30,
+
+        top: window.height/2,
+
+        opacity: 0.5,
+
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    slide1: {
+
+        marginLeft : 50,
+
+        width: window.width - 50,
+        height:300,
+        resizeMode:'contain',
+        marginTop : window.height/2 - 200
+
+
+    },
+    slide2: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    slide3: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#92BBD9',
+    },
+    text: {
+        color: '#fff',
+        fontSize: 30,
+        fontWeight: 'bold',
+    }
+})
