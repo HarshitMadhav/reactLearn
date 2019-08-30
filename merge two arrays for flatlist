@@ -1,0 +1,26 @@
+after response merge two arrays for a single flatlist to show data in a single flatlist.
+
+myCallbackFunctions = (res) => {
+        this.hideLoading()
+        if (res.status == 200){
+
+            this.setState({data:res.data})
+            this.setState({pdata: res.userdata})
+
+            var s = res.data
+
+            const interest = [...s, ...res.userdata];
+
+            this.setState({fdata:interest})
+
+  
+          //dont use this commented code
+          //  let finaldata = [...res.data, ...res.userdata]
+          //  this.setState({fdata: res.finaldata})
+          // alert(JSON.stringify(interest))
+        }
+        else{
+            alert(stringsoflanguages.unable)
+        }
+
+    }
