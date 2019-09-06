@@ -194,7 +194,7 @@ return(
           <MapView
                 provider={PROVIDER_GOOGLE} // remove if not using Google Maps
                 style={{width:width-40, height:300, marginTop:10, marginBottom:this.state.marginBottom}}
-                initialRegion={this.state.initialPosition}
+                region={this.state.initialPosition}
                 showsMyLocationButton={true}
                 showsUserLocation={true}
                 onMapReady={this._onMapReady}
