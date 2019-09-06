@@ -1,0 +1,66 @@
+Take:::::::::::::
+
+constructor(props) {
+    super(props)
+    this.state = {
+        finalmoviesList:[],
+    }
+  }
+  
+    let i;
+    var interest=[]
+    var len = responseJson.data.length
+    for(i = 0 ; i < len; i++){
+
+        interest = interest.concat(...responseJson.data[i]);
+
+     }
+
+     this.setState({finalmoviesList: interest})
+
+
+//////////////////after getting response from api call if you have multiple arrays and want to display them in single flatlist do this
+
+  getMoviesFromApiAsync = () => {
+    this.showLoading()
+    const url = GLOBAL.BASE_URL + 'travel_document';
+   fetch(url, {
+method: 'POST',
+headers: {
+ 'Content-Type': 'application/json',
+},
+body: JSON.stringify({
+ user_id : GLOBAL.user_id,
+ upload_by:'user'
+}),
+}).then((response) => response.json())
+ .then((responseJson) => {
+   this.hideLoading()
+   if(responseJson.status=="success"){
+
+      let i;
+      var interest=[]
+     var len = responseJson.data.length
+     for(i = 0 ; i < len; i++){
+
+        interest = interest.concat(...responseJson.data[i]);
+
+     }
+
+     this.setState({finalmoviesList: interest})
+   }else {
+
+     alert('Something went wrong!')
+   }
+
+
+ })
+ .catch((error) => {
+   console.error(error);
+   this.hideLoading();
+ });
+
+
+ }
+
+
