@@ -1,4 +1,32 @@
+Refer here for installation of react native maps:
+    https://github.com/react-native-community/react-native-maps/blob/master/docs/installation.md
+
 following code contains react native maps (get current user location), image picker, check-box, dashed view
+
+
+add these before: 
+1... (React Native all versions) If you do not have project-wide properties defined and have a different play-services version than the one included in this library, use the following instead (switch 10.0.1 for the desired version):
+dependencies {
+   ...
+   implementation(project(':react-native-maps')){
+       exclude group: 'com.google.android.gms', module: 'play-services-base'
+       exclude group: 'com.google.android.gms', module: 'play-services-maps'
+   }
+   implementation 'com.google.android.gms:play-services-base:10.0.1'
+   implementation 'com.google.android.gms:play-services-maps:10.0.1'
+}
+
+2... (React Native all versions) Specify your Google Maps API Key:
+
+Add your API key to your manifest file (android/app/src/main/AndroidManifest.xml):
+
+<application>
+   <!-- You will only need to add this meta-data tag, but make sure it's a child of application -->
+   <meta-data
+     android:name="com.google.android.geo.API_KEY"
+     android:value="Your Google maps API Key Here"/>
+</application>
+
 
 //////////////////////// full code ///////////////////////
 
