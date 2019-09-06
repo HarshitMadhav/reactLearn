@@ -1,0 +1,332 @@
+Refer here: https://reactnativeforyou.com/how-to-download-an-image-from-url-in-react-native-android-2/
+
+Download image from a response of api call and also display multiple  (N number of arrays in a flatlist)
+
+npm install rn-fetch-blob
+react-native link rn-fetch-blob
+
+add these permissions to AndroidManifest.xml
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
++   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />                                               
++   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />                                              
++   <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
+
+Also, if you're going to use Android Download Manager you have to add this to AndroidManifest.xml
+
+    <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
++           <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>                          
+    </intent-filter>
+
+also use random string to prevent the overwriting of imagefile names.
+
+////////////////////////// full code ////////////////
+
+import React, {Component} from 'react';
+import { Platform,StyleSheet, Text,FlatList,ActivityIndicator,StatusBar,ProgressBarAndroid,
+  ToastAndroid,
+  PermissionsAndroid,
+   View ,Image,Alert,Dimensions ,
+   TextInput,TouchableOpacity,TouchableHighlight,Linking} from 'react-native';
+const window = Dimensions.get('window');
+import { PowerTranslator, ProviderTypes, TranslatorConfiguration } from 'react-native-power-translator';
+const { width, height } = Dimensions.get('window');
+import Button from 'react-native-button';
+const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : StatusBar.currentHeight;
+const GLOBAL = require('./Global');
+import RNFetchBlob from "rn-fetch-blob";
+var randomString = require('random-string');
+
+const APPBAR_HEIGHT = Platform.OS === 'ios' ? 44 : 56;
+const equalWidth =  (width/2 )
+type Props = {};
+const MyStatusBar = ({backgroundColor, ...props}) => (
+<View style={[styles.statusBar, { backgroundColor }]}>
+  <StatusBar translucent backgroundColor={backgroundColor} {...props} />
+</View>
+);
+var rpath="";
+var doclist=[];
+
+export default class UploadedDocs extends Component {
+  static navigationOptions = {
+    title: 'Login',
+    header: null
+  };
+
+constructor(props) {
+    super(props)
+    this.state = {
+      isScreen :'',
+      states : false,
+        finalmoviesList:[],
+        languageCode :GLOBAL.language,
+         backgroundColors: 'white',
+         progress: 0,
+               loading: false
+    }
+  }
+
+  showLoading() {
+      this.setState({loading: true})
+   }
+
+   hideLoading() {
+      this.setState({loading: false})
+   }
+
+ _keyExtractor = (item, index) => item.id;
+ _resPress = (item) => {
+   Linking.openURL(item.document)
+            .then(() =>  {
+                console.log('CONFIRM')
+            })
+            .catch(() => {
+                console.log('CANCEL')
+            })
+
+   }
+
+   actualDownload = (item) => {
+//    alert(JSON.stringify(item))
+    var docname = item.document_title
+    var rs = randomString({
+     length: 3,
+     numeric: true,
+     letters: false,
+     special: false,
+
+     });
+
+     rpath = docname + rs
+     var totalPath=  '/' + rpath + '.png'
+      //alert(totalPath)
+     var url = item.document
+       this.setState({
+         progress: 0,
+         loading: true
+       });
+       let dirs = RNFetchBlob.fs.dirs;
+       RNFetchBlob.config({
+         // add this option that makes response data to be stored as a file,
+         // this is much more performant.
+         path: dirs.DownloadDir + totalPath,
+         fileCache: true
+       })
+         .fetch(
+           "GET",
+           url,
+           {
+             //some headers ..
+           }
+         )
+         .progress((received, total) => {
+           console.log("progress", received / total);
+           this.setState({ progress: received / total });
+         })
+         .then(res => {
+           this.setState({
+             progress: 100,
+             loading: false
+           });
+           ToastAndroid.showWithGravity(
+             "Your file has been downloaded to downloads folder!",
+             ToastAndroid.SHORT,
+             ToastAndroid.BOTTOM
+           );
+         });
+     };
+
+     async downloadFile(item) {
+         try {
+           const granted = await PermissionsAndroid.request(
+             PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+             {
+               title: "Storage Permission",
+               message: "App needs access to memory to download the file "
+             }
+           );
+           if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+             this.actualDownload(item);
+           } else {
+             Alert.alert(
+               "Permission Denied!",
+               "You need to give storage permission to download the file"
+             );
+           }
+         } catch (err) {
+           console.warn(err);
+         }
+       }
+
+  _renderItem = ({item,index}) => {
+
+    return (
+
+
+      <View style={{flexDirection :'row',backgroundColor:'white',color :'white' , flex: 1 ,margin: 10,borderRadius :6,width : window.width- 20, shadowColor: '#000',height:'auto',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.6,
+    shadowRadius: 2,
+    elevation: 5 }}>
+    <Image style={{marginLeft :10,marginTop :10,height :125,width :125,resizeMode:'contain', marginBottom:10}}
+                     source={{ uri: item.document }} />
+    <View style = {{flexDirection: "column" ,marginTop : 20}} >
+
+    {GLOBAL.language == "en" && (
+       <Text style={{marginLeft : 15,marginTop:12,fontSize : 12,color :'black',fontFamily :'Poppins-Medium', height:'auto',width:"80%"}}>
+        {item.document_title} </Text>
+    )}
+
+    {GLOBAL.language != "en" && (
+       <PowerTranslator style={{marginLeft : 15,marginTop:12,fontSize : 12,color :'black',fontFamily :'Poppins-Medium', height:'auto'}} text={item.document_title} />
+    )}
+
+
+<TouchableOpacity onPress={()=>this.downloadFile(item)}>
+    {GLOBAL.language == "en" && (
+       <Text style={{fontWeight :'bold',marginLeft : 15,marginTop:18,fontSize : 16,color :'#261650',fontFamily :'Poppins-Medium',width :200}}>
+        {'Download'} </Text>
+    )}
+
+    {GLOBAL.language != "en" && (
+       <PowerTranslator style={{fontWeight :'bold',marginLeft : 15,marginTop:12,fontSize : 16,color :'#261650',fontFamily :'Poppins-Medium',width :200}} text={'Download'} />
+    )}
+
+    </TouchableOpacity>
+    </View>
+     </View>
+    )
+  }
+
+  componentWillMount() {
+       this.getMoviesFromApiAsync()
+
+   }
+  changeLanguage(languageCode) {
+          this.setState({ languageCode: languageCode });
+  }
+  getMoviesFromApiAsync = () => {
+    this.showLoading()
+    const url = GLOBAL.BASE_URL + 'travel_document';
+   fetch(url, {
+method: 'POST',
+headers: {
+ 'Content-Type': 'application/json',
+},
+body: JSON.stringify({
+ user_id : GLOBAL.user_id,
+ upload_by:'user'
+}),
+}).then((response) => response.json())
+ .then((responseJson) => {
+   this.hideLoading()
+   if(responseJson.status=="success"){
+
+      let i;
+      var interest=[]
+     var len = responseJson.data.length
+     for(i = 0 ; i < len; i++){
+
+        interest = interest.concat(...responseJson.data[i]);
+
+     }
+
+     this.setState({finalmoviesList: interest})
+   }else {
+
+     alert('Something went wrong!')
+   }
+
+
+ })
+ .catch((error) => {
+   console.error(error);
+   this.hideLoading();
+ });
+
+
+ }
+
+
+  render() {
+    TranslatorConfiguration.setConfig(ProviderTypes.Google, GLOBAL.key, GLOBAL.language);
+    if(this.state.loading){
+   return(
+   <View style={{flex: 1 ,backgroundColor: 'white'}}>
+   <ActivityIndicator style = {styles.loading}
+
+   size="large" color="#201344" />
+   </View>
+   )
+ }
+
+    return (
+     <View style={styles.container}>
+              <MyStatusBar backgroundColor="#201344" barStyle="light-content" />
+<View style={styles.appBar} >
+<TouchableOpacity onPress = {()=>this.props.navigation.goBack()}>
+<Image style={{marginLeft :10,marginTop :12,height :25,width :25,resizeMode:'contain'}}
+               source={require('./back.png')} />
+               </TouchableOpacity>
+               {GLOBAL.language == "en" && (
+                  <Text style={{marginLeft : 15,marginTop:12,fontSize : 16,color :'white',fontFamily :'Poppins-Medium'}}>
+                   {'Uploaded Documents'} </Text>
+               )}
+
+               {GLOBAL.language != "en" && (
+                  <PowerTranslator style={{marginLeft : 15,marginTop:12,fontSize : 16,color :'white',fontFamily :'Poppins-Medium'}} text={'Uploaded Documents'} />
+               )}
+
+</View>
+
+
+<FlatList
+     data={this.state.finalmoviesList}
+     numColumns={1}
+     keyExtractor = { (item, index) => index.toString() }
+     renderItem={this._renderItem}
+     extraData={this.state}
+   />
+
+      </View>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+      flex: 1,
+      backgroundColor:'#f7f7f7',
+
+    },
+    statusBar: {
+      height: STATUSBAR_HEIGHT,
+    },
+    appBar: {
+      backgroundColor:'#261650',
+      height: APPBAR_HEIGHT,
+      flexDirection :'row',
+
+
+
+    },
+    loading: {
+             position: 'absolute',
+             left: window.width/2 - 30,
+
+             top: window.height/2,
+
+             opacity: 0.5,
+
+             justifyContent: 'center',
+             alignItems: 'center'
+         },
+
+colord:
+{ textAlign :'center',marginLeft :15,marginTop :window.height/2 - 120,width : window.width -30,fontSize : 22  ,color :'#261650'},
+
+});
+
