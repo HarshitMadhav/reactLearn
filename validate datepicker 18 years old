@@ -1,0 +1,65 @@
+make the user select minimum 18 years old age from datepicker
+
+1---------- while using Datepicker library
+// refer here https://stackoverflow.com/questions/52759908/react-datepicker-enable-to-set-date-only-if-it-18-years-old-and-above
+// refer here (lib) https://www.npmjs.com/package/react-native-datepicker
+
+import DatePicker from 'react-native-datepicker'
+
+<DatePicker
+      style={{width: 200,}}
+      date={this.state.date}
+      mode="date"
+      showIcon={false}
+      placeholder={this.state.dob}
+      format="YYYY-MM-DD"
+      minDate="1950-01-01"
+      maxDate= {moment().subtract(18,'years').format('YYYY-MM-DD')}
+      confirmBtnText="Confirm"
+      cancelBtnText="Cancel"
+      customStyles={{
+        dateInput: {
+          marginLeft: -76, borderWidth:0, color:'black'
+        }
+      }}
+      onDateChange={(date) => {this.setState({date: date})}}
+    />
+
+
+2------------------ while using DateTimePicker library
+// refer here https://stackoverflow.com/questions/45859935/how-to-subtract-and-plus-date-in-react-native
+// refer here (lib): https://github.com/mmazzarolo/react-native-modal-datetime-picker
+
+import DateTimePicker from "react-native-modal-datetime-picker";
+
+const dob = new Date();
+const year = dob.getFullYear();
+const month = dob.getMonth();
+const day = dob.getDate();
+
+
+state={
+        isDateTimePickerVisible: false,
+}
+
+    handleDatePicked = date => {
+            this.setState({ dob: date.toString() });
+            this.hideDateTimePicker();
+        };
+        showDateTimePicker = (types) => {
+            this.setState({ isDateTimePickerVisible: true });
+        };
+        hideDateTimePicker = () => {
+            this.setState({ isDateTimePickerVisible: false });
+        };
+
+  <DateTimePicker
+      isVisible={this.state.isDateTimePickerVisible}
+      mode = 'date'
+      onConfirm={this.handleDatePicked}
+      onCancel={this.hideDateTimePicker}
+      format="DD/MM/YYYY"
+      minimumDate = {new Date(year - 70, month, day)}
+      maximumDate={new Date(year - 18, month, day)}
+   />
+// from this date picker user will be able to select date from current year - 70 to current year - 18 
