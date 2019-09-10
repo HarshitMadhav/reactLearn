@@ -1,10 +1,11 @@
-make the user select minimum 18 years old age from datepicker
+make the user select minimum 18 years old age from datepicker using moment js
 
 1---------- while using Datepicker library
 // refer here https://stackoverflow.com/questions/52759908/react-datepicker-enable-to-set-date-only-if-it-18-years-old-and-above
 // refer here (lib) https://www.npmjs.com/package/react-native-datepicker
 
 import DatePicker from 'react-native-datepicker'
+var moment = require('moment');
 
 <DatePicker
       style={{width: 200,}}
@@ -31,6 +32,7 @@ import DatePicker from 'react-native-datepicker'
 // refer here (lib): https://github.com/mmazzarolo/react-native-modal-datetime-picker
 
 import DateTimePicker from "react-native-modal-datetime-picker";
+var moment = require('moment');
 
 const dob = new Date();
 const year = dob.getFullYear();
