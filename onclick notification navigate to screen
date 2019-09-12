@@ -1,0 +1,55 @@
+// on click of a received notification (open) to navigate to specific screen.
+// make sure to make foreground false for disabling foreground notification. 
+// add this if (notif.foreground == false || AppState.currentState == "inactive" ) in onNotif() to prevent the navigations when
+the app is in foreground
+
+
+IN Home.js or Splash.js or from the screen from which you want to navigate
+
+import PushNotification from 'react-native-push-notification';
+import NotifService from './NotifService';
+import appConfig from './app.json';
+
+export default class Home extends Component {
+    constructor(props) {
+    super(props);
+    this.notif = new NotifService(this.onRegister.bind(this), this.onNotif.bind(this));
+
+  }
+
+    onRegister(token) {
+      AsyncStorage.setItem('token', token.token);
+  //    alert(token.token)
+      GLOBAL.token = token.token
+  //    alert(GLOBAL.token)
+      console.log( 'TOKEN:', token );
+      this.setState({ registerToken: token.token, fcmRegistered: true });
+    }
+
+    onNotif(notif) {
+//alert(JSON.stringify(notif))
+    //    Alert.alert(notif.title, notif.message);
+if (notif.foreground == false || AppState.currentState == "inactive" ){
+//  alert(JSON.stringify(notif.sd_type + ' fdf ' + notif.following_id));
+//
+            if (notif.sd_type == "chat"){
+                this.props.navigation.navigate('ApniChat')
+            }else if (notif.sd_type == "follow"){
+           GLOBAL.another = notif.following_id
+                this.props.navigation.navigate('AnotherProfile')
+            }else if (notif.sd_type == "group"){
+
+                this.props.navigation.navigate('GroupList')
+            }
+            else if (notif.sd_type == "news"){
+                GLOBAL.newsid = notif.news_id
+                this.props.navigation.navigate('NewsDetail')
+            }
+        }
+
+    }
+
+    handlePerm(perms) {
+      Alert.alert("Permissions", JSON.stringify(perms));
+    }
+}
