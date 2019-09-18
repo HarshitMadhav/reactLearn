@@ -1,0 +1,63 @@
+////////////////////// GET API
+
+headHome=()=>{
+      var pizza = 'pizza'
+      var lat = '28.8'
+      var lon = '77'
+      var url = 'https://developers.zomato.com/api/v2.1/search?q='+pizza+'&lat='+lat+'&lon='+lon+'&radius=1000&sort=real_distance'
+    
+      fetch(url, {
+                  method: 'GET',
+                  headers: {
+                      'user-key': '70562d7dd9c57ed0b09ab40b8f3da802',
+                      'Content-Type': 'application/json'
+                  },
+              })
+    
+                  .then((response) => response.json())
+                  .then((responseData) => {
+                    this.hideLoading()
+                        alert(JSON.stringify(responseData))
+    
+            })
+            .catch((error) =>{
+              console.error(error);
+            })
+    
+              }
+////////////// POST API
+
+          var url = GLOBAL.BASE_URL + 'changepassword'
+
+          fetch(url, {
+                      method: 'POST',
+                      headers: {
+                          'Authorization': "Bearer " + GLOBAL.chtoken,
+                          'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({
+                        user_id: GLOBAL.userID,
+                        new_password: this.state.newpass,
+                        old_password: this.state.oldpass
+                      })
+                  })
+
+                      .then((response) => response.json())
+                      .then((responseData) => {
+                        this.hideLoading()
+//                        alert(JSON.stringify(responseData))
+                        if(responseData.status == 200){
+                          alert(stringsoflanguages.schpass)
+                          this.props.navigation.goBack()
+                        }else if(res.status == 202) {
+                          alert(stringsoflanguages.wrold)
+                        }  else{
+                          alert(stringsoflanguages.unable)
+                      }
+
+                })
+                .catch((error) =>{
+                  console.error(error);
+                })
+
+                  }
