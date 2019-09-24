@@ -1,0 +1,340 @@
+// resend otp in after some time with a timer saying "Resend OTP in 5 secs" and then after time is over display "Resend OTP"
+
+//Refer here https://stackoverflow.com/questions/51695887/countdown-timer-in-react-native
+
+
+//////////// Code /////////////////
+
+  constructor(props) {
+    super(props);
+    this.state ={ timer:5, }
+  }
+
+  componentDidMount(){
+    this.interval = setInterval(
+      () => this.setState((prevState)=> ({ timer: prevState.timer - 1 })),
+      1000
+    );
+  }
+
+  componentDidUpdate(){
+  if(this.state.timer === 0){
+    clearInterval(this.interval);
+  }
+}
+
+componentWillUnmount(){
+ clearInterval(this.interval);
+}
+
+******************** in render()  do this **************
+{this.state.timer != 0 && (
+  <Text style={{fontSize: 15, color:'#3070F4', fontFamily: 'AvenirLTStd-Roman', marginTop: 20}}>Resend in {this.state.timer} secs</Text>
+
+)}
+
+{this.state.timer ==0 && (
+  <TouchableOpacity  onPress={this.buttonClickListener}>
+  <Text style={{fontSize: 15, color:'#3070F4', fontFamily: 'AvenirLTStd-Roman', marginTop: 20}}>Resend OTP?</Text>
+  </TouchableOpacity>
+
+)}
+
+
+/// *********************** full code *********************///
+import React, {Component} from 'react';
+import {Platform, StyleSheet, Text,ActivityIndicator, View, AsyncStorage,Image,TouchableOpacity ,Alert,Container ,TextInput , Dimensions} from 'react-native';
+import styles from './Style.js';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import Button from 'react-native-button'
+const GLOBAL = require('./Global');
+import { DrawerActions } from 'react-navigation';
+import OTPInput from 'react-native-otp';
+const window = Dimensions.get('window');
+import DeviceInfo from 'react-native-device-info';
+var randomString = require('random-string');
+var count=3;
+import OtpInputs from 'react-native-otp-inputs'
+
+
+type Props = {};
+ class Otp extends Component<Props> {
+
+  static navigationOptions = {
+    title: 'Login',
+    header: null
+  };
+
+  constructor(props) {
+    super(props);
+    this.state ={ otp: '',loading:'',ipaddress:'',timer:5, showResend:0}
+  }
+
+
+  componentDidMount(){
+    this.interval = setInterval(
+      () => this.setState((prevState)=> ({ timer: prevState.timer - 1 })),
+      1000
+    );
+  }
+
+  componentDidUpdate(){
+  if(this.state.timer === 0){
+    clearInterval(this.interval);
+//    this.setState({showResend:1})
+  }
+}
+
+componentWillUnmount(){
+ clearInterval(this.interval);
+}
+
+handleOTPChange = (otp) => {
+
+    this.setState({ otp:otp })
+  }
+
+  clearOTP = () => {
+    this.setState({ otp: '' })
+  }
+
+  autoFill = () => {
+    this.setState({ otp: '221198' })
+  }
+  showLoading() {
+       this.setState({loading: true})
+    }
+
+    hideLoading() {
+       this.setState({loading: false})
+    }
+
+    buttonClickListener = () =>{
+      var k = '';
+    if (GLOBAL.isScreen  == "1"){
+     k = GLOBAL.fmobile;
+    } else {
+    k = GLOBAL.mymobile;
+    }
+//    DeviceInfo.getIPAddress().then(ip => {
+//      this.setState({ipaddress:ip})
+// });
+   var x = randomString({
+   length: 4,
+   numeric: true,
+   letters: false,
+   special: false,
+
+   });
+
+    if (GLOBAL.mymobile == ''){
+      alert('Please Enter Mobile Number')
+    }     else if (this.state.status == false){
+      alert('Please Connect to Internet')
+    }  else {
+      const url = GLOBAL.BASE_URL +  GLOBAL.otp_for_forget
+      this.showLoading()
+      fetch(url, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    phone: k,
+    otp:x
+
+  }),
+}).then((response) => response.json())
+    .then((responseJson) => {
+
+
+       this.hideLoading()
+       if (responseJson.status == true) {
+           GLOBAL.otps =  x;
+//           GLOBAL.fmobile= this.state.username;
+
+        alert('OTP Sent Again to Your Registered Mobile Number.')
+
+       }else {
+           //alert('Your Mobile Number Is Not Registered.')
+       }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+    }
+  }
+
+buttonclickotp=()=>{
+
+//alert(GLOBAL.otps)
+ var k =  AsyncStorage.getItem('token');
+    if (this.state.otp == ''){
+      alert('Please Enter OTP')
+    }     else if (this.state.status == false){
+      alert('Please Connect to Internet')
+    }  else if(GLOBAL.otps==this.state.otp){
+      if (GLOBAL.isScreen == '1'){
+      const url = GLOBAL.BASE_URL +  GLOBAL.forget_password_by_mobile
+      this.showLoading()
+      fetch(url, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    mobile: GLOBAL.fmobile,
+
+
+  }),
+}).then((response) => response.json())
+    .then((responseJson) => {
+
+
+       this.hideLoading()
+       if (responseJson.status == true) {
+
+        alert('New Password Sent To Your Registered Mobile Number.')
+        this.props.navigation.replace('Login')
+       }else {
+           alert('Entered OTP is Invalid.')
+       }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+    }
+    else{
+            const url = GLOBAL.BASE_URL +  GLOBAL.Signup
+      this.showLoading()
+      fetch(url, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+
+
+  body: JSON.stringify({
+    name: GLOBAL.myname,
+    mobile: GLOBAL.mymobile,
+    email: GLOBAL.myemail,
+    password: GLOBAL.mypassword,
+    deviceID: GLOBAL.mydeviceID,
+    deviceType: GLOBAL.mydeviceType,
+    deviceToken: GLOBAL._token,
+    model_name: GLOBAL.mymodel_name,
+    carrier_name: '',
+    device_country: 'India',
+    device_memory: '',
+    has_notch: '',
+    manufacture: '',
+    ip_address: '0',
+
+  }),
+}).then((response) => response.json())
+    .then((responseJson) => {
+
+      if (responseJson.status == true) {
+
+
+      this.setState({ results: responseJson.user_detail })
+
+
+
+       AsyncStorage.setItem('userID', this.state.results.userID);
+       AsyncStorage.setItem('image', this.state.results.image);
+       AsyncStorage.setItem('name', this.state.results.name);
+       AsyncStorage.setItem('email', this.state.results.email);
+       AsyncStorage.setItem('mobile', this.state.results.mobile);
+
+
+        this.props.navigation.replace('TabNavigator')
+       }
+       this.hideLoading()
+    })
+    .catch((error) => {
+      console.error(error);
+       this.hideLoading()
+    });
+    }
+  }
+    else {
+           alert('Entered OTP is Invalid.')
+       }
+  }
+
+
+
+  render() {
+
+    if(this.state.loading){
+      return(
+        <View style={{flex: 1}}>
+        <ActivityIndicator style = {styles.loading}
+
+       size="large" color="#e41582" />
+        </View>
+      )
+    }
+
+    return (
+      <KeyboardAwareScrollView contentContainerStyle={{flex:1, backgroundColor:'white'}} keyboardShouldPersistTaps='always'>
+      <View style= {{flex: 1, width: '100%', backgroundColor: 'white', flexDirection: 'column'}}>
+
+      <View style={{marginLeft: 30,marginRight: 30, marginTop: 50, flexDirection: 'column', alignItems: 'center'}}>
+
+      <Image style={{width: 120, height: 120, resizeMode: 'contain', alignSelf: 'center'}}
+       source={require('./resources/otp_ic.png')} />
+
+       <Text style={{fontSize: 30, color:'black', fontFamily: 'AvenirLTStd-Black', marginTop: 30}}>Verification Code</Text>
+       <Text style={{width: '70%',fontSize: 20,textAlign: 'center',color:'#626369', fontFamily: 'AvenirLTStd-Roman', marginTop: 20}}>OTP has been sent to your mobile number. Please verify</Text>
+
+       <OtpInputs
+       containerStyles={{alignSelf:'center', marginTop:100, marginBottom:30}}
+       value={this.state.otp}
+       handleChange={this.handleOTPChange}
+       tintColor="#2F95D6"
+       offTintColor="#2F95D6"
+       numberOfInputs={4}
+     />
+
+{this.state.timer != 0 && (
+  <Text style={{fontSize: 15, color:'#3070F4', fontFamily: 'AvenirLTStd-Roman', marginTop: 20}}>Resend in {this.state.timer} secs</Text>
+
+)}
+
+{this.state.timer ==0 && (
+  <TouchableOpacity  onPress={this.buttonClickListener}>
+  <Text style={{fontSize: 15, color:'#3070F4', fontFamily: 'AvenirLTStd-Roman', marginTop: 20}}>Resend OTP?</Text>
+  </TouchableOpacity>
+
+)}
+
+
+
+
+                <View style={{width: '100%', flexDirection: 'row', alignItems: 'center' ,justifyContent: 'center', marginTop: 40}}>
+
+                <Button
+                containerStyle={{width:'55%',marginTop : 15,padding:16, height:60, overflow:'hidden', borderRadius:40, backgroundColor: '#EA128B', elevation: 8}}
+
+                style={{fontSize: 18, color: 'white', alignSelf: 'center', fontWeight: 'bold'}}
+                onPress={this.buttonclickotp}
+                >
+                VERIFY
+                </Button>
+                </View>
+
+
+
+      </View>
+      </View>
+
+     </KeyboardAwareScrollView>
+    );
+  }
+}
+export default Otp;
+
+
+
