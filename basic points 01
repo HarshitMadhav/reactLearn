@@ -1,0 +1,76 @@
+*************Use TypeScript
+The number one thing you can do to improve your JS is by not writing JS. For the uninitiated, TypeScript (TS) is a “compiled” superset of JS (anything that runs in JS runs in TS). TS adds a comprehensive optional typing system on top of the vanilla JS experience. For a long time, TS support across the ecosystem was inconsistent enough for me to feel uncomfortable recommending it. Thankfully, those days are long behind us and most frameworks support TS out of the box. Now that we’re all on the same page about what TS is, let’s talk about why you would want to use it.
+
+TypeScript enforces type safety
+Type safety describes a process where a compiler verifies that all types are being used in a legal way throughout a piece of code. In other words, if you create a function foo that takes a number:
+function foo(someNum: number): number {
+  return someNum + 5;
+}
+That foo function should only ever be called with a number:
+good
+console.log(foo(2)); // prints "7"
+no good
+console.log(foo("two")); // invalid TS code
+Aside from the overhead of adding types to your code, there are zero downsides to type-safety enforcement. The benefit on the other hand, is too large to ignore. Type safety provides an extra level of protection against common errors/bugs, which is a blessing for a lawless language like JS.
+
+Typescript types make refactoring larger applications possible
+Refactoring a large JS application can be a true nightmare. Most of the pain of refactoring JS is due to the fact that it doesn’t enforce function signatures. This means a JS function can never really be misused. For example, if I have a function myAPI that is used by 1000 different services:
+function myAPI(someNum, someString) {
+  if (someNum > 0) {
+    leakCredentials();
+  } else {
+    console.log(someString);
+  }
+}
+and I change the call signature a bit:
+function myAPI(someString, someNum) {
+  if (someNum > 0) {
+    leakCredentials();
+  } else {
+    console.log(someString);
+  }
+}
+I have to be 100% certain, that every place where this function is used (thousands of places), I correctly update the usage. If I even miss one my credentials could leak. Here’s the same scenario with TS:
+before
+function myAPITS(someNum: number, someString: string) { ... }
+after
+function myAPITS(someString: string, someNum: number) { ... }
+As you can see, the myAPITS function went through the same change as the JavaScript counterpart. But instead of resulting in valid JavaScript, this code results in invalid TypeScript, as the thousands of places it’s used are now providing the wrong types. And because of the type safety we discussed earlier, those thousand cases will block compilation and your credentials won’t get leaked (that’s always nice).
+
+
+****************let and const
+
+For most of JS’s existence, there was only one variable scope qualifier: var. var has some pretty unique/interesting rules in regards to how it handles scope. The scoping behavior of var is inconsistent and confusing and has resulted in unexpected behavior and therefore bugs throughout the lifetime of JS. But as of ES6, there is an alternative to var: const and let. There is practically zero need to use var anymore, so don’t. Any logic that uses var can always be converted to equivalent const and let based code.
+As for when to use const vs let, I always start by declaring everything const. const is far more restrictive and “immutablish,” which usually results in better code. There aren’t a ton of “real scenarios” where using let is necessary, I would say 1/20 variables I declare with let. The rest are all const.
+I said const is “immutablish” because it does not work in the same way as const in C/C++. What const means to the JavaScript runtime is that the reference to that const variable will never change. This does not mean the contents stored at that reference will never change. For primitive types (number, boolean, etc.), const does translate to immutability (because it’s a single memory address). But for all objects (classes, arrays, dicts), const does not guarantee immutability.
+
+
+****************Arrow => Functions
+
+Arrow functions are a concise method of declaring anonymous functions in JS. Anonymous functions describe functions that aren’t explicitly named. Usually, anonymous functions are passed as a callback or event hook.
+
+vanilla anonymous function
+someMethod(1, function () { // has no name
+  console.log('called');
+});
+For the most part, there isn’t anything “wrong” with this style. Vanilla anonymous functions behave “interestingly” in regards to scope, which can/has resulted in many unexpected bugs. We don’t have to worry about that anymore thanks to arrow functions. Here is the same code implemented with an arrow function:
+anonymous arrow function
+someMethod(1, () => { // has no name
+  console.log('called');
+});
+Aside from being far more concise, arrow functions have much more practical scoping behavior. Arrow functions inherit this from the scope they were defined in.
+In some cases, arrow functions can be even more concise:
+const added = [0, 1, 2, 3, 4].map((item) => item + 1);
+console.log(added) // prints "[1, 2, 3, 4, 5]"
+Arrow functions that reside on a single line include a implicit return statement. There is no need for brackets or semi-colons with single line arrow functions.
+I want to make it clear. This isn’t a var situation; there are still valid use cases for vanilla anonymous functions (specifically class methods). That being said, I’ve found that if you always default to an arrow function, you end up doing a lot less debugging as opposed to defaulting to vanilla anonymous functions.
+
+
+***********************Lint Your Code and Enforce a Style
+Code without a consistent style (look and feel) is incredibly difficult to read and understand. Therefore, a critical aspect of writing high-end code in any language is having a consistent and sensible style. Due to the breadth of the JS ecosystem, there are a LOT of options for linters and style specifics. What I can’t stress enough is that it’s far more important that you are using a linter and enforcing a style (any of them) than it is which linter/style you specifically choose. At the end of the day, no one is going to write code exactly how I would, so optimizing for that is an unrealistic goal.
+
+I see a lot of people ask whether they should use eslint or prettier. For me, they serve very different purposes and therefore should be used in conjunction. Eslint is a traditional linter most of the time. It’s going to identify issues with your code that have less to do with style and more to do with correctness. For example, I use eslint with AirBNB rules. With that configuration, the following code would force the linter to fail:
+var fooVar = 3; // airbnb rules forebid "var"
+It should be pretty obvious how eslint adds value to your development cycle. In essence, it makes sure you follow the rules about what is and isn’t good practice. Due to this, linters are inherently opinionated. As with all opinions, take it with a grain of salt. The linter can be wrong.
+
+Prettier is a code formatter. It is less concerned with correctness and far more worried about uniformity and consistency. Prettier isn’t going to complain about using var, but it will automatically align all the brackets in your code. In my personal development process, I always run prettier as the last step before pushing code to Git. In many cases, it even makes sense to have Prettier run automatically on each commit to a repo. This ensures that all code coming into source control has consistent style and structure.
