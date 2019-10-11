@@ -1,0 +1,35 @@
+Validate textinput values after the input has been provided to the textinput
+
+<TextInput style={{width: '15%'}}
+                          label={stringsoflanguages.percentage}
+                          value={this.state.finalArray[indexs].percentage}
+                          keyboardType={'numeric'}
+                          maxLength={3}
+                          editable={true}
+
+                          onChangeText={text => {
+                              let { finalArray } = this.state;
+                              finalArray[indexs].percentage = text;
+                              this.setState({
+                                  finalArray,
+                              });
+                          }}
+                          onEndEditing={()=>{
+
+                            let { finalArray } = this.state;
+                            let asd = 101 - parseInt(finalArray[indexs].getPerck)
+                            let ass = parseInt(finalArray[indexs].percentage)
+//                            alert(asd + ' ' + ass)
+                            if(asd < ass || asd == ass){
+                              let ff = asd-1
+                              var text = '0'
+                            alert('Value should smaller then or equal to ' + ff)
+                            finalArray[indexs].percentage = text;
+                            this.setState({
+                                finalArray
+                            });
+
+                            }
+                          }}
+
+                      />
