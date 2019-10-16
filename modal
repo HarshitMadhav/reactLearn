@@ -17,7 +17,7 @@ setModalVisible=(visible)=> {
       SIGNUP pop
       </Button>
 
-      <Modal
+        <Modal
            animationType="slide"
            transparent={true}
            visible={this.state.modalVisible}
@@ -25,8 +25,17 @@ setModalVisible=(visible)=> {
 //             Alert.alert('Modal has been closed.');
              this.setModalVisible(!this.state.modalVisible)
            }}>
-           <View style={{
+           <TouchableOpacity 
+            style={{
                      flex: 1,
+                     flexDirection: 'column',
+                     justifyContent: 'center',backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                     alignItems: 'center'}} 
+            activeOpacity={1} 
+            onPressOut={() => {this.setModalVisible(false)}}
+          >
+           <View style={{
+
                      flexDirection: 'column',
                      justifyContent: 'center',backgroundColor: 'rgba(0, 0, 0, 0.5)',
                      alignItems: 'center'}}>
@@ -55,4 +64,5 @@ setModalVisible=(visible)=> {
                </View>
 
            </View>
+           </TouchableOpacity>
          </Modal>
