@@ -1,0 +1,10 @@
+getDirections=()=>{
+  var lat= GLOBAL.appointment_details.doctor_lat
+  var lot= GLOBAL.appointment_details.doctor_long
+
+    var url = `https://www.google.com/maps?saddr=My+Location&daddr=`+lat+','+lot;
+//    alert(url)
+    Linking.openURL(url);
+
+
+}
