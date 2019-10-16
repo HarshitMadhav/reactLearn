@@ -1,0 +1,46 @@
+The ‘==’ operator tests for abstract equality i.e. it does the necessary type conversions before doing the equality comparison.
+But the ‘===’ operator tests for strict equality i.e it will not do the type conversion hence if the two values are not of the same type,
+when compared, it will return false.
+
+EXAMPLE 1---------------------
+<script> 
+// Here number 1 is converted into true(boolean type) 
+// as in javascript true is referred as 1 and false is 
+// referred as 0, hence it returns true. 
+document.write(true == '1'); 
+
+// used for next line 
+document.write('<br>') 
+
+// No type conversion so it returns false	 
+document.write(true === '1'); 
+
+</script> 
+Output:
+
+true
+false
+
+EXAMPLE 2-----------------------
+<script> 
+    // Here L.H.S. is a string literal whereas 
+    // R.H.S. is a string object, 
+    // due to type conversion of string object into  
+    // a string literal, it returns true. 
+    document.write("GeeksforGeeks" == new String("GeeksforGeeks")); 
+  
+    // used for next line 
+    document.write('<br>') 
+  
+    // No type conversion takes place 
+    document.write("GeeksforGeeks" === new String("GeeksforGeeks")); 
+  
+</script>
+
+Output:
+
+true
+false
+
+In general “===” operator is recommended since it never does type conversion we are doing an exact comparison thus it always produces correct results.
+
