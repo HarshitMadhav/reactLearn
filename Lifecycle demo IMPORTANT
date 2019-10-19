@@ -1,0 +1,129 @@
+import React, {Component} from 'react';
+import {Platform, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+
+const instructions = Platform.select({
+  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
+  android:
+    'Double tap R on your keyboard to reload,\n' +
+    'Shake or press menu button for dev menu',
+});
+
+type Props = {};
+
+// There are basically 4 types of methods available in react native:
+
+// 1. Mounting methods (constructor() -> componentWillMount() -> render() -> componentDidMount())
+// 2. Updating methods (componentWillReceiveProps() -> shouldComponentUpdate() -> componentWillUpdate() -> componentDidUpdate())
+// 3. Unmounting method (componentWillUnmount())
+// 4. Error handling method (componentDidCatch())
+
+
+export default class App extends Component<Props> {
+constructor(){
+  // firstly constructor is called
+    super();
+    this.state={
+      madhav: 0, mahakal:10
+    }
+    console.log("Constructor Called.");
+
+  }
+
+  componentWillMount(){
+    // will mount is called before render
+    console.log('will mount')
+    this.setState({madhav: 1})
+  }
+  componentDidMount(){
+    // did mount is called after render
+        console.log('did mount')
+        this.setState({madhav: 1})
+        this.setState({mahakal: 9})
+
+  }
+
+  componentDidUpdate(){
+    // any setstate will trigger the render() followed by componentdidupdate
+    // any setstate will definitely trigger componentdidupdate
+    console.log('did update called after a set state is made')
+  }
+
+  componentWillUpdate(){
+     // any setstate will trigger the componentwillupdate followed by render()
+    // any setstate will definitely trigger componentwillupdate
+
+    console.log('will update called after a set state is made')
+  }
+
+  componentWillReceiveProps(nextProps) {
+//This function would called before our component does anything with new props, We would send the next prop as argument inside it.
+//componentWillReceiveProps in not called on initial render
+    console.log('componentWillReceiveProps called')
+    this.setState({
+
+      madhav: nextProps.myProp + "hello"
+
+    });
+  }
+
+shouldComponentUpdate(nextProp, nextState) {
+//The shouldComponentUpdate() function calls every time before the screen or parent component re-rendering process.
+// You can stop re-rendering screen by passing false in this function.
+// it will clearly stop re-rendering totally but will always update values in without actually rendering.
+    console.log(nextProp, nextState);
+
+    console.log(this.props, this.state);
+
+    return true;  
+// this shouldComponentUpdate is called firstly everytime after setstate is made after this willupdate -> render -> didupdate are called
+// if this returns false then it stops render, componentDidUpdate, componentWillUpdate execution
+// if this returns true then after it firstly componentWillUpdate will be called, then render and then componentDidUpdate will be called
+// so after this method returns true it will be followed by componentWillUpdate -> render -> componentDidUpdate
+  }
+
+  checkCallforDidUpdate=()=>{
+    this.setState({mahakal: this.state.mahakal-1})
+  }
+
+componentWillUnmount() {
+  // this is called after we navigate to another screen
+  // in unmount we remove all listeners that we have added while mounting
+        console.log('Unmount called')
+//This function is called right after the component is removed form DOM or destroyed, 
+//Users can clear any running timers, stop network requests and cleaning any previously stored value in application.
+// dont use setstate in unmount as it will trigger the willupdate -> render -> didupdate methods again.
+    }
+
+  render() {
+    console.log('render')
+    // everything inside render is called as 'ReactDOM'
+    return (
+      <View style={styles.container}>
+        <Text style={styles.welcome}>{this.state.madhav} Madhav</Text>
+        <Text style={styles.instructions}>{this.state.mahakal} Mahakal</Text>
+        <TouchableOpacity onPress={()=> this.checkCallforDidUpdate()}>
+        <Text style={styles.instructions}>{instructions}</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
+  welcome: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10,
+  },
+  instructions: {
+    textAlign: 'center',
+    color: '#333333',
+    marginBottom: 5,
+  },
+});
