@@ -5,3 +5,5 @@ Add keyboardShouldPersistTaps='always' prop to the component
 keyboardShouldPersistTaps='always'
     >
     
+    
+    // use always like 'always' not this "always" use ' ' instead of " " in order to make it work
