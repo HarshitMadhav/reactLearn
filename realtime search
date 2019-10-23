@@ -1,0 +1,83 @@
+take var arrayholder=[];
+
+
+getData=()=>{
+            const url =  GLOBAL.BASE_URL  + 'lab_test_list'
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    "user_id":GLOBAL.user_id,
+                }),
+            }).then((response) => response.json())
+                .then((responseJson) => {
+
+               //     alert(JSON.stringify(responseJson))
+                    if (responseJson.status == true) {
+                        this.setState({results:responseJson.list}) ///////////////// add this
+                        arrayholder = responseJson.list ////////////// add this
+
+                    }else{
+                        this.setState({results:[]})
+                    }
+                })
+                .catch((error) => {
+                    console.error(error);
+                    this.hideLoading()
+                });
+
+}
+
+
+SearchFilterFunction(text){
+
+// search with two key values ie. search with test_name and description of items in flatlist
+        const newData = arrayholder.filter(function(item){
+            const mergetwo= item.test_name.concat(item.description)
+            const itemData = mergetwo.toUpperCase()
+            const textData = text.toUpperCase()
+            return itemData.indexOf(textData) > -1
+        })
+
+
+        this.setState({
+            results: newData,
+            text: text
+
+
+        })
+
+    }
+
+   SearchFilterFunction(text){
+   // search with single value test_name ie. search with only test name of items in flatlist
+        const newData = arrayholder.filter(function(item){
+            const itemData = item.test_name.toUpperCase()
+            const textData = text.toUpperCase()
+            return itemData.indexOf(textData) > -1
+        })
+        this.setState({
+            results: newData,
+            text: text
+
+
+        })
+
+    }
+    
+    
+
+in render()                         <TextInput style={{marginLeft:10 ,width:window.width - 100, height:45}}
+                                   placeholderTextColor='rgba(0, 0, 0, 0.4)'
+                                   onChangeText={(text) => this.SearchFilterFunction(text)}
+                                   placeholder={"Search"}/>
+
+<FlatList style= {{flexGrow:0,margin:8,height:window.height - 100}}
+                              data={this.state.results}
+                              numColumns={1}
+                              keyExtractor = { (item, index) => index.toString() }
+                              renderItem={this._renderItems}
+                    />
