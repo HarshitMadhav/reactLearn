@@ -24,3 +24,7 @@ myCallbackFunctions = (res) => {
         }
 
     }
+////////////////////  or do this for multiple arrays merging
+        const interest = [...responseJson.asis, ...responseJson.royal_touch, ...responseJson.green_lamp, ...responseJson.century];
+        this.setState({ about: interest})
+        
