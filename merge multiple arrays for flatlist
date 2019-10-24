@@ -64,3 +64,10 @@ body: JSON.stringify({
  }
 
 
+//////////////////// or do something like this
+
+      if (responseJson.status == true){
+        alert(JSON.stringify(responseJson))
+        const interest = [...responseJson.asis, ...responseJson.royal_touch, ...responseJson.green_lamp, ...responseJson.century];
+        this.setState({ about: interest})
+      }
