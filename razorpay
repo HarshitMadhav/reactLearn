@@ -1,0 +1,37 @@
+    rajorPay = (ss) =>{
+
+        var b = parseInt(this.state.finalPrice) * 100
+
+        var options = {
+            description: ss,
+            image: {uri :require('./loginlogo.png')},
+            currency: 'INR',
+            key: 'rzp_test_CDbzQjcE3QD5L3',
+            amount:b,
+
+            name: GLOBAL.myname,
+            prefill: {
+                email: GLOBAL.myemail,
+                contact: GLOBAL.mymobile,
+                name: GLOBAL.myname
+            },
+            theme: {color: '#F37254'}
+        }
+
+        RazorpayCheckout.open(options).then((data) => {
+            var a = data.razorpay_payment_id
+            this.capture(a,b);
+
+
+
+        }).catch((error) => {
+            // handle failure
+           // this.myPayments(s,error.description,'')
+
+        });
+        RazorpayCheckout.onExternalWalletSelection(data => {
+
+
+
+        });
+    }
