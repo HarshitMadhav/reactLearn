@@ -282,7 +282,7 @@ longitudeDelta: 0,
 
                     {this.state.marker.map(marker => (
 
-                        <Marker coordinate={this.state.initialRegion}
+                        <Marker coordinate={this.state.initialPosition}
                         title={'Hi User!'}
                         description={'You are here!'}
                         />
