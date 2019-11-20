@@ -1,0 +1,30 @@
+Use .map to transform one array into another, and destructure the arguments for the least syntax noise:
+
+const countries = [
+    {"id": 1, "name": "Afghanistan"},
+    {"id": 2, "name": "Albania"},
+    {"id": 3, "name": "Algeria"},
+    {"id": 4, "name": "American Samoa"}
+];
+const transformed = countries.map(({ id, name }) => ({ label: id, value: name }));
+console.log(transformed);
+
+//another way
+You could also transform to the new property names in the arguments themselves, if you wanted:
+
+const countries = [
+    {"id": 1, "name": "Afghanistan"},
+    {"id": 2, "name": "Albania"},
+    {"id": 3, "name": "Algeria"},
+    {"id": 4, "name": "American Samoa"}
+];
+const transformed = countries.map(({ id: label, name: value }) => ({ label, value }));
+console.log(transformed);
+
+
+
+// example i did this
+                        var rece = responseJson.list
+                        const transformed = rece.map(({ id, state_name }) => ({ label: state_name, value: id }));
+                        console.log(transformed)
+                        this.setState({resultstates:transformed})
