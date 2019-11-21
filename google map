@@ -26,7 +26,25 @@ Add your API key to your manifest file (android/app/src/main/AndroidManifest.xml
      android:name="com.google.android.geo.API_KEY"
      android:value="Your Google maps API Key Here"/>
 </application>
+/////////////////// if you get navigator.geolocation error  , do this   ////////////////
+import Geolocation from '@react-native-community/geolocation';
 
+Geolocation.getCurrentPosition((position) => {
+      var lat = parseFloat(position.coords.latitude)
+      var long = parseFloat(position.coords.longitude)
+
+      var initialRegion = {
+        latitude: lat,
+        longitude: long,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA,
+      }
+
+      this.setState({initialPosition: initialRegion})
+
+    },
+    (error) => alert(JSON.stringify(error)),
+    {enableHighAccuracy: false, timeout: 20000,});
 
 //////////////////////// full code ///////////////////////
 
