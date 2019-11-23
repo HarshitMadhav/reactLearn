@@ -12,5 +12,11 @@ All linked libraries are listed in pod, if not listed in pod then it means it is
 Right click on Libraries -> Add Files -> select node modules -> library to be linked -> go to library ios folder -> 
 select xcodeproject folder
 
+///////////In info.plist we add permissions by clicking plus icon, input reason of permission also
+
+// UPload to appstore
+// Go to product -> click on Archive then Window -> Organiser -> select build you want to upload of specific project -> Distribute app
+Or click on Validate app to get the IPA file
+
 
 
