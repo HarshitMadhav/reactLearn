@@ -5,6 +5,7 @@ XCode install -> Browser or Appstore
 Go to project iOS folder -> select xcodeproject.workspace it will open itself in Xcode.
 To run click on Play button
 All libraries containing .h .m are written in objective C.
+run react-native link to link libraries to be listed in pod.
 All linked libraries are listed in pod, if not listed in pod then it means it is not linked.
 
 ////////////  Adding Libraries manual linking
