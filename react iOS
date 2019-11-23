@@ -1,0 +1,15 @@
+Click GO -> Applications ->Xcode and Android Studio
+XCode install -> Browser or Appstore
+
+////////////  Running iOS project
+Go to project iOS folder -> select xcodeproject.workspace it will open itself in Xcode.
+To run click on Play button
+All libraries containing .h .m are written in objective C.
+All linked libraries are listed in pod, if not listed in pod then it means it is not linked.
+
+////////////  Adding Libraries manual linking
+Right click on Libraries -> Add Files -> select node modules -> library to be linked -> go to library ios folder -> 
+select xcodeproject folder
+
+
+
