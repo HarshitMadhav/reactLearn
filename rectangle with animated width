@@ -1,0 +1,46 @@
+Refer link https://stackoverflow.com/questions/54743247/how-to-make-rectangle-with-animated-width-react-native
+
+import * as React from 'react';
+import { Text, View, Animated } from 'react-native';
+import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+
+export default class App extends React.Component {
+
+  state = {
+    widthAnim: new Animated.Value(0)
+  }
+
+  maxWidthAnimate = () => {
+    Animated.timing(this.state.widthAnim , {
+      toValue: 1,
+      duration: 2000
+    });
+  }
+
+  minWidthAnimate = () => {
+    Animated.timing(this.state.widthAnim , {
+      toValue: 0,
+      duration: 2000
+    });
+  }
+
+  render() {
+    const width = this.state.widthAnim.interpolate(
+      {
+        inputRange: [0, 0.5, 1],
+        outputRange: [50, 200, 50]
+      }
+    );
+    return (
+      <View>
+        <GestureRecognizer
+          onSwipeLeft={this.minWidthAnimate}
+          onSwipeRight={this.maxWidthAnimate}
+        >
+            <Animated.View style={{width: width, height: 100, backgroundColor: "blue", borderBottomRightRadius: 100, borderTopRightRadius: 100}}>
+            </Animated.View>
+        </GestureRecognizer>
+      </View>
+    );
+  }
+}
