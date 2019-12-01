@@ -8,7 +8,27 @@ git [--version] [--help] [-C <path>] [-c <name>=<value>]
     [--git-dir=<path>] [--work-tree=<path>] [--namespace=<name>]
     [--super-prefix=<path>]
     <command> [<args>]
-    
+
+# practice what I did.
+
+git clone <url>
+git status
+git add .
+git commit -m "inital commit"
+git push
+git checkout -b testbranch
+git status
+git add .
+git push --set-upstream origin testbranch
+git status
+git checkout master
+git pull
+git branch
+git checkout testbranch
+git branch
+git checkout master
+git branch
+
 # Terminal Cheat Sheet
 
 pwd         # print working directory
