@@ -1,0 +1,7 @@
+Without Rotation---
+                  <Image style = {{width :20 ,height :20,resizeMode:'contain',}}
+                           source={require('./add.png')}/>
+With Rotation---
+                    <Image style = {{width :20 ,height :20,resizeMode:'contain', transform:[{skewY:'8deg'},{skewX:'-2deg'},{rotate:'45deg'}],}}
+                           source={require('./add.png')}/>
+
