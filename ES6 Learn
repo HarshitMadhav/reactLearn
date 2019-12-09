@@ -1,0 +1,739 @@
+// ECMAScript (ES) is a scripting language specification standardized by ECMAScript
+// International. It is used by applications to enable client-side scripting. The specification is
+// influenced by programming languages like Self, Perl, Python, Java etc. Languages like
+// JavaScript, Jscript and ActionScript are governed by this specification.
+// This tutorial introduces you to ES6 implementation in JavaScript.
+// JavaScript
+// JavaScript was developed by ***Brendan Eich***, a developer at Netscape Communications
+// Corporation, in 1995.JavaScript started life with the name Mocha, and was briefly named
+// LiveScript before being officially renamed to JavaScript. It is a scripting language that is
+// executed by the browser, i.e. on the client’s end. It is used in conjunction with HTML to
+// develop responsive webpages.
+// ECMA Script6’s implementation discussed here covers the following new features:
+//  Support for constants
+//  Block Scope
+//  Arrow Functions
+//  Extended Parameter Handling
+//  Template Literals
+//  Extended Literals
+//  Enhanced Object Properties
+//  De-structuring Assignment
+//  Modules
+//  Classes
+//  Iterators
+//  Generators
+//  Collections
+//  New built in methods for various classes
+//  Promises
+
+var message= 'hi'+2+5
+console.log(message)
+var message= 'hi'+(2+5)
+console.log(message)
+var message= 2+5
+console.log(message)
+var message= 'hi'+2+5+'love!'
+console.log(message)
+let messagea= 'let usage'+(2+5)
+console.log(messagea)
+messa= 2+5 // when using strict mode "use strict"; it will throw error messa not declared
+console.log(messa)
+
+console.log('hi!!!!')
+
+var under = 25; let unders= 10
+myfunction=()=>{
+	let howw =20
+	mymyfunction=()=>{
+	let howw =10
+	console.log('++shout again++' + howw)		
+	}
+	mymyfunction()
+	console.log('___shout!___'+ under + unders + '_____Addition____' + (under+unders))
+}
+
+var array=[15,30]
+console.log('__array_length==>'+ array.length)
+for(var i = 0 ; i <= array.length; i++){
+	console.log('___for loop__'+under)
+}
+var funarray =[{'hi':'joker!','ask': 'what to do?'},{'formal':'what you wearing?','greet':'welome aboard!'}]
+console.log(funarray)
+console.log(JSON.stringify(funarray[0]) + JSON.stringify(funarray[1]))
+console.log('----------------------------')
+console.log(JSON.stringify(funarray[0].hi) + JSON.stringify(funarray[1].formal))
+console.log('----------------------------')
+console.log(JSON.stringify(funarray[0].hi.concat(funarray[1].formal)))
+console.log('----------------------------')
+console.log(JSON.stringify(funarray[0].hi.concat(array[1])))
+console.log('----------------------------')
+myfunction()
+
+function byyourside(){
+	console.log('----------------------------')
+	console.log('byyourside with new line \n\ncalled!!!!')
+	console.log('----------------------------')
+}
+byyourside()
+
+
+function block_scope_method()
+{
+ var num=100
+ const haha = 5 +num
+ console.log("value of num in block_scope_method() "+num + ' const haha ' + haha)
+ {
+ console.log("Inner Block begins")
+ let num=200
+ console.log("value of num : "+num)
+ }
+}
+
+block_scope_method()
+
+
+var main = function()
+ {
+ for(var x=0;x<5;x++)
+{
+ console.log(x);
+}
+ console.log("x can be accessed outside the block scope x value is :"+x);
+console.log('x is hoisted to the function scope');
+ }
+ main();
+
+
+class Car{
+	constructor(brand){
+		this.carname = brand;
+	}
+	present(){
+		return 'I have a ' + this.carname;
+	}
+}
+
+mycar = new Car('Mustang')
+
+console.log(mycar)
+
+console.log('----------------- Conditional operator ? -----------')
+
+var numb= 20
+var result = ''
+result = numb > 0 ? 'positive' : 'negative'
+console.log(result)
+
+
+var exp = 'Hello! JavaScript'
+var finals = exp =='Hello! JavaScript' ? 'Same' : 'Not Same'
+console.log(finals)
+
+
+var num = 1
+var samp = num==false ? 'true':'false'
+console.log(samp)
+
+//diff b/w '==' and '==='
+
+var num = 1
+var samp = num===false ? 'true':'false'
+console.log(samp)
+
+//
+
+var num = 0
+var samp = num==false ? 'true':'false'
+console.log(samp)
+
+//
+
+var num = 0
+var samp = num===false ? 'true':'false'
+console.log(samp)
+
+var num=12
+console.log(typeof num); //output: number // typeof num returns "number"
+										  // typeof string returns "string"
+										  // typeof boolean returns "boolean"
+										  // typeof object returns "object"
+
+var obj = {'a':'1', 'b':'2', 'c': '3'}
+for(var prop in obj){
+	console.log(obj[prop])
+}
+
+function tripledots(...params){
+	console.log("Rest parameters length"+params.length);
+}
+
+// Rest parameters are similar to variable arguments in Java. Rest parameters doesn’t
+// restrict the number of values that you can pass to a function. However, the values passed
+// must all be of the same type. In other words, rest parameters act as placeholders for
+// multiple arguments of the same type.
+// To declare a rest parameter, the parameter name is prefixed with three periods, known
+// as the spread operator.
+
+tripledots()
+tripledots(5,6,7)
+
+
+// AnonymousFunction
+// Functions that are not bound to an identifier (function name) are called as anonymous
+// functions. These functions are dynamically declared at runtime. Anonymous functions can
+// accept inputs and return outputs, just as standard functions do. An anonymous function
+// is usually not accessible after its initial creation.
+// Variables can be assigned an anonymous function. Such an expression is called a function
+// expression.
+// Following is the syntax for anonymous function.
+// var res=function( [arguments] ) { ... }
+
+
+var anonymous_func = function(x,y){ return x*y };
+function product()
+{
+var result;
+result = anonymous_func(10,20);
+console.log("The product : "+result)
+}
+product()
+
+//Lambda functions
+
+// Lambda refers to anonymous functions in programming. Lambda functions are a concise
+// mechanism to represent anonymous functions. These functions are also called as Arrow
+// functions.
+// Lambda Function - Anatomy
+// There are 3 parts to a Lambda function:
+//  Parameters: A function may optionally have parameters.
+//  The fat arrow notation/lambda notation (=>): It is also called as the goes to
+// operator.
+//  Statements: Represents the function’s instruction set
+// Tip: By convention, the use of a single letter parameter is encouraged for a compact and
+// precise function declaration.
+// Lambda Expression
+// It is an anonymous function expression that points to a single line of code. Following is
+// the syntax for the same.
+// ( [param1, parma2,…param n] )=>statement;
+
+var lambda_expression_function=(x)=>10+x
+console.log(lambda_expression_function(10))
+
+function_hoisting()
+function function_hoisting(){
+	console.log('Function hoisting Example') // function declarations can be hoisted while function expressions cannot be hoisted
+}
+
+// * are used to represent generators
+// Generators enable two-way communication between the caller and the called function.
+// This is accomplished by using the yield keyword. 
+// Note: Generator functions cannot be represented using arrow functions.
+function* ask() {
+const name = yield "What is your name?";
+const sport = yield "What is your favorite sport?";
+return `${name}'s favorite sport is ${sport}`;
+}
+const it = ask();
+console.log(it.next());
+console.log(it.next('Ethan'));
+console.log(it.next('Cricket'));
+
+//ES6 - OBJECTS
+// JavaScript supports extending data types. JavaScript objects are a great way to define
+// custom data types.
+// An object is an instance which contains a set of key value pairs. 
+
+var person={
+firstname:"Tom",
+lastname:"Hanks",
+func:function(){return "Hello!!"},
+};
+//access the object values
+console.log("OBJECTS in ES6 ---"+person.firstname)
+console.log(person.func())
+
+var foo='Madhav'
+var foot = {foo}
+console.log(foot.foo)
+console.log(foot.fors)
+
+// TheObject() Constructor
+// JavaScript provides a special constructor function called Object() to build the object. The
+// new operator is used to create an instance of an object.
+var mycar = new Object()
+mycar.owner= 'Harshit'
+mycar.model = 'Ford'
+
+console.log(mycar.owner + ' owns '+mycar.model)
+console.log('we get undefined when we try to access undefined object '+ mycar.models)
+
+var myCar= new Object()
+var propertyName = "make";
+myCar[propertyName] = "Ford";
+console.log(myCar.make)
+
+function Cargo() // Using a Function Constructor
+{
+ this.make="Ford"
+ this.model="F123"
+}
+var obj=new Cargo()
+console.log(obj.make)
+console.log(obj.model)
+
+var myCarm = new Object();
+myCarm.make = "Ford"; //define an object
+myCarm.year = 1987;
+console.log(myCarm["make"]) //access the object property
+console.log(myCarm["year"])
+
+// TheObject.createMethod
+// Objects can also be created using the Object.create() method. It allows you to create
+// the prototype for the object you want, without having to define a constructor function.
+var roles = {
+ type: "Admin", // Default value of properties
+ displayType : function() { // Method which will display type of role
+ console.log(this.type);
+ }
+}
+// Create new role type called super_role
+var super_role = Object.create(roles);
+super_role.displayType(); // Output:Admin
+// Create new role type called Guest
+var guest_role = Object.create(roles);
+guest_role.type = "Guest";
+guest_role.displayType(); // Output:Guest
+
+
+// The Object.assign() method is used to copy the values of all enumerable own properties
+// from one or more source objects to a target object. It will return the target object.
+
+// Syntax: : Object.assign(target, ...sources)
+
+
+var det = { name:"Tom", ID:"E1001" };
+var copy = Object.assign({}, det);
+console.log(copy)
+for(let val in copy){
+	console.log(copy[val])
+}
+
+//Merging Objects
+var o1 = { a: 10 };
+var o2 = { b: 20 };
+var o3 = { c: 30 };
+var obj = Object.assign(o1, o2, o3);
+console.log(obj);
+console.log(o1); 	//Note: Unlike copying objects, when objects are merged, the larger object doesn’t maintain
+					//a new copy of the properties. Rather it holds the reference to the properties contained in
+					//the original objects.
+// Deleting Properties
+// You can remove a property by using the delete operator. The following code shows how
+// to remove a property.
+
+// Creates a new object, myobj, with two properties, a and b.
+var myobj = new Object;
+myobj.a = 5;
+myobj.b = 12;
+// Removes the ‘a’ property
+delete myobj.a;
+console.log ("a" in myobj) // yields "false"
+
+//ComparingObjects
+// In JavaScript, objects are a reference type. Two distinct objects are never equal, even if
+// they have the same properties. This is because, they point to a completely different
+// memory address. Only those objects that share a common reference yields true on
+// comparison.
+// Example 1: Different Object References
+var val1 = {name: "Tom"};
+var val2 = {name: "Tom"};
+console.log(val1 == val2) // return false
+console.log(val1 === val2) // return false
+
+// In the above example, val1 and val2 are two distinct objects that refer to two different
+// memory addresses. Hence on comparison for equality, the operator will return false.
+//Example 2: Single Object Reference
+var val1 = {name: "Tom"};
+var val2 = val1
+console.log(val1 == val2) // return true
+console.log(val1 === val2) // return true
+// In the above example, the contents in val1 are assigned to val2, i.e. the reference of the
+// properties in val1 are shared with val2. Since, the objects now share the reference to the
+// property, the equality operator will return true for two distinct objects that refer to two
+// different memory addresses. Hence on comparison for equality, the operator will return
+// false.
+
+// Object De-structuring
+// The term destructuring refers to breaking up the structure of an entity. The destructuring
+// assignment syntax in JavaScript makes it possible to extract data from arrays or objects
+// into distinct variables.
+var emp = { name: 'John', Id: 3 }
+var {name, Id} = emp
+console.log(name)
+console.log(Id)
+
+//Number
+//Following is the syntax for creating a number object.
+var numm = new Number('madhav');
+console.log(numm)
+// In the place of number, if you provide any non-number argument, then the argument
+// cannot be converted into a number, it returns NaN (Not-a-Number). 
+var numm = new Number(17/9);
+console.log(numm)
+console.log(Number.isNaN(0/0))
+console.log(Number.isFinite(Infinity))
+console.log(Number.parseInt(10.23)); /*or*/ console.log(Number.parseInt("10.23"));
+
+// Number Methods
+// Number.isNaN() Determines whether the passed value is NaN
+// Number.isFinite() Determines whether the passed value is a finite number
+// Number.isInteger() Determines whether the passed value is an integer
+// Number.isSafeInteger() Determines whether the passed value is a safe integer (number between -(253 - 1) and 253- 1)
+// Number.parseFloat() The value is the same as parseFloat() of the global object
+// Number.parseInt() The value is the same as parseInt() of the global object
+
+// Number InstancesMethods
+// The Number object contains only the default methods that are a part of every object's definition.
+// toExponential() Returns a string representing the number in exponential notation
+// toFixed() Returns a string representing the number in fixed-point notation
+// toLocaleString() Returns a string with a language sensitive representation of this number
+// toPrecision() Returns a string representing the number to a specified precision in fixed-point or exponential notation
+// toString() Returns a string representing the specified object in the specified  ***radix (base)
+//  radix − An integer between 2 and 36 specifying the base to use for representing numeric values.
+
+// valueOf() Returns the primitive value of the specified object
+var num3=177.234
+console.log("num3.toFixed() is "+num3.toFixed())
+console.log("num3.toFixed(2) is "+num3.toFixed(2))
+console.log("num3.toFixed(6) is "+num3.toFixed(6))
+var num = new Number(177.1234);
+console.log( num.toLocaleString());
+
+var num = new Number(7.123456);
+console.log(num.toPrecision());
+console.log(num.toPrecision(1));
+console.log(num.toPrecision(2));
+
+
+var num = new Number(10);
+console.log(num.toString());
+console.log(num.toString(2)); // 10 to base 2
+console.log(num.toString(8)); // 10 to base 8
+
+// Binary and Octal Literals
+// Before ES6, your best bet when it comes to binary or octal representation of integers was
+// to just pass them to parseInt() with the radix. In ES6, you could use the --0b-- and --0o-- prefix
+// to represent binary and octal integer literals respectively. Similarly, to represent a
+// hexadecimal value, use the --0x-- prefix.
+// The prefix can be written in upper or lower case. However, it is suggested to stick to the
+// lowercase version.
+console.log('Binary representation  '+0b001) //Binary representation
+console.log('Binary representation  '+0b010)
+console.log('Octal Representation   '+0o010) //Octal Representation
+console.log('Octal Representation   '+0o100)
+console.log('Hexadecimal Representation   '+0x010) //Hexadecimal Representation
+console.log('Hexadecimal Representation   '+0x100)
+
+
+
+var bool = new Boolean(1);
+console.log(bool)
+console.log(bool.toString()) //Returns a string of either "true" or "false" depending upon the value
+//of the object.
+console.log(bool.valueOf()) //Returns the primitive value of the Boolean object.
+
+//Strings
+
+var myname = "Harshit"
+var sname = 'Madhav'
+console.log('Length of the string '+myname.length)
+console.log(myname.toUpperCase())
+console.log(myname.charAt('3'))
+console.log(myname.concat(myname, sname))
+
+var re = /apples/gi;
+var str = "Apples are round, and apples are juicy.";
+var newstr = str.replace(re, "oranges");
+console.log(newstr)
+
+if ( str.search(re) == -1 )
+{
+ console.log("Does not contain Apples" );
+}
+
+else
+{
+ console.log("Contains Apples" );
+}
+var sliced = str.slice(3, -2); //string.slice( beginslice [, endSlice] );
+console.log(sliced);
+
+var splitted = str.split(" ", 3); //string.split([separator][, limit]);
+console.log(splitted)
+
+console.log("(1,2): " + str.substr(1,2)); //string.substr(start[, length]);
+// start − Location at which to start extracting characters (an integer between 0 and one less than the length of the string).
+// length − The number of characters to extract.
+console.log("(-2,2): " + str.substr(-2,2)); //If start is negative, then substr uses it as a character index from the end of the string.
+console.log("(1): " + str.substr(1));
+console.log("(-20, 2): " + str.substr(-20,2));
+console.log("(20, 2): " + str.substr(20,2));
+
+//The substring method returns the new sub-string based on given parameters.
+// indexA − An integer between 0 and one less than the length of the string.
+// indexB − (optional) An integer between 0 and the length of the string.
+console.log("(1,2): " + str.substring(1,2)); //string.substring(indexA, [indexB])
+console.log("(0,10): " + str.substring(0, 10));
+console.log("(5): " + str.substring(5));
+
+
+console.log(str.startsWith('Apples')); //str.startsWith(searchString[, position])
+// searchString: The characters to be searched for at the start of this string.
+// Position: The position in this string at which to begin searching for searchString defaults to 0
+// RETURN VALUE : true if the string begins with the characters of the search string; otherwise, false.
+console.log(str.endsWith('juicy.')); //str.endsWith(matchstring[, position])
+// matchstring: The characters that the string must end with. It is case sensitive.
+// Position: The position to match the matchstring. This parameter is optional.
+// RETURN VALUE : true if the string ends with the characters of the match string; otherwise, false.
+
+console.log(str.includes('les')) //str.includes(searchString[, position])
+// searchString : The substring to search for.
+// Position: The position in this string at which to begin searching for searchString;defaults to 0
+// RETURN VALUE : true if the string contains the substring ; otherwise, false.
+
+console.log(str.repeat(2));
+
+
+//String.raw enables us to write the backslash
+var text =`Hello \n World`
+console.log(text)
+var raw_text=String.raw`Hello \n World `
+console.log(raw_text)
+
+
+// charAt() Returns the character at the specified index
+// charCodeAt() Returns a number indicating the Unicode value of the character at the given index
+// concat() Combines the text of two strings and returns a new string
+// indexOf() Returns the index within the calling String object of the first occurrence of the specified value, or -1 if not found
+// lastIndexOf() Returns the index within the calling String object of the last occurrence of the specified value, or -1 if not found
+// localeCompare() Returns a number indicating whether a reference string comes before or after or is the same as the given string in a sorted order
+// match() Used to match a regular expression against a string
+// replace() Used to find a match between a regular expression and a string, and to replace the matched substring with a new substring
+// search() Executes the search for a match between a regular expression and a specified string
+// slice() Extracts a section of a string and returns a new string
+// split() Splits a String object into an array of strings by separating the string into substrings
+// substr() Returns the characters in a string beginning at the specified location through the specified number of characters
+// substring() Returns the characters in a string between two indexes into the string
+// toLocaleLowerCase() The characters within a string are converted to lower case while respecting the current locale
+// toLocaleUpperCase() The characters within a string are converted to uppercase while respecting the current locale
+// toLowerCase() Returns the calling string value converted to lowercase
+// toString() Returns a string representing the specified object
+// toUpperCase() Returns the calling string value converted to uppercase
+// valueOf() Returns the primitive value of the specified object
+// String.prototype.startsWith(searchString,position=0) Returns true if the receiver starts with searchString; the position lets you specify where the string to be checked starts
+// String.prototype.endsWith(searchString,endPosition=searchString.length) Returns true if the receiver ends with searchString; endPosition lets you specify where the string to be checked ends
+// String.prototype.includes(searchString,position=0) Returns true if the receiver contains searchString; position lets you specify where the string to be searched starts
+// String.prototype.repeat(count) Returns the receiver,concatenated count times
+
+// ES6 Arrays
+// An array is a homogenous collection of values. To simplify, an array is a collection of values
+// of the same data type. 
+// var array_name; //declaration
+// array_name=[val1,val2,valn..] //initialization
+// OR
+// var array_name=[val1,val2…valn]
+// Note: The pair of [] is called the dimension of the array.
+var arr_names=new Array(4) // -->Array Object. The array constructor can be passed as->
+//  A numeric value that represents the size of the array or
+//  A list of comma separated values 
+for(var i=0;i<arr_names.length;i++)
+{
+ arr_names[i]=i * 2
+ console.log(arr_names[i])
+}
+//Array Constructor Accepts Comma-separated Values
+var names=new Array("Mary","Tom","Jack","Jill")
+for(var i=0;i<names.length;i++)
+{
+ console.log(names[i])
+}
+
+names.push('Madhav')
+
+console.log(names)
+
+names.pop()
+console.log(names)
+
+
+var numbers = new Array(1, 4, 9);
+var length = numbers.push(10);
+console.log("new numbers is : " + numbers );
+length = numbers.push(20);
+console.log("new numbers is : " + numbers );
+
+// map() method creates a new array with the results of calling a provided function on every element in this array.
+// Syntax- array.map(callback[, thisObject]);
+//  callback − Function that produces an element of the new Array from an element of the current one.
+//  thisObject − Object to use as this when executing callback.
+// Return Value -> Returns the created array.
+var numbers = [1, 4, 9];
+var roots = numbers.map(Math.sqrt);
+console.log("roots is : " + roots );
+
+//slice() method extracts a section of an array and returns a new array.
+//Syntax -> array.slice( begin [,end] );
+//  begin − Zero-based index at which to begin extraction. As a negative index, start indicates an offset from the end of the sequence.
+//  end − Zero-based index at which to end extraction.
+// Return Value - Returns the extracted array based on the passed parameters.
+var arr = ["orange", "mango", "banana", "sugar", "tea"];
+console.log("arr.slice( 1, 2) : " + arr.slice( 1, 2) ); 
+console.log("arr.slice( 1, 3) : " + arr.slice( 1, 3) );
+
+//splice() method changes the content of an array, adding new elements while removing old elements.
+// Syntax-> array.splice(index, howMany, [element1][, ..., elementN]);
+//  index − Index at which to start changing the array.
+//  howMany − An integer indicating the number of old array elements to remove. If howMany is 0, no elements are removed.
+//  element1, ..., elementN − The elements to add to the array. If you don't 
+// Return value -> Returns the extracted array based on the passed parameters.
+var arr = ["orange", "mango", "banana", "sugar", "tea"];
+var removed = arr.splice(2, 0, "water");
+console.log("After adding 1: " + arr );
+console.log("removed is: " + removed);
+
+removed = arr.splice(3, 1);
+console.log("After adding 1: " + arr );
+console.log("removed is: " + removed);
+
+//Declaring a Two-dimensional Array
+//var arr_name=[ [val1,val2,val3],[v1,v2,v3] ]
+//Accessing a Two-dimensional Array Element
+//var arr_name[initial_array_index][referenced_array_index]
+var multi=[[1,2,3],[23,24,25]] // it is like a 2d matrix
+console.log(multi[0][0])
+console.log(multi[0][1])
+console.log(multi[0][2])
+console.log(multi[1][0])
+console.log(multi[1][1])
+console.log(multi[1][2])
+
+//Array De-structuring
+//JavaScript supports de-structuring in the context of an array. 
+var arr=[12,13]
+var[x,y]=arr
+console.log('destructured element '+ x)
+console.log('destructured element '+ y)
+
+// Array Methods
+// Following is the list of the methods of the Array object along with their description.
+// concat() Returns a new array comprised of this array joined with other array(s) and/or value(s)
+// every() Returns true if every element in this array satisfies the provided testing function
+// filter() Creates a new array with all of the elements of this array for which the provided filtering function returns true
+// forEach() Calls a function for each element in the array
+// indexOf() Returns the first (least) index of an element within the array equal to the specified value, or -1 if none is found
+// join() Joins all elements of an array into a string
+// lastIndexOf() Returns the last (greatest) index of an element within the array equal to the specified value, or -1 if none is found
+// map() Creates a new array with the results of calling a provided function on every element in this array
+// pop() Removes the last element from an array and returns that element
+// push() Adds one or more elements to the end of an array and returns the new length of the array
+// reduce() Applies a function simultaneously against two values of the array (from left-to-right) as to reduce it to a single value
+// reduceRight() Applies a function simultaneously against two values of the array (from right-to-left) as to reduce it to a single value
+// reverse() Reverses the order of the elements of an array -- the first becomes the last, and the last becomes the first
+// shift() Removes the first element from an array and returns that element
+// slice() Extracts a section of an array and returns a new array
+// some() Returns true if at least one element in this array satisfies the provided testing function
+// toSource() Represents the source code of an object
+// sort() Sorts the elements of an array
+// splice() Adds and/or removes elements from an array
+// toString() Returns a string representing the array and its elements
+// unshift() Adds one or more elements to the front of an array and returns the new length of the array
+
+
+//Date
+var now = new Date()
+console.log('--------------'+now+'--'+now.getTime()+'--'+now.getMilliseconds()) //more methods like getMinutes(),getMonth(),setUTCMinutes(), etc
+//Javascript date setDate() method sets the day of the month for a specified date according to local time.
+// Date.setDate( dayValue )
+// Parameter-  dayValue − An integer from 1 to 31, representing the day of the month
+var dt = new Date( "Aug 28, 2008 23:30:00" );
+dt.setDate( 24 );
+console.log( dt )
+
+
+//ES6 - Math
+
+
+
+// JavaScript is Case-sensitive
+// JavaScript is case-sensitive. This means that JavaScript differentiates between the uppercase
+// and the lowercase characters.
+// Semicolons are Optional
+// Each line of instruction is called a statement. Semicolons are optional in JavaScript.
+// A single line can contain multiple statements. However, these statements must be separated by a semicolon. 
+
+// ES6 and Hoisting
+// The JavaScript engine, by default, moves declarations to the top. This feature is termed as
+// hoisting. This feature applies to variables and functions. Hoisting allows JavaScript to use a
+// component before it has been declared. However, the concept of hoisting does not apply to
+// scripts that are run in the Strict Mode.
+
+//Variables
+// A variable, by definition, is “a named space in the memory” that stores values. In other
+// words, it acts as a container for values in a program. Variable names are called identifiers.
+// Following are the naming rules for an identifier:
+//  Identifiers cannot be keywords.
+//  Identifiers can contain alphabets and numbers.
+//  Identifiers cannot contain spaces and special characters, except the underscore (_)
+// and the dollar ($) sign.
+//  Variable names cannot begin with a number.
+
+// JavaScript is an un-typed language. This means that a JavaScript variable can hold a value
+// of any data type. Unlike many other languages, you don't have to tell JavaScript during
+// variable declaration what type of value the variable will hold. The value type of a variable can
+// change during the execution of a program and JavaScript takes care of it automatically. This
+// feature is termed as dynamic typing.
+
+
+//  let v/s var
+// var no =10;
+// var no =20;
+// console.log(no);
+// The following output is displayed on successful execution of the above code.
+// 20
+// Let us re-write the same code using the let keyword.
+// let no =10;
+// let no =20;
+// console.log(no);
+// The above code will throw an error: Identifier 'no' has already been declared. Any variable
+// declared using the let keyword is assigned the block scope. 
+
+
+//Consider the following expression- 2 + 3. Here in the expression, 2 and 3 are operands and
+//the symbol + (plus) is the operator.
+//  JavaScript supports the following types of operators:
+//  Arithmetic operators
+//  Logical operators
+//  Relational operators
+//  Bitwise operators
+//  Assignment operators
+//  Ternary/conditional operators
+//  String operators
+//  Type operators
+//  The void operator
+
+
+// Conditional Operator (?)
+// This operator is used to represent a conditional expression. The conditional operator is also
+// sometimes referred to as the ternary operator. Following is the syntax.
+// Test ? expr1 : expr2
+// Where,
+// Test: Refers to the conditional expression
+// expr1: Value returned if the condition is true
+// expr2: Value returned if the condition is false
+// Example
+// var num=-2
+// var result= num > 0 ?"positive":"non-positive"
+// console.log(result)
+// 32
+// Line 2 checks whether the value in the variable num is greater than zero. If num is set to a
+// value greater than zero, it returns the string “positive” else a “non-positive” string is returned.
