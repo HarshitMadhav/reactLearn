@@ -10,6 +10,7 @@ var myBanners=[{
 },
 ]
 
+take activeSlide:0 in state
 
   get pagination () {
           const { entries, activeSlide } = this.state;
