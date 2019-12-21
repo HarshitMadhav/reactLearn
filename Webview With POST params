@@ -1,0 +1,17 @@
+Refer here https://stackoverflow.com/questions/48630853/how-do-i-pass-post-parameters-in-react-native-webview
+
+<WebView
+    source={{uri: 'https://mypage.com/index.php', headers: '---', body: '---',method:'POST'}}
+    style={{marginTop: 20}}
+  />
+  
+<WebView
+  source={{uri: 'http://139.59.76.223/picasoid/cc_avenue/c_1/dataFromjson.php',
+  body:JSON.stringify({"description_syntax":total_data}),
+  method:'post'}}
+  
+  style={{margin: 10,width:'95%',height:'100%'}}
+  sharedCookiesEnabled={true}
+/>
+
+
