@@ -1,0 +1,70 @@
+// image ref https://i.stack.imgur.com/Zsi2Y.png
+// refer here https://stackoverflow.com/questions/54316555/add-one-last-element-to-the-end-of-flatlist
+
+Add one last element to the end of FlatList (FLATLIST with add more button at the last index of flatlist)
+
+            renderRowItemlab = (itemData) => {
+//            alert(JSON.stringify(itemData))
+            if (itemData.item.plusImage) {
+      return (
+        <TouchableOpacity onPress={()=> this.uploadDoc('labreport')}>
+            <View   style  = {{width:'100%',margin:13, height:'auto',shadowColor: "#000",alignItems:'center', backgroundColor:'white', justifyContent:'center'}}>
+          <Image style={{height: 60, width: 60, resizeMode:'contain', alignSelf:'center' ,}}
+            source={require("./add_more.png")} />
+                <Text style = {{fontSize:11,fontFamily:'Konnect-Medium',color:'black', marginTop:10, width:80, textAlign:'center'}}>
+                Add More
+                </Text>
+        </View>
+        </TouchableOpacity>
+      );
+    }
+
+            var fullPath = this.state.path_urlslab + itemData.item.image
+//            console.log(fullPath)
+        return (
+
+            <View   style  = {{width:'30%',margin:5, height:'auto',shadowColor: "#000",alignItems:'center', backgroundColor:'white', justifyContent:'center'}}>
+
+            {itemData.item.file_type=='pdf' && (
+            <View>
+            <TouchableOpacity style={{position:'absolute', right:5}} onPress={()=> this.deleteImage(itemData.item.id,GLOBAL.reportTypes)}>
+            <Image style={{width:20, height:20, resizeMode:'contain'}} source={require('./circle_cross.png')}/>
+            </TouchableOpacity>
+            <TouchableOpacity style={{margin:10}}onPress={()=> Linking.openURL(fullPath)}>
+                <Image style={{width:60, height:60, resizeMode:'contain', alignSelf:'center'}} source={require('./pdf_im.png')}/>
+
+                <Text style = {{fontSize:11,fontFamily:'Konnect-Medium',color:'black', marginTop:10, width:80}}>
+                    {itemData.item.image}
+
+                </Text>
+                </TouchableOpacity>
+                </View>
+                )}
+            {itemData.item.file_type!='pdf' && (
+
+            <TouchableOpacity style={{margin:10}}onPress={()=> this.openImage1(itemData, fullPath)}>
+                <Image style={{width:60, height:60, resizeMode:'contain', alignSelf:'center'}} source={{uri: fullPath}}/>
+
+                <Text style = {{fontSize:11,fontFamily:'Konnect-Medium',color:'black', marginTop:10, width:80}}>
+                    {itemData.item.image}
+
+                </Text>
+                </TouchableOpacity>
+
+                )}
+            </View>
+
+
+        )
+    }
+
+  <FlatList style = {{marginTop:5,}}
+        data={[...this.state.resultslab,{ plusImage: true } ]}
+        numColumns={3}
+        keyExtractor={this._keyExtractor}
+        renderItem={this.renderRowItemlab}
+        extraData={this.state}
+    />
+
+
+
