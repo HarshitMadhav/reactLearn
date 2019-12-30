@@ -1,0 +1,78 @@
+select a multiple items on the go and then deselect them by clicking on them once again.
+
+selectedProduct=(itemData, index)=>{
+//        alert(index)
+ let { categories } = this.state;
+   let targetPost = categories[index];
+
+   if (targetPost.is_checked == ""){
+     targetPost.is_checked = "Y";
+   }else{
+     targetPost.is_checked = "";
+   }
+   // Flip the 'liked' property of the targetPost
+
+
+    categories[index] = targetPost;
+
+   // Then update targetPost in 'posts'
+   // You probably don't need the following line.
+   // posts[index] = targetPost;
+
+   // Then reset the 'state.posts' property
+
+   this.setState({ categories: categories})
+
+
+    }
+
+    _renderItemproducts = (itemData, index) => {
+
+        var helloMessage = false;
+      if (itemData.item.is_checked == ""){
+     helloMessage = true;
+      }
+
+        return (
+            <TouchableOpacity onPress={() => this.selectedProduct(itemData,itemData.item.index)
+            }>
+            {helloMessage == true && (
+
+                <View   style  = {{width:80, height:50,backgroundColor:'red',borderLeftWidth:1, borderLeftColor:'#FF6443',
+                    borderTopWidth:1, borderTopColor:'#FF6443',borderBottomWidth:1, borderBottomColor:'#FF6443',
+                    borderRadius:0,flexDirection:'column',alignItems:'center', justifyContent:'center'
+                }}>
+                    <Text style = {{fontSize:15,fontFamily:'BreeSerif-Regular',color:'black',textAlign:'center',width:'95%'}}>
+                        {itemData.item.title}
+                    </Text>
+
+                </View>
+
+                )}
+
+            {helloMessage==false && (
+
+                <View   style  = {{width:80, height:50,backgroundColor:'white',borderLeftWidth:1, borderLeftColor:'#FF6443',
+                    borderTopWidth:1, borderTopColor:'#FF6443',borderBottomWidth:1, borderBottomColor:'#FF6443',
+                    borderRadius:0,flexDirection:'column',alignItems:'center', justifyContent:'center'
+                }}>
+                    <Text style = {{fontSize:15,fontFamily:'BreeSerif-Regular',color:'black',textAlign:'center',width:'95%'}}>
+                        {itemData.item.title}
+                    </Text>
+
+                </View>
+
+                )}
+            </TouchableOpacity>
+        )
+    }
+
+        <FlatList style= {{flexGrow:0,}}
+                              data={this.state.categories}
+                              horizontal={true}
+                              showsHorizontalScrollIndicator={false}                              
+                              keyExtractor = { (item, index) => index.toString() }
+                              renderItem={this._renderItemproducts}
+                              extraData={this.state}
+                    />
+            
