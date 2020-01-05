@@ -1,0 +1,77 @@
+refer here : https://medium.com/the-andela-way/build-and-publish-your-first-npm-package-a4daf0e2431
+
+Build and publish your first NPM package
+
+What is NPM
+NPM is a package manager for NodeJS. It was created in 2009 as an open source project to help javascript developers easily share code in form of packages. Since then thousands of packages have been published to the NPM registry where all the packages are hosted. This article will walk you through how you can create and publish your own NPM package.
+What are we building/publishing
+The focus of this article is not to build a bad-ass NPM package but instead to explain how to build and publish an NPM package. The build and publish cycle is nearly the same for any other package, once you understand how its done for something as simple as what we will be building in this article, you are good to go.
+In this article, we will be building a random number generator, very simple hun… That’s the idea.
+Building the package
+Requirements
+All you need to build(and then publish) an NPM package is the NPM command line tool which also goes by the name npm. npm is distributed with NodeJS, this means that when you install NodeJS, you automatically get npminstalled on your computer. Visit here to download NodeJS.
+To verify that npm was installed properly, you can run npm --version, it should output a version.
+The single and most important file
+After downloading npm, we can go ahead to start creating our package. Due to the simplistic nature of the package, most of the coding would be done in the command line interface(CLI). In the CLI do the following:
+
+# Create the project directory
+mkdir random-number-generator 
+# Change into the project directory
+cd random-number-generator     
+# Initialise an NPM package
+npm init
+The npm init command should reveal an interactive session in the CLI that looks like this:
+Package Name :
+version:
+npm init interactive session
+You will be required to answer some questions, these questions are basically about the NPM package you want to create. The command line tool auto-suggests reasonable answers to the questions, if you feel the suggested answer is good enough, just hit enter. If you also don’t have an answer to any of the question, hit enter and continue, you can always edit it later.
+After answering the questions, a package.json file will be created in the root of the project folder, the content will be similar to this:
+{
+  "name": "random-number-generator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
+Package.json is the single and most important file as far as creating/publishing an NPM package is concerned, without it, you won’t be able to publish whatever you create to the NPM registry.
+Note the main field in the package.json file, it refers to the name of the file that would be loaded when your package is required by another application, by default it points toindex.js
+Adding the project codes
+The project to be created is a very simple one, in fact, all the project code will be composed in a single file. Feel free to create something more complex.
+Create an index.js file in the root of the project folder then add the code for the random number generator:
+function randomNoGenerator(min, max) {
+  if(typeof(max) !== 'number' && typeof(min) !== 'number') {
+    min = 0;  max = 1;
+  }
+ return (Math.random() * (max-min)) + min;
+}
+module.exports = randomNoGenerator;
+Notice the module.exportsat the bottom of the file, whatever you are exporting here is what would be available for importing when others install the package.
+Publishing the package
+Authenticate
+You need to create an account in the NPM registry, you can do this here. If you are having any issues creating an account check the documentation here.
+After creating an account, go back to the command line and authenticate yourself with the command npm login, you would be prompted to provide your details, provide the required details and hit enter.
+To test that the login was successful, enter the command npm whoami, your username should be logged to the CLI.
+Publish
+Note that you may not be able to publish the random-number-package if someone else already has a package with the same name in the registry. You can simply change the name of the package to something unique to make it publishable. Check here for guides on naming a package.
+Publishing your NPM package is as simple as entering this command in the CLI:
+npm publish
+After the publish is done without any error, you can visit your account in the NPM registry to see the package.
+Testing
+To test the package, you simply need to install and use it. You can do the following to test the random-number-generator package:
+# Create a test directory
+mkdir random-number-test 
+  
+# Change into the directory
+cd random-number-test 
+# Install the package     
+npm install random-number-generator --save
+# Create a test file
+touch test.js
+Copy this simple test code and paste it in the test.jsfile.
+const randomNumberGenerator = require('random-number-generator');
+console.log(randomNumberGenerator(5, 10));
+Execute the code in the test.js file using node ./test.js, you should see a random number logged to the console.
