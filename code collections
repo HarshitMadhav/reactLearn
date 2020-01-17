@@ -1,0 +1,16 @@
+Collections of codes from variable sources
+*************************
+I used this solution to allow manual snapshot in app while disallowing screen capture when the app goes in background, hope it helps.
+
+@Override
+protected void onResume() {
+    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
+    super.onResume();
+}
+
+@Override
+protected void onPause() {
+    getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+    super.onPause();
+}
+****************************
