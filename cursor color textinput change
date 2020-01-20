@@ -1,0 +1,41 @@
+Refer here https://stackoverflow.com/questions/33094796/how-to-change-react-native-cursor-color
+
+    For Android I think the property is in styles.xml, try setting it there:
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">@color/kio_turquoise</item>
+        <item name="colorPrimaryDark">@color/kio_hot_pink</item>
+
+        <!-- sets cursor color -->
+        <item name="colorControlActivated">Your Color Hex code</item>
+     </style>
+
+    for iOS
+    
+    In AppDelegate.m of project.
+
+    Adding the below code between self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds]; and [self.window makeKeyAndVisible];, you can change the global tint color.
+
+    self.window.tintColor = [UIColor redColor]; // Here is your color.
+    Or, adding the below code after [self.window makeKeyAndVisible];, you can change the tint color of TextInput/UITextField.
+
+    [[UITextField appearance] setTintColor:[UIColor redColor]];
+
+
+
+    or Use prop
+    selectionColor={'#E60000'}
+
+
+
+      <View style = {{flexDirection:'row',marginTop:hp('4%'),width:wp('82%'),height:hp('7%'), borderColor:'white',borderRadius:30, borderWidth:2, elevation: this.state.elevations, backgroundColor:'white', marginLeft:wp('8%')}}>
+          <TextInput style = {{width:wp('100%'),color:'#909090', height:hp('7%'), fontSize:18, fontFamily:'Nunito-Regular', paddingLeft:wp(5)}}
+                     placeholder = {'Date of Birth'}
+                     placeholderTextColor = "#909090"
+                     autoCapitalize = "none"
+                     editable={true}
+                     selectionColor={'#E60000'}
+                     onChangeText={(text) => this.setState({dob:text})}
+                     value={this.state.dob}
+          />
+      </View>
