@@ -1,0 +1,19 @@
+refer here :https://stackoverflow.com/questions/51098599/flatlist-inside-scrollview-doesnt-scroll
+
+
+FlatList inside ScrollView doesn't scroll
+
+added to parent <ScrollViews prop nestedScrollEnabled={true} /> and to children <FlatList nestedScrollEnabled={true} />
+
+
+              <ScrollView style={styles.container}
+              nestedScrollEnabled={true}>
+
+                    <FlatList style={{flexGrow:0,}}
+                              data={this.state.newslist}
+                              nestedScrollEnabled={true}
+                              numColumns={1}
+                              horizontal={false}
+                              keyExtractor = { (item, index) => index.toString() }
+                              renderItem={this._renderItemNewsList}
+                    />
