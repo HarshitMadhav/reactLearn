@@ -1,0 +1,142 @@
+Select a single item in flatlist and display tick corresponding to the selected element.
+See the renderItem and selectedFirst()
+
+this.state = {
+ pdList: [
+  {
+    key: "1",
+    name: "Basic Astrology Classes",
+    image: require("./resources/pinkscreen.png"),
+    add2: "3 Months Subscription at ₹22000/-",
+    add3: "About Program",
+    is_selected: "0"
+  },
+  {
+    key: "2",
+    name: "Advance Astrology Classes",
+    image: require("./resources/bluescreen.png"),
+    add2: "1 Year Subscription at ₹65000/-",
+    add3: "About Program",
+    is_selected: "0"
+  }
+];
+}
+ 
+selectedFirst = (item, indexs) => {
+  //    alert(indexs)
+  var a = this.state.pdList;
+  for (var i = 0; i < this.state.pdList.length; i++) {
+    this.state.pdList[i].is_selected = "0";
+  }
+  var index = a[indexs];
+  if (index.is_selected == "0") {
+    index.is_selected = "1";
+    this.setState({ catid: item.id });
+  } else {
+    index.is_selected = "0";
+  }
+  this.state.pdList[indexs] = index;
+  this.setState({ pdList: this.state.pdList });
+
+  //    this.props.navigation.navigate('PanditDetails')
+};
+
+_renderItem = ({ item, index }) => {
+  return (
+    <TouchableOpacity
+      style={{
+        height: hp(28),
+        width: wp("90%"),
+        alignSelf: "center",
+        backgroundColor: "#e3e3e3",
+        marginTop: hp(2.5),
+        borderRadius: 8
+      }}
+      onPress={() => this.selectedFirst(item, index)}
+      activeOpacity={0.99}
+    >
+      <ImageBackground
+        source={item.image}
+        style={{
+          height: "100%",
+          width: "100%",
+          alignSelf: "center",
+          resizeMode: "stretch",
+          borderRadius: 8
+        }}
+        imageStyle={{ borderRadius: 25, borderRadius: 10 }}
+      >
+        <Text
+          style={{
+            fontSize: 16,
+            fontFamily: "Nunito-SemiBold",
+            color: "white",
+            alignSelf: "flex-end",
+            borderBottomWidth: 2,
+            borderBottomColor: "#e60000",
+            marginRight: 13,
+            marginTop: 8
+          }}
+        >
+          {item.add3}
+        </Text>
+
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginLeft: "5%",
+            width: "90%"
+          }}
+        >
+          <View style={{ flexDirection: "column", width: "88%" }}>
+            <Text
+              style={{
+                fontSize: 24,
+                fontFamily: "Nunito-SemiBold",
+                color: "white",
+                width: "75%"
+              }}
+              multiline={true}
+            >
+              {item.name}
+            </Text>
+            <Text
+              style={{
+                fontSize: 21,
+                fontFamily: "Nunito-SemiBold",
+                color: "white",
+                marginTop: 35,
+                width: "80%"
+              }}
+              multiline={true}
+            >
+              {item.add2}
+            </Text>
+          </View>
+
+          {item.is_selected == "0" && (
+            <View style={{ backgroundColor: "transparent" }} />
+          )}
+
+          {item.is_selected == "1" && (
+            <Image
+              source={require("./resources/tick1.png")}
+              style={{ height: 42, width: 42, resizeMode: "contain" }}
+            />
+          )}
+        </View>
+      </ImageBackground>
+    </TouchableOpacity>
+  );
+};
+ 
+ 
+ <FlatList
+  style={{ flexGrow: 0, marginTop: 5 }}
+  data={this.state.pdList}
+  numColumns={1}
+  keyExtractor={(item, index) => index.toString()}
+  renderItem={this._renderItem}
+/>;
