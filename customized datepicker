@@ -1,0 +1,42 @@
+customized datepicker
+
+https://www.npmjs.com/package/react-native-datepicker
+
+import DatePicker from 'react-native-datepicker'
+
+
+<DatePicker
+                       style={{width: window.width - 20, marginTop:5}}
+                       date={this.state.date}
+                       mode="time"
+                       placeholder="Select Start Time"
+                       placeholderColor = {'black'}
+                      format="hh:mma"
+
+                       is24Hour = {false}
+                       confirmBtnText="Confirm"
+                       cancelBtnText="Cancel"
+                       iconSource={require('./slots_picker.png')}
+                       customStyles={{
+                         dateIcon: {
+                           position: 'absolute',
+                           right: 5,
+                           top: 15,
+                           padding:10,
+                           width:20, height:20,
+                           marginLeft: 20
+                         },
+                         dateInput: {
+                           marginLeft: 20,
+                           borderColor:'#e5e5e5',
+                           borderRadius:5,
+                           justifyContent: 'center',
+                           alignItems: 'flex-start',
+                           marginTop:10,
+                           paddingLeft:10,
+                           width:'90%',
+                         }
+                         // ... You can check the source to find the other keys.
+                       }}
+                       onDateChange={(date) => {this.setState({date: date})}}
+                     />
