@@ -1,0 +1,16 @@
+import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
+
+
+<RadioForm
+       radio_props={this.state.radio_props}
+       initial={0}
+       animation={false}
+       selectedButtonColor={'#E60000'}
+       buttonColor={'#00000040'}
+       buttonSize={13}
+       radioStyle={{paddingTop: wp(1.5)}}
+       buttonOuterSize={25}
+       labelStyle={ { fontFamily: 'Nunito-SemiBold' } }
+       onPress={(value) => {this.setState({value:value})}}>
+
+     </RadioForm>
