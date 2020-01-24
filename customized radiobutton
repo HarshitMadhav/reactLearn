@@ -14,3 +14,21 @@ import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-
        onPress={(value) => {this.setState({value:value})}}>
 
      </RadioForm>
+
+another one
+
+            <RadioForm
+                radio_props={radio_props}
+                initial={this.state.value}
+                buttonSize={10}
+                buttonColor={'#E60000'}
+                formHorizontal={true}
+                buttonOuterColor = {'#E60000'}
+                selectedButtonColor = {'#E60000'}
+                animation={false}
+                labelColor={'grey'}
+                buttonStyle={{marginTop:20}}
+                buttonWrapStyle={{marginTop:20}}
+                labelStyle = {{fontSize:16,fontFamily:'Konnect-Regular',paddingLeft:10, paddingRight:10,color:'grey'}}
+                onPress={(value) => {this.setState({value:value})}}
+            />
