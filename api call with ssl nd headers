@@ -1,0 +1,51 @@
+api call with ssl certificates along with header and token
+
+SSL pinning in react native ie. using OKHTTP in react native
+React-Native Ssl pinning using OkHttp 3 in Android, and AFNetworking on iOS.
+
+checkout this package https://www.npmjs.com/package/react-native-ssl-pinning
+https://github.com/MaxToyberman/react-native-ssl-pinning#README
+
+var url =''
+
+fetch(url , {
+            method: 'POST',
+            timeoutInterval: 1000, // milliseconds
+            headers: {
+                'X-API-KEY': ' FCCDB2FFD5830D7F20E67C056DA727002AD9A403DDA29B3FDFAC22ECA226CD4F',
+                'Content-Type': 'application/json'
+            },
+            sslPinning: {
+                certs: ['yawd']
+            },
+            body: JSON.stringify({
+            "username" : this.state.Phone,
+            "password" :this.state.Password,
+            "device_id":DeviceInfo.getUniqueId(),
+            "device_token":GLOBAL.device_token,
+            "device_type":Platform.OS,
+            "ip_address":0,
+            "model_name":0,
+            "carrier_name":0,
+            "have_notch":0,
+            "device_memory":0,
+            "device_country":0,
+            "manufacture":0
+            })
+        })
+
+            .then((response) => response.json())
+            .then((responseData) => {
+             alert(JSON.stringify(responseData))
+
+              if(responseData.status==true){
+                GLOBAL.userID = responseData.userID
+                this.props.navigation.replace("DrawerNavigator")
+              AsyncStorage.setItem('userID', responseData.userID)
+              }else {
+                alert("Invalid Credentials")
+              }
+        })
+      .catch((error) =>{
+        console.error(error);
+      })
