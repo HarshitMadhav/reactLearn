@@ -1,0 +1,42 @@
+change keys in array with other named key for example in this changed id, state_name keys to label, value
+
+var rece = responseJson.list
+        const transformed = rece.map(({ id, state_name }) => ({ label: state_name, value: id }));
+    //    console.log(transformed)
+        this.setState({resultstates:transformed})
+
+
+
+const url = GLOBAL.BASE_URL + "state_list";
+
+fetch(url, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+
+  body: JSON.stringify({
+    key: "state"
+  })
+})
+  .then(response => response.json())
+  .then(responseJson => {
+    //                    alert(JSON.stringify(responseJson.list))
+    if (responseJson.status == true) {
+      //                        console.log('yes')
+      var rece = responseJson.list;
+      const transformed = rece.map(({ id, state_name }) => ({
+        label: state_name,
+        value: id
+      }));
+      //    console.log(transformed)
+      this.setState({ resultstates: transformed });
+      //                        arrayholder = responseJson.list
+    } else {
+      this.setState({ resultstates: [] });
+    }
+  })
+  .catch(error => {
+    console.error(error);
+    this.hideLoading();
+  });
