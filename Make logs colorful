@@ -1,0 +1,5 @@
+        //Color in logs
+
+console.log("\x1b[36m%s\x1b[0m" ,"Background Color Is Blue");
+    
+        console.log("\x1b[36m",JSON.stringify(responseJson))
