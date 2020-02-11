@@ -53,3 +53,76 @@ return (
     <SvgXml xml={markerRendering} />
 )
 }
+
+***************//// CHANGE COLOR OF SVG COMPONENTS ON CLICK
+
+Touch Events
+Touch events are supported in react-native-svg. These include:
+
+disabled
+onPress
+onPressIn
+onPressOut
+onLongPress
+delayPressIn
+delayPressOut
+delayLongPress
+You can use these events to provide interactivity to your react-native-svg components.
+
+<Circle
+  cx="50%"
+  cy="50%"
+  r="38%"
+  fill="red"
+  onPress={() => alert('Press on Circle')}
+/>
+
+Example: 
+<Svg
+  width="70%"
+  height="80%"
+  fill="blue"
+  stroke="red"
+  color="green"
+  viewBox="-16 -16 544 544"
+>
+
+
+
+<Rect
+            x="0"
+            y="0"
+            width="200"
+            height="200"
+            stroke="red"
+            strokeWidth="2"
+            fill={this.state.color}
+            onPress={() => this.setState({color:'green'})}
+
+          />
+
+<Rect
+            x="50"
+            y="50"
+            width="200"
+            height="200"
+            stroke="red"
+            strokeWidth="2"
+            fill={this.state.color}
+            onPress={() => this.setState({color:'green'})}
+
+          />
+
+<Circle
+  cx="50%"
+  cy="50%"
+  r="38%"
+  fill={this.state.color}
+  onPress={() => this.setState({color:'green'})}
+/>
+
+</Svg>
+
+
+
+
