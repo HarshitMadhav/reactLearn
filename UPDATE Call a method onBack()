@@ -1,0 +1,31 @@
+Lets have 2 components 
+
+A and B
+
+in A make method :
+      this.props.navigation.navigate('MyCameraPicker',{finalUploadCamera : this.finalUploadCamera})
+
+      finalUploadCamera=(type, path, getdoc_cat, resType, resName)=>{
+      
+      }
+      
+in B make method :
+    takePicture = async() => {
+    if (this.camera) {
+      const options = { quality: 0.5, base64: false , width: 500, height:500};
+      const data = await this.camera.takePictureAsync(options);
+      console.log(JSON.stringify(data));
+      GLOBAL.cameraImage = data.uri;
+
+      this.aftergoBack(data.uri)
+    }
+  };
+
+
+    aftergoBack(cameraUri){
+    const { navigation } = this.props;
+    navigation.goBack();
+    navigation.state.params.finalUploadCamera(cameraUri);
+    }
+
+
