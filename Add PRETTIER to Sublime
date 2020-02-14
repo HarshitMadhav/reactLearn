@@ -3,8 +3,24 @@ https://medium.com/@kimlindholm/jsprettier-for-sublime-text-b3f74c157535
 https://medium.com/@ogbopinamoses/how-to-install-jsprettier-in-sublime-text-f22b0f77380e
 
 Adding JsPrettie to SUBLIME TEXT 3
+Step 1:
+# First install prettier
+# yarn (local):
+yarn add prettier --dev
 
+# yarn (global):
+yarn global add prettier
 
+# npm (local):
+npm install --save-dev prettier
+
+# npm (global):
+npm install --global prettier
+
+Step 2: Install JsPrettier
+Open Sublime Text and using Package Control, type Install Package and then JsPrettier.
+
+Step 3:
 Go to Preferences -> Package settings -> JsPrettier -> Settings -user
 This will open a file named JsPrettier.sublime-settings
 Add this in JsPrettier.sublime-settings
