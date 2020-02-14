@@ -1,0 +1,46 @@
+Refer here https://github.com/react-native-community/react-native-geolocation/issues/86
+
+Asking to turn on location 
+
+Geolocation.getCurrentPosition() requests permission which is good, but when that user doesn't have location
+turned on and permission is granted, location isn't enabled. Is there a way to ask the user to enable location?
+
+:: Solution ::
+
+Ended up wrapping my Geolocation.getCurrentPosition with RNAndroidLocationEnabler from 
+https://github.com/Richou/react-native-android-location-enabler
+
+:: CODE ::
+
+constructor(props) {
+    super(props);
+    if (Platform.OS === 'android') {
+        this.getPermissions()
+    } else {
+        this.findCoordinates()
+    }
+  }
+
+  getPermissions = () => {
+    RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({interval: 10000, fastInterval: 5000})
+    .then(data => {
+      if (data === "already-enabled") {
+        this.findCoordinates()
+      } else {
+        setTimeout(() => {
+          this.findCoordinates()
+        }, 1000)
+      }
+    })
+  };
+
+  findCoordinates = () => {
+    Geolocation.getCurrentPosition(
+      info => {
+        this.setState({ locationInfo: info });
+      },
+      error => {
+        console.log(error)
+      });
+  }
+
