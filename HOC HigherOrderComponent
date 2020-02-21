@@ -1,0 +1,44 @@
+HOC is a function that takes React Component as input and outputs a new React Component.
+
+Simple example of HOC
+
+function HOC(Comp) {
+  return class NewComp extends Component {
+    render() {
+      return <Comp />
+    }
+  }
+}
+
+When should you use HOC?
+
+HOC is useful when you want to inject additional behaviours to the existing Component. You can use HOC to inject:
+    React Lifecycle (eg. execute code in componentWillMount)
+    State (eg. react-redux’s connect)
+    Component (Parent Component, Child Component, Sibling Component)
+    Style
+
+You can also create a Higher Order Component to dismiss the keyboard.
+
+import React from 'react';
+import { TouchableWithoutFeedback, Keyboard, View } from 'react-native';
+
+const DismissKeyboardHOC = (Comp) => {
+  return ({ children, ...props }) => (
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <Comp {...props}>
+        {children}
+      </Comp>
+    </TouchableWithoutFeedback>
+  );
+};
+const DismissKeyboardView = DismissKeyboardHOC(View)
+
+////////////////   Simply use it like this
+
+...
+render() {
+    <DismissKeyboardView>
+        <TextInput keyboardType='numeric'/>
+    </DismissKeyboardView>
+}
