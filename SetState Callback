@@ -1,0 +1,39 @@
+Setstate is asynchronous this.setState({counter : 1})
+
+Lets take a example
+state={
+  counter:0
+}
+mount(){
+    this.setState({counter : 1})
+    alert(this.state.counter) // this will give counter value as 0
+    
+    this.setState({counter: 1 },() => {
+        alert(this.state.counter); // this.will give counter value as 1
+    });
+    
+}
+
+USE CALLBACK of setState if we want to perform any action or any value update immediately.
+
+since setState works in an asynchronous way. That means after calling setState the this.state variable is 
+NOT immediately changed. so if you want to perform an action immediately after setting state on a state variable and
+then return a result, a callback will be useful
+
+this.setState({
+    name:'value' 
+},() => {
+    console.log(this.state.name);
+});
+
+Correct Code with setState having call back function:
+
+ this.setState(
+       (prevState,props)=>{
+           return {counter:prevState.counter+1};
+        }
+    );
+Thus whenever we need to update our current state to next state based on value possed by property just now and all 
+this is happening in async fashion it is good idea to use setState as callback function.
+
+  
