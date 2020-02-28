@@ -1,3 +1,21 @@
+....IF want to load Youtube video in WebView use
+
+<WebView
+  style={props.style}
+  source={{uri: `https://www.youtube.com/embed/${props.videoId}?controls=0&showinfo=0`}}
+/>
+
+get video id of youtube from import getYouTubeID from 'get-youtube-id';
+       var videoid = getYouTubeID(this.state.video_url, {fuzzy: false});
+      console.log(videoid); 
+PASS CONTROLS =1 to uri if you want to show controls 0,1,2 three are there.
+<WebView
+  style={{height: '80%', width: '100%'}}
+  source={{uri: `https://www.youtube.com/embed/${videoid}?controls=1&showinfo=0`}}
+/>
+
+
+
 // If youtube controls dont appear then,
 // Refer here https://github.com/inProgress-team/react-native-youtube/issues/131
 
