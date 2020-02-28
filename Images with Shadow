@@ -1,0 +1,23 @@
+  renderItem = (itemData) => {
+    //alert(JSON.stringify(itemData))
+    return (
+      <TouchableNativeFeedback onPress={()=> this.openVideo(itemData)}>
+      <View style={{ shadowColor: '#f7f7f7',
+    shadowOffset: {
+      width: 0,
+      height: 3
+    },
+    shadowRadius: 0.5,flexDirection:'column',height: 'auto',
+    shadowOpacity: 0.5,flex : 1, backgroundColor:'white',borderRadius:8,
+    margin:5,marginTop:15,marginBottom:1,}}>
+    <View style={{width:110, height:110, borderColor: 'transparent', borderWidth: 0.001, borderRadius: 55,elevation:8, backgroundColor:'white', alignSelf:'center'}}>
+    <Image style={{width:'100%', height:'100%',}} source={itemData.item.artwork}/>
+    </View>
+     <Text style={{fontSize:15, alignSelf:'center',  marginTop: 10, fontFamily: 'Nunito-SemiBold'}} numberOfLines={3}>{itemData.item.title}</Text>
+
+</View>
+
+</TouchableNativeFeedback>
+
+    )
+  }
