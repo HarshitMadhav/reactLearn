@@ -1,0 +1,23 @@
+setState re-render all components and sub-components every time it is called
+so if we have to update many states with trigerring re-render
+
+  use setState multiple times:
+  
+  this.setState({responseTaurus : responseJson.ashtak_points.taurus})
+  this.setState({responseGemini : responseJson.ashtak_points.gemini})
+  
+  the above will trigger render 2 times and so on... each setstate triggers render method
+  
+  
+If we want to perform setState multiple without re-render then do this,
+// clubbing in single setState
+// updating state values by single setState
+             this.setState({
+              responseAries : responseJson.ashtak_points.aries,
+              responseTaurus : responseJson.ashtak_points.taurus,
+              responseGemini : responseJson.ashtak_points.gemini, 
+        })
+
+  the above will trigger render 1 time only. 
+
+
