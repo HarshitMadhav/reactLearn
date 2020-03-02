@@ -11,7 +11,7 @@ so if we have to update many states with trigerring re-render
   
 If we want to perform setState multiple without re-render then do this,
 // clubbing in single setState
-// updating state values by single setState
+// updating state values by single setState so as to prevent multiple re-renderings
              this.setState({
               responseAries : responseJson.ashtak_points.aries,
               responseTaurus : responseJson.ashtak_points.taurus,
