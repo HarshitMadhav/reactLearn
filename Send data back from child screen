@@ -1,0 +1,47 @@
+Refer here : https://github.com/react-navigation/react-navigation/issues/1416#issuecomment-300489310
+
+You can do something along these lines to pass back from the child screen.
+
+Create a function in your parent component like this:
+
+returnData(id, name) {
+  this.setState({id: id, name: name});
+}
+
+Then when you navigate to your child component, pass the function:
+
+this.props.navigation.navigate('ChildComponent', {returnData: this.returnData.bind(this)});
+
+Then in your child component when you go back, you can do something like this:
+
+  this.props.navigation.state.params.returnData('123', 'Name of item');
+  this.props.navigation.goBack();
+
+Or you could call the function anytime, it doesn't have to be when you go back.
+
+It's not great when you have to send props back 2 or 3 screens deep since you have to keep passing the props down in 
+each component, but if you get into a situation like that, you should probably just use Redux or another state management.
+
+////////////////// Example
+A component
+  returnDataMale(lat, lon, name) {
+    console.log('Male--> lat' + lat + 'lon' + lon);
+    this.setState({m_lat: lat, m_lon: lon, pob: name});
+  }
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.navigate('SelectPlace', {
+                    params: {
+                      previous_screen: 'male_horo_match',
+                      returnDataMale: this.returnDataMale.bind(this),
+                    },
+                  });
+                }}>
+
+B component named as SelectPlace
+var navigation = this.props.navigation.state.params
+if(navigation.params.previous_screen == 'male_horo_match'){
+  navigation.params.returnDataMale(details.geometry.location.lat, details.geometry.location.lng, details.formatted_address);
+  this.props.navigation.goBack()
+}
+
