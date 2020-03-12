@@ -1,0 +1,27 @@
+Refer here : https://stackoverflow.com/questions/44419650/react-js-set-a-default-value-into-a-prop
+Set a default value into a prop
+
+import PropTypes from 'prop-types';
+
+class AppButton extends Component {
+ render(){
+    return (
+      <button onClick={this.props.onClick}>{this.props.message}</button>
+    )
+  }
+};
+
+AppButton.propTypes = {
+  message: PropTypes.string,
+  onClick: PropTypes.func
+};
+
+AppButton.defaultProps = {
+  message: 'Hello',
+  onClick: function(){ alert("Hello"); }
+};
+
+From the docs:
+
+The defaultProps will be used to ensure that this.props.name will have a value if it was not specified by the parent component.
+The propTypes typechecking happens after defaultProps are resolved, so typechecking will also apply to the defaultProps.
