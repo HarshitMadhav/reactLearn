@@ -1,0 +1,34 @@
+Like unlike at same index of flatlist without updating whole array
+
+  _onPressButton = (item, index) => {
+    this.likeHome(item.key);
+
+    var s = this.state.moviesList[index];
+    if (item.like_status == 'N') {
+      s.like_status = 'Y';
+      s.like_count = parseInt(item.like_count) + 1;
+    } else {
+      s.like_status = 'N';
+      s.like_count = parseInt(item.like_count) - 1;
+    }
+    this.state.moviesList[index] = s;
+
+    this.setState({moviesList: this.state.moviesList});
+  };
+
+////////////////////// or example cancel booking at index
+
+    onPressCancel=(item, index)=>{
+    var s = this.state.results[index];
+//  alert(JSON.stringify(s))      
+    if (item.cancel_power == 1) {
+      s.cancel_power = 0;
+   //   s.cancel_power = parseInt(item.cancel_power);
+    } else {
+      s.cancel_power = 1;
+ //     s.cancel_power = parseInt(item.cancel_power);
+    }
+    this.state.results[index] = s;
+
+    this.setState({results: this.state.results});
+}
