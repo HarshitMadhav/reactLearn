@@ -66,3 +66,14 @@ class App extends Component {
 }
 
 export default App
+
+
+Some explanation:
+
+After the animation, image's width becomes 300, which is 280 pixels larger, since the image scales up from the center, therefore, the image's x coordination has left shifted 140 px, or -140 px, And we want the x coordinate to left shift only 20 px, hence, we should right shift it 120 px, that's why the output range of x is [0, 120]
+
+Same reason why y's output range is [0, 25]
+
+width is now 300 compared to before 20, which is 15 times larger
+
+height is now 250 compared to before 20, which is 12.5 times larger
