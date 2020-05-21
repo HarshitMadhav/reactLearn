@@ -72,12 +72,19 @@ function Tabs() {
           activeTintColor: '#1976D2',
           inactiveTintColor: 'gray',
           activeBackgroundColor :'white',
-          inactiveBackgroundColor :'white'
+          inactiveBackgroundColor :'white',
+          labelStyle :{fontFamily: 'AvenirLTStd-Heavy', fontSize:20}          
         }}
       >
         <Tab.Screen name="Home" component={Home} />
         <Tab.Screen name="Consult Now" component={Splash}/>
-        <Tab.Screen name="My Account" component={MyAccount} />
+        <Tab.Screen name="My Account" component={MyAccount} 
+   listeners={{
+    tabPress: e => {
+      // Prevent default action
+      console.log('ji')
+    },
+  }} />
       </Tab.Navigator>
   );
 }
