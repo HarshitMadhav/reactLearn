@@ -1,0 +1,25 @@
+        var firstMap = this.state.chatTime.map((item, indexOne, arr)=>{
+
+          var inIndex = indexOne
+
+        var insideMap = item.slots.map((item, indexTwo, insideArr)=>{
+          return(
+            <Text style = {{alignSelf:'center',textAlign:'center',fontSize:17,marginTop:20,fontFamily:'AvenirLTStd-Medium', color:'rgb(255, 159, 0)'}}>
+              {item.start} : {item.end}-> {indexTwo}->hh {inIndex}
+            </Text>
+
+          )
+        })
+      
+      return(
+      <View style = {{flexDirection:'row'}}>
+        <Text style = {{alignSelf:'center',textAlign:'center',fontSize:17,marginTop:40,color:'rgb(116, 116, 116)',fontFamily:'AvenirLTStd-Medium'}}>
+      {item.day}
+      </Text>
+
+      {insideMap}   
+
+       </View>
+
+  )} )
+
