@@ -1,0 +1,15 @@
+    componentDidMount(){
+      BackHandler.addEventListener('hardwareBackPress', this._handleBackPress);
+
+    }
+
+    componentWillUnmount () {
+      BackHandler.removeEventListener('hardwareBackPress', this._handleBackPress);
+
+    }
+
+    _handleBackPress(){
+    // You need to return true, if you want to disable the default back button behavior.
+        ToastAndroid.show('Back button is disabled!', ToastAndroid.SHORT);
+        return true;
+    }
