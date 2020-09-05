@@ -1,0 +1,139 @@
+Onclick NOTIFICATION navigate to specific screen
+
+import React, {Component} from 'react';
+import { StyleSheet,TextInput,Text, View,Image ,Alert,AsyncStorage,Dimensions ,TouchableOpacity} from 'react-native';
+const window = Dimensions.get('window');
+import store from 'react-native-simple-store';
+const GLOBAL = require('./Global');
+type Props = {};
+import appConfig from './app.json';
+import PushNotification from 'react-native-push-notification';
+import NotifService from './NotifService';
+
+export default class Splash extends Component {
+
+  constructor(props) {
+      super(props);
+      this.state = {
+        // senderId: appConfig.senderID,
+        gotNotif:0
+      };
+
+      this.notif = new NotifService(this.onRegister.bind(this), this.onNotif.bind(this));
+//     this.notif.scheduleNotif()
+    }
+
+
+    static navigationOptions = ({ navigation }) => {
+        return {
+            header: () => null,
+            animations: {
+                setRoot: {
+                    waitForRender: false
+                }
+            }
+        }
+    }
+    proceed=()=>{
+
+        var value =  AsyncStorage.getItem('userID');
+        value.then((e)=> {
+            if (e == '' || e == null ){
+                this.props.navigation.replace('Slider')
+            }else {
+                GLOBAL.user_id = e
+
+                var values =  AsyncStorage.getItem('name');
+                values.then((f)=> {
+                    GLOBAL.myname = f
+
+                })
+
+                var valuess =  AsyncStorage.getItem('email');
+                valuess.then((f)=> {
+                    GLOBAL.myemail = f
+
+                })
+                var values2 =  AsyncStorage.getItem('mobile');
+                values2.then((f)=> {
+                    GLOBAL.mymobile = f
+                })
+
+                var valuesf =  AsyncStorage.getItem('token');
+                valuesf.then((f)=> {
+                    GLOBAL.firebaseToken = f
+                })
+
+                this.props.navigation.replace('DrawerNavigator')
+            }
+        })
+
+    }
+componentDidMount() {
+}
+
+    render() {
+        return (
+            <View style={styles.container}>
+                <Image style = {{width :window.width ,height : '100%'}}
+                       source={require('./splash.png')}/>
+
+            </View>
+        );
+    }
+
+  onRegister(token) {
+      AsyncStorage.setItem('token', token.token);
+      GLOBAL.firebaseToken= token.token
+      console.log( 'TOKEN:', token );
+      alert( 'TOKEN:'+ token.token );
+
+      // this.setState({ registerToken: token.token, fcmRegistered: true });
+    }
+
+    onNotif(notif) {
+      console.log(notif);
+      if(notif.foreground){
+
+      }else{
+
+        var value =  AsyncStorage.getItem('userID');
+        value.then((e)=> {
+            if (e == '' || e == null ){
+                this.props.navigation.replace('Slider')
+            }else {
+                GLOBAL.user_id = e
+
+                var values =  AsyncStorage.getItem('name');
+                values.then((f)=> {
+                    GLOBAL.myname = f
+
+                })
+
+                var valuess =  AsyncStorage.getItem('email');
+                valuess.then((f)=> {
+                    GLOBAL.myemail = f
+
+                })
+                var values2 =  AsyncStorage.getItem('mobile');
+                values2.then((f)=> {
+                    GLOBAL.mymobile = f
+                })
+
+
+                  this.props.navigation.navigate('Notification')
+
+            }
+        })
+
+      }
+      // Alert.alert(notif.title, notif.message+notif.foreground);
+      // this.setState({gotNotif: 1})
+    }
+
+    handlePerm(perms) {
+      Alert.alert("Permissions", JSON.stringify(perms));
+    }
+
+}
+
