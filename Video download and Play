@@ -1,0 +1,131 @@
+// video download and play
+
+import React, {Component} from 'react';
+import {StyleSheet,ScrollView,PermissionsAndroid,ToastAndroid,Animated, Easing, Text, View,Image,TouchableOpacity,Container} from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import Button from 'react-native-button';
+import Header from 'react-native-custom-headers';
+const GLOBAL = require('./Global');
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import Pdf from 'react-native-pdf';
+import * as Animatable from 'react-native-animatable';
+import RNFetchBlob from 'rn-fetch-blob';
+import IndicatorCustom from './IndicatorCustom'
+import VideoPlayer from 'react-native-video-controls';
+
+export default class VideoDownload extends Component {
+
+    static navigationOptions = ({ navigation }) => {
+        return {
+           header: () => null,
+        }
+    }
+
+    constructor(props){
+        super(props)
+        const { navigation } = this.props;
+        this.state = {
+            istoggle:false,
+            data:'',
+            totalpages:0,
+            currentpages:0,
+            getPdf:'',
+            uri : ''
+        }
+    }
+
+    showLoading() {
+        this.setState({loading: true})
+    }
+
+    hideLoading() {
+        this.setState({loading: false})
+    }
+
+
+
+    componentDidMount(){
+      this.downloadFile()
+    }
+
+
+
+actualDownload=()=>{
+            this.showLoading()
+            const { dirs } = RNFetchBlob.fs;
+        //    alert(JSON.stringify(dirs))
+          RNFetchBlob.config({
+            fileCache: true,
+            addAndroidDownloads: {
+            useDownloadManager: true,
+            notification: true,
+            mediaScannable: true,
+            title: `test.mp4`,
+            path: `${dirs.DownloadDir}/test.mp4`,
+            },
+          })
+            .fetch('GET', 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4', {})
+            .then((res) => {
+              console.log('The file saved to ', res.path());
+              this.setState({ uri : res.path()})
+              this.hideLoading()
+
+              // play file from this res.path() take it in state
+            })
+            .catch((e) => {
+              console.log(e)
+            });
+    }
+
+   async downloadFile(){
+    try {
+      const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        this.actualDownload();
+      } else {
+        Alert.alert('Permission Denied!', 'You need to give storage permission to download the file');
+      }
+    } catch (err) {
+      console.warn(err);
+    } 
+    }
+
+
+
+    render() {
+        if(this.state.loading){
+            return(
+                <IndicatorCustom/>
+            )
+        }
+
+        return (
+
+        <View style={{flex:1, flexDirection:'column'}}>
+
+         <Header navigation={this.props.navigation}
+                       showHeaderImage={false}
+                       headerColor ={'#E60000'}
+                       backImagePath={require('./resources/back.png')}
+                       headerName={'VIDEO DOWNLOAD'}
+                       headerTextStyle={{fontFamily:'Nunito-SemiBold', color:'white',marginLeft:10}} />
+
+
+    <VideoPlayer style={{ height:hp(20),width:wp('95%'),borderTopLeftRadius:6, borderTopRightRadius:6}}
+      onEnd={()=> this.setState({playVideo:false})}
+      source={{ uri: this.state.uri }}
+      navigator={ this.props.navigator }
+      />
+
+
+            </View>
+        );
+    }
+}
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        flexDirection: 'column'
+    },
+});
+
