@@ -1,3 +1,9 @@
+            Taking previous value from state and then add
+          // this.setState((prevState)=>{
+         //  alert(JSON.stringify(prevState.f_count))
+         //    return {f_count : prevState.f_count +1}
+         // })
+
 Setstate is asynchronous this.setState({counter : 1})
 
 Lets take a example
