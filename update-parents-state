@@ -1,0 +1,51 @@
+Refer here https://stackoverflow.com/questions/35537229/how-to-update-parents-state-in-react
+
+*************** Example ONE **************
+For child-parent communication you should pass a function setting the state from parent to child, like this
+class Parent extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.handler = this.handler.bind(this)
+  }
+
+  handler() {
+    this.setState({
+      someVar: 'some value'
+    })
+  }
+
+  render() {
+    return <Child handler = {this.handler} />
+  }
+}
+
+class Child extends React.Component {
+  render() {
+    return <Button onClick = {this.props.handler}/ >
+  }
+}
+
+**************** Example TWO ******************
+class Parent extends React.Component {
+  constructor(props) {
+    super(props)
+    // without bind, replaced by arrow func below
+  }
+
+  handler = (val) => {
+    this.setState({
+      someVar: val
+    })
+  }
+
+  render() {
+    return <Child handler = {this.handler} />
+  }
+}
+
+class Child extends React.Component {
+  render() {
+    return <Button onClick = {() => this.props.handler('the passing value')}/ >
+  }
+}
