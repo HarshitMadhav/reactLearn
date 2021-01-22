@@ -1,0 +1,19 @@
+state:{
+  imageError: false
+}
+
+{this.state.imageError ? (
+        <VideoPlayer
+            isFullscreen={flash}
+            style={{ flex: 1 }}
+            videoPath={this.state.videoUri}
+            uploadingVideo={false}
+        />
+    ) : (<Image
+                style={{ flex: 1 }}
+                source={{ uri: this.state.videoUri }}
+                onError={error => {
+                    this.setState({ imageError: true });
+                }}
+            />
+    )}
