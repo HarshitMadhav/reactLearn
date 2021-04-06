@@ -1,0 +1,6 @@
+import _ from 'lodash';
+instead of this snippet
+this.props.callAPI(this.props.item.requestBookingid)
+use 
+var ID = _.result(this.props, "this.props.item.requestBookingid", "") // so that in case of no bookingid app dont crash and manage 
+//default booking id to pass in case of no booking id get
