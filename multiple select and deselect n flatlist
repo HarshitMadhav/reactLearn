@@ -1,5 +1,27 @@
 select a multiple items on the go and then deselect them by clicking on them once again.
 
+// in hooks
+  const [addons, setAddons] = useState(props.addonsList);
+  const onPressAdd=(item, index)=>{
+
+   let categories = props.addonsList;
+   let targetPost = categories[index];
+   if (targetPost.isAdded == 0){
+     targetPost.isAdded = 1;
+   }else{
+     targetPost.isAdded = 0;
+   }
+    categories[index] = targetPost;
+    props.selectAddons(categories)
+    setAddons([categories])
+  }
+      <FlatList
+        style={{ marginVertical: 7, flexGrow: 0 }}
+        keyExtractor={(item, index) => index.toString()}
+        data={props.addonsList}
+        renderItem={({ item, index }) => ()} />
+        
+// in class based component
 selectedProduct=(itemData, index)=>{
 //        alert(index)
  let { categories } = this.state;
