@@ -1,5 +1,41 @@
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 
+// Pro Mode to show selected radio button label color different then unselected one
+<RadioForm
+  formHorizontal={false}
+  animation={true}
+>
+  {/* To create radio buttons, loop through your array of options */}
+  {
+    props.activityRanges.map((obj, i) => {return(
+      <RadioButton labelHorizontal={true} key={i} >
+        {/*  You can set RadioButtonLabel before RadioButtonInput */}
+        <RadioButtonInput
+          obj={obj}
+          index={i}
+          isSelected={noActiv === i}
+          onPress={(i,j)=> setNoActiv(j)}
+          borderWidth={2}
+          buttonInnerColor={colors.activeButtonColor}
+          buttonOuterColor={noActiv === i ? colors.activeButtonColor : colors.inactiveButtonColor}
+          buttonSize={10}
+          buttonOuterSize={20}
+          buttonStyle={{color:'red'}}
+          buttonWrapStyle={{marginLeft: 10}}
+        />
+        <RadioButtonLabel
+          obj={obj}
+          index={i}
+          onPress={(i,j)=> setNoActiv(j)}
+          labelHorizontal={true}
+          labelStyle={{fontSize: 14, color: i=== noActiv ? colors.activeLabelColor : colors.inactivelabelColor}}
+          labelWrapStyle={{}}
+        />
+      </RadioButton>
+    )})
+  }  
+</RadioForm>
+
 
 <RadioForm
        radio_props={this.state.radio_props}
