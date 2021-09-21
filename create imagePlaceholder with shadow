@@ -1,3 +1,10 @@
+use it like
+    <RNImagePlaceholder
+      source={{uri: profile_picture}}
+      defaultStyle={styles.pic}
+    />
+
+
 import React from 'react';
 import ImagePlaceholder from 'react-native-img-placeholder';
 import {StyleSheet} from 'react-native';
