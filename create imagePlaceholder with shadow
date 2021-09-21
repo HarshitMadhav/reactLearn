@@ -4,6 +4,12 @@ use it like
       defaultStyle={styles.pic}
     />
 
+  pic: {
+    height: 50,
+    width: 50,
+    borderRadius: 25,
+  },
+
 
 import React from 'react';
 import ImagePlaceholder from 'react-native-img-placeholder';
