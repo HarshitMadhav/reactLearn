@@ -1,0 +1,39 @@
+import React from 'react';
+import ImagePlaceholder from 'react-native-img-placeholder';
+import {StyleSheet} from 'react-native';
+import {NeomorphFlex} from 'react-native-neomorph-shadows';
+import {Colors} from '../../res';
+
+const RNImagePlaceholder = ({source, defaultStyle}) => {
+  return (
+    <NeomorphFlex style={styles.neo}>
+      <ImagePlaceholder
+        style={[styles.imgStle, defaultStyle]}
+        loadingStyle={{size: 'small', color: 'grey'}}
+        source={source}
+        borderRadius={10}
+        placeholderSource={require('../../res/assets/common/imagePlaceholder.jpeg')}
+        placeholderStyle={[styles.imgStle, defaultStyle]}
+      />
+    </NeomorphFlex>
+  );
+};
+
+export default RNImagePlaceholder;
+
+const styles = StyleSheet.create({
+  imgStle: {
+    width: 100,
+    height: 100,
+    borderRadius: 10,
+  },
+  neo: {
+    shadowRadius: 3,
+    borderRadius: 10,
+    borderWidth: 2.5,
+    shadowColor: Colors.bgColor,
+    borderColor: Colors.bgColor,
+    backgroundColor: Colors.bgColor,
+    alignItems: 'center',
+  },
+});
