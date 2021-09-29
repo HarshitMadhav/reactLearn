@@ -13,6 +13,9 @@ import React from 'react';
 import {StyleSheet,Text,View,Button,TouchableOpacity,ScrollView,Image} from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
  
+
+// [DocumentPicker.types.docx, DocumentPicker.types.pdf] in case if want to pick two different types of file in single select
+ 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
