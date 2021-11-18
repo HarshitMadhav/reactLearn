@@ -1,0 +1,512 @@
+import React, {useState, useCallback, useEffect} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  TextInput,
+  Platform,
+  Alert,
+  ActivityIndicator,
+} from 'react-native';
+import {
+  GiftedChat,
+  Composer,
+  InputToolbar,
+  Bubble,
+  Send,
+  Avatar,
+  Actions,
+} from 'react-native-gifted-chat';
+import {CommonStyles, Colors, Dimen, Fonts, Assets, apis} from '../../../res';
+import {CustomHeader, RNImagePlaceholder, Input, Loader} from '../../common';
+import {Neomorph} from 'react-native-neomorph-shadows';
+import firestore from '@react-native-firebase/firestore';
+import {useSelector} from 'react-redux';
+import {launchImageLibrary} from 'react-native-image-picker';
+import storage from '@react-native-firebase/storage';
+import {AuthApi} from '../../utils';
+
+// var randomstring = require("randomstring");
+
+// let generateRandom = randomstring.generate({
+//   length: 12,
+//   charset: 'alphabetic'
+// });
+
+const ChatScreen = ({route}) => {
+  let friendProfile = route?.params.friendProfile;
+  // let friendProfile = '1'
+  const [messages, setMessages] = useState([]);
+  const [textMessage, setTextMessage] = useState('');
+  const [uploading, setUploading] = useState(false);
+  const [profilePic, setProfilePic] = useState(null);
+  const [profilePicName, setProfilePicName] = useState(null);
+  const [imageUrl, setImageUrl] = useState(null);
+  const [showSend, setShowSend] = useState(false);
+
+  const userToken = useSelector((state) => state.AuthReducer.userToken);
+
+  const uid = friendProfile.id;
+
+  const userRes = useSelector((state) => state.AuthReducer.userRes);
+
+  const getAllMessages = async () => {
+    const docid = uid > user.uid ? user.uid + '-' + uid : uid + '-' + user.uid;
+    const querySanp = await firestore()
+      .collection('paperclip_chat_db')
+      .doc(docid)
+      .collection('FwJtwfGZZr33C0fZKPrp')
+      .orderBy('createdAt', 'desc')
+      .get();
+    const allmsg = querySanp.docs.map((docSanp) => {
+      return {
+        ...docSanp.data(),
+        createdAt: docSanp.data().createdAt.toDate(),
+      };
+    });
+    setMessages(allmsg);
+  };
+
+  const selectPhoto = () => {
+    const options = {
+      quality: 1,
+      maxWidth: 800,
+      maxHeight: 800,
+    };
+    launchImageLibrary(options, (response) => {
+      if (response.didCancel) {
+        console.log('cancelled image picker');
+      } else {
+        setTextMessage('');
+        setProfilePic(response.uri);
+        setProfilePicName(response.fileName);
+        uploadImage(response.uri, response.fileName);
+      }
+    });
+  };
+
+  const renderActions = (props: Readonly<ActionsProps>) => {
+    return (
+      <Actions
+        {...props}
+        options={{
+          ['Send Image']: selectPhoto,
+        }}
+        icon={() => (
+          <Image source={Assets.read.attachment} resizeMode="contain" />
+        )}
+        onSend={(args) => {
+          console.log('------>' + JSON.stringify(args));
+          // Backend.sendImage(args);
+        }}
+      />
+    );
+  };
+
+  const uploadImage = async (uri, getfileName) => {
+    // const { uri } = image;
+    const filename = uri.substring(uri.lastIndexOf('/') + 1);
+    const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+
+    setUploading(true);
+    // setTransferred(0);
+    const task = storage().ref(filename).putFile(uploadUri);
+    // set progress state
+    // task.on('state_changed', snapshot => {
+    //   setTransferred(
+    //     Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 10000
+    //   );
+    // });
+    let response;
+    try {
+      response = await task;
+      console.log(JSON.stringify(response));
+    } catch (e) {
+      console.error(e);
+    }
+    // Alert.alert(
+    //   'Photo uploaded!',
+    //   'Your photo has been uploaded to Firebase Cloud Storage!'
+    // );
+    // setImage(null);
+
+    let imageRef = await storage().ref('/' + response.metadata.name);
+    imageRef
+      .getDownloadURL()
+      .then((url) => {
+        setUploading(false);
+
+        console.log(url);
+        setImageUrl(url);
+        // setTextMessage('')
+        setShowSend(true);
+        //from url you can fetched the uploaded image easily
+      })
+      .catch((e) => {
+        console.log('getting downloadURL of image error => ', e);
+        setUploading(false);
+      });
+  };
+
+  useEffect(() => {
+    const docid =
+      uid > userRes.id ? userRes.id + '-' + uid : uid + '-' + userRes.id;
+    const messageRef = firestore()
+      .collection('paperclip_chat_db')
+      .doc(docid)
+      .collection('messages')
+      .orderBy('createdAt', 'desc');
+
+    const unSubscribe = messageRef.onSnapshot((querySnap) => {
+      const allmsg = querySnap.docs.map((docSanp) => {
+        const data = docSanp.data();
+        if (data.createdAt) {
+          return {
+            ...docSanp.data(),
+            createdAt: docSanp.data().createdAt.toDate(),
+          };
+        } else {
+          return {
+            ...docSanp.data(),
+            createdAt: new Date(),
+          };
+        }
+      });
+      setMessages(allmsg);
+    });
+    return () => {
+      unSubscribe();
+    };
+  }, []);
+
+  const sendMessageNotification = async (msg) => {
+    let data = {
+      receiverId: friendProfile.id,
+      // message: (msg.text!=null || msg.text!='') ? msg.text : msg.image
+    };
+    if (msg.text != '') {
+      data = {...data, message: msg.text};
+    }
+    console.log(JSON.stringify(data));
+
+    AuthApi(
+      userToken,
+      apis.chatNotification,
+      apis.postRequest,
+      data,
+      false,
+    ).then((res) => {
+      console.log('res : ', res);
+    });
+  };
+
+  const onSend = (messageArray) => {
+    // alert(JSON.stringify(messageArray))
+    console.log('messageArray : ', messageArray);
+    const msg = messageArray[0];
+    const mymsg = {
+      ...msg,
+      sentBy: userRes.id,
+      sentTo: friendProfile.id,
+      createdAt: new Date(),
+      image: imageUrl,
+    };
+    setMessages((previousMessages) =>
+      GiftedChat.append(previousMessages, mymsg),
+    );
+    const docid =
+      uid > userRes.id ? userRes.id + '-' + uid : uid + '-' + userRes.id;
+
+    firestore()
+      .collection('paperclip_chat_db')
+      .doc(docid)
+      .collection('messages')
+      .add({...mymsg, createdAt: firestore.FieldValue.serverTimestamp()});
+
+    sendMessageNotification(msg);
+    setImageUrl(null);
+    setProfilePic(null);
+    setShowSend(false);
+  };
+
+  const renderBubble = (props) => {
+    return (
+      <Bubble
+        {...props}
+        wrapperStyle={{
+          right: styles.rightBubble,
+          left: styles.leftBubble,
+        }}
+        textStyle={{
+          right: {
+            color: 'white',
+          },
+          left: {
+            color: 'white',
+          },
+        }}
+      />
+    );
+  };
+  const renderAvatar = (props) => {
+    return (
+      <View style={styles.friendAvtar}>
+        <RNImagePlaceholder
+          defaultStyle={styles.friendImg}
+          source={{uri: friendProfile.profile_picture}}
+          // source={  Assets.groups .readers}
+        />
+      </View>
+    );
+  };
+
+  const renderComposer = (props) => {
+    return (
+      <View style={{flexDirection: 'row', width: 200}}>
+        <TouchableOpacity style={{borderWidth: 1}}>
+          <Neomorph swapShadows style={styles.crossView}>
+            <Image source={Assets.common.cross} resizeMode="contain" />
+          </Neomorph>
+        </TouchableOpacity>
+        <Composer
+          {...props}
+          placeholder="Type here…"
+          textInputStyle={{borderWidth: 8, width: 60}}
+        />
+      </View>
+    );
+  };
+
+  const renderInputToolbar = (props) => {
+    return (
+      <InputToolbar
+        {...props}
+        containerStyle={{
+          backgroundColor: 'transparent',
+          width: '100%',
+          flexDirection: 'row',
+          shadowOpacity: 0.2,
+          shadowRadius: 2,
+          borderRadius: 25,
+          // backgroundColor: '#212529',
+          backgroundColor: 'pink',
+          height: 49,
+          // width: Dimen.phoneWidth - 40,
+          alignItems: 'center',
+          marginTop: 30,
+          paddingHorizontal: 20,
+        }}
+      />
+    );
+  };
+
+  const customSendPress = (text, onSend) => {
+    console.log('customSendPress : ', text);
+    if (imageUrl && !text && onSend) {
+      onSend({text: text.trim()}, true);
+    } else if (text && onSend) {
+      onSend({text: text.trim()}, true);
+      0;
+    } else {
+      return false;
+    }
+  };
+
+  const renderSend = ({onSend, text, sendButtonProps, ...sendProps}) => {
+    return (
+      <Send
+        {...sendProps}
+        // textStyle={styles.sendButton}
+        sendButtonProps={{
+          ...sendButtonProps,
+          onPress: () => customSendPress(text, onSend),
+        }}
+      />
+    );
+  };
+
+  // const renderSend = (props) => {
+  //   const {text, messageIdGenerator, user, onSend} = props
+  //   // if(text && imageUrl){
+  //     return (
+  //       <Send {...props}>
+  //       <Neomorph swapShadows style={styles.crossView}>
+  //           <Image
+  //             source={Assets.allicon.send}
+  //             resizeMode="contain"
+  //             style={{tintColor: 'white', height: 16, width: 16}}
+  //           />
+  //       </Neomorph>
+  //     </Send>
+  //     )
+  //   // }
+
+  //   // else return <></>
+  // };
+
+  const RenderImageLoading = ({title}) => {
+    return (
+      <>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+            paddingRight: 15,
+          }}>
+          {title === 'Processing' && (
+            <ActivityIndicator size="small" color="white" />
+          )}
+          <Text style={{fontSize: 15, color: 'white', marginLeft: 5}}>
+            {title}
+          </Text>
+        </View>
+        {profilePic && (
+          <Image
+            source={{uri: profilePic}}
+            style={{
+              height: 70,
+              width: 70,
+              alignSelf: 'flex-end',
+              right: 10,
+              top: 5,
+              borderRadius: 5,
+            }}
+          />
+        )}
+      </>
+    );
+  };
+
+  const renderFooter = () => {
+    return (
+      <>
+        {profilePic && (
+          <View
+            style={{
+              width: '100%',
+              backgroundColor: Colors.bgColor,
+              flexDirection: 'row',
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+              marginBottom: 20,
+            }}>
+            {uploading ? (
+              <RenderImageLoading title={'Processing'} />
+            ) : (
+              <RenderImageLoading title={'Image Attached ,Press send'} />
+            )}
+          </View>
+        )}
+      </>
+    );
+  };
+
+  return (
+    <View style={CommonStyles.flexBlack}>
+      <CustomHeader title={friendProfile.full_name} back={true} />
+      <GiftedChat
+        messages={messages}
+        onSend={(messages) => onSend(messages)}
+        user={{
+          _id: userRes.id,
+        }}
+        text={textMessage}
+        onInputTextChanged={(text) => setTextMessage(text)}
+        placeholder={imageUrl != null ? 'Image attached' : 'Type your message'}
+        renderBubble={renderBubble}
+        renderAvatar={renderAvatar}
+        alwaysShowSend={true}
+        renderActions={renderActions}
+        // renderComposer={renderComposer}
+        renderFooter={renderFooter}
+        renderInputToolbar={(props) => {
+          return (
+            <>
+              {/* {uploading && <RenderImageLoader />} */}
+              <InputToolbar
+                {...props}
+                containerStyle={{
+                  borderTopWidth: 1.5,
+                  borderTopColor: 'green',
+                }}
+                textInputStyle={{color: 'black'}}
+              />
+            </>
+          );
+        }}
+        renderSend={renderSend}
+        scrollToBottom
+      />
+    </View>
+  );
+};
+
+export default ChatScreen;
+
+const styles = StyleSheet.create({
+  txt: {
+    color: Colors.whiteF1F2,
+    fontSize: 15,
+    fontFamily: Fonts.nunitoRegular,
+  },
+  leftBubble: {
+    backgroundColor: Colors.lightGrey,
+    // width: '60%',
+    borderTopRightRadius: 15,
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15,
+    borderTopLeftRadius: 5,
+    // alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10,
+  },
+  rightBubble: {
+    backgroundColor: Colors.navyBlue,
+    // width: '60%',
+    borderTopLeftRadius: 15,
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15,
+    borderTopRightRadius: 5,
+    // alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10,
+  },
+  friendImg: {
+    height: 60,
+    width: 60,
+  },
+  crossView: {
+    shadowRadius: 10,
+    borderRadius: 100,
+    backgroundColor: Colors.blue,
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+  },
+  inputBox: {
+    flexDirection: 'row',
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    borderRadius: 25,
+    backgroundColor: '#212529',
+    height: 50,
+    width: Dimen.phoneWidth - 40,
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  input: {
+    flex: 1,
+    color: Colors.white,
+    fontSize: Dimen.mediumFont,
+    fontFamily: 'Nunito-Regular',
+    paddingHorizontal: 10,
+  },
+  toolBar: {
+    paddingHorizontal: 20,
+  },
+});
