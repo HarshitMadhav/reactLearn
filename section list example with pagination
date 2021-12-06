@@ -1,0 +1,53 @@
+<View style={{}}>
+                    {console.log('this.state?.sellerSectionList115', this.state.sellerSectionList)}
+                    {/* {(this.state.sellerSectionList.length == 0) && this.sellerEmptyProductView()} */}
+                    {this.state?.sellerSectionList[0]?.totalItems > 0 ? <SectionList
+                      contentContainerStyle={{ paddingBottom: 40 }}
+                      sections={this.state?.sellerSectionList}
+                      keyExtractor={(item, index) => index.toString()}
+                      renderSectionHeader={this.headerComponent}
+                      stickySectionHeadersEnabled={false}
+                      showsVerticalScrollIndicator={false}
+                      onRefresh={() => this.onRefreshProductList()}
+                      refreshing={this.state.isFetching}
+                      onEndReachedThreshold={0.2}
+                      onEndReached={({ distanceFromEnd }) => {
+                        console.log('this.state.paging.page onEndReached if else 758', this.state.paging.page)
+                        if (!this.state.isFetching)
+                          if (this.state.paging.total > (((this.state.paging.page - 1) * 10) + this.state.paging.count)) {
+                            console.log('this.state.paging.page onEndReached if', this.state.paging.page)
+                            this.getproductlistSummary((this.state.paging.page + 1), this.state.availableslots[this.state.currentSlotIndex])
+                          }
+                          else {
+                            console.log('this.state.paging.page onEndReached if else 765', this.state.paging.page)
+                            console.log('this.state.availableslots.length', this.state.availableslots.length, (this.state.currentSlotIndex + 1))
+                            if (this.state.filterItem == 'all') {
+                              if (this.state.availableslots.length > (this.state.currentSlotIndex + 1))
+                                this.setState({ currentSlotIndex: this.state.currentSlotIndex + 1 }, (() => {
+                                  this.getproductlistSummary(1, this.state.availableslots[this.state.currentSlotIndex])
+                                  // this.props.cartListUpdated(this.state.sellerSectionList)
+                                }))
+                            } else {
+                            }
+                          }
+                      }}
+                      renderItem={({ item, index }) =>
+                        <View>
+                          {/* {console.log('itemitemitemitemitem779',item)} */}
+                          <View style={styles.listofFood}>
+                            <AddFoodItem
+                              item={item}
+                              decrement={() => this.decrementitem(item, index, item.slot)}
+                              increment={() => {
+                                console.log('item785', item, index)
+                                if (this.state.restaurantDetail.seller.online_status)
+                                  this.incrementitem(item, index, item.slot)
+                                else showToast(LocalizedStrings.misc.not_accepting_order)
+                              }}
+                              available={`${this.getDeliveryTime(this.state.restaurantDetail.seller.openingTime)}`}
+                            />
+                          </View>
+                          <View style={styles.largeBorder} />
+                        </View>
+                      }
+                    /> : null}
