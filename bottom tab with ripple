@@ -1,0 +1,24 @@
+ <Tab.Navigator
+            screenOptions={({route}) => {
+                return {
+                    header: props => <CustomHeader navigation={props.navigation} {...props} />,
+                    tabBarIcon: ({focused, size, color}) => {
+                        if (focused) {
+                            return selectedIconsMapper[route.name];
+                        } else {
+                            return unselectedIconMapper[route.name];
+                        }
+                    },
+                    tabBarActiveTintColor: COLOR.primary,
+                    tabBarItemStyle: {paddingVertical: 5},
+                    tabBarLabelStyle: {fontSize: 15)},
+                    tabBarButton: (props) => <Pressable {...props}
+                                                        android_ripple={{
+                                                            color: RIPPLE_COLOR,
+                                                            borderless: true,
+                                                            radius: buttonSize,
+                                                            foreground:true
+                                                        }}/>
+                };
+            }}
+        >
