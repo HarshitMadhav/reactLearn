@@ -1,0 +1,18 @@
+import { useTheme, makeStyles } from 'react-native-elements';
+
+export default function Example(props) {
+          const { variant, title, titleColor, icon } = props;
+          const styles = useStyles({ variant, titleColor });
+          
+          return null;
+}
+const useStyles = makeStyles((theme, { titleColor, variant }) => ({
+	icon: {
+		alignSelf: variant === LandingHeaderVariant.center ? 'center' : 'flex-start',
+	},
+	title: {
+		marginTop: 4,
+		color: titleColor || theme.fColors.content.primary,
+		alignSelf: variant === CONSTANT.center ? 'center' : 'flex-start',
+	},
+}));
