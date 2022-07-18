@@ -1,3 +1,20 @@
+			<Surface
+				style={[
+					styles.cardLayout(cardPadding),
+					rowReverse && styles.rowReverse,]}>
+			</Surface>
+			
+const styles = StyleSheet.create({
+	cardLayout: (cardPadding) => ({
+		display: 'flex',
+		flexDirection: 'row',
+		alignItems: 'center',
+		padding: cardPadding,
+	}),
+	})
+
+//////////// OR //////////////
+
 import { useTheme, makeStyles } from 'react-native-elements';
 
 export default function Example(props) {
@@ -16,3 +33,6 @@ const useStyles = makeStyles((theme, { titleColor, variant }) => ({
 		alignSelf: variant === CONSTANT.center ? 'center' : 'flex-start',
 	},
 }));
+
+
+
