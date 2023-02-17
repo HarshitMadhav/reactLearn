@@ -1,0 +1,6 @@
+App = codePush(codePushOptions)(App);
+if (Text.defaultProps == null) {
+	Text.defaultProps = {};
+	Text.defaultProps.allowFontScaling = false;
+}
+// add this in index.js entry file -> the main component
