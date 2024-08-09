@@ -1,0 +1,154 @@
+import React, { useEffect, useRef, useState } from 'react';
+import { TextInput, View, Animated, Easing, TouchableWithoutFeedback } from 'react-native';
+import { makeStyles, useTheme } from 'react-native-elements';
+import PropTypes from 'prop-types';
+import commonBaseService from 'businessLogic/services/commonBaseService';
+import { Typography } from '../../../designSystem/atoms';
+import { TYPOGRAPHY_VARIANTS } from '../../../designSystem/atoms/Typography';
+
+const TextInputOutlined = ({
+	label,
+	errorText,
+	value,
+	style,
+	onBlur,
+	onFocus,
+	errorMessage,
+	placeholder,
+	placeholderTextColor,
+	isActive = true,
+	...restOfProps
+}) => {
+	const styles = useStyles();
+	const { theme } = useTheme();
+	const [isFocused, setIsFocused] = useState(false);
+	const inputRef = useRef(null);
+	const focusAnim = useRef(new Animated.Value(0)).current;
+	const hasError = !commonBaseService.isEmptyOrUndefined(errorMessage);
+
+	useEffect(() => {
+		Animated.timing(focusAnim, {
+			toValue: isFocused || !!value ? 1 : 0,
+			duration: 150,
+			easing: Easing.bezier(0.4, 0, 0.2, 1),
+			useNativeDriver: true,
+		}).start();
+	}, [isFocused, value]);
+
+	const determineColor = (baseColor, errorColor, secondaryColor) =>
+		hasError ? errorColor : isFocused ? baseColor : secondaryColor;
+
+	const borderColor = determineColor(
+		theme.fColors.primary.brand,
+		theme.fColors.secondary.lossRed[400],
+		theme.fColors.supporting.gainsboro,
+	);
+	const labelColor = determineColor(
+		theme.fColors.primary.brand,
+		theme.fColors.secondary.lossRed[400],
+		theme.fColors.supporting.secondary,
+	);
+
+	return (
+		<View style={style}>
+			<TextInput
+				style={[styles.input, { borderColor }]}
+				ref={inputRef}
+				placeholder={placeholder}
+				placeholderTextColor={placeholderTextColor}
+				{...restOfProps}
+				value={value}
+				onBlur={(event) => {
+					setIsFocused(false);
+					onBlur?.(event);
+				}}
+				onFocus={(event) => {
+					setIsFocused(true);
+					onFocus?.(event);
+				}}
+			/>
+			<TouchableWithoutFeedback onPress={() => inputRef.current?.focus()}>
+				<Animated.View
+					style={[
+						styles.labelContainer,
+						{
+							transform: [
+								{ scale: focusAnim.interpolate({ inputRange: [0, 1], outputRange: [1, 0.75] }) },
+								{ translateY: focusAnim.interpolate({ inputRange: [0, 1], outputRange: [24, -12] }) },
+								{ translateX: focusAnim.interpolate({ inputRange: [0, 1], outputRange: [16, 0] }) },
+							],
+						},
+					]}>
+					{(isFocused || !commonBaseService.isEmptyOrUndefined(value)) && (
+						<Typography
+							style={[styles.label, { color: labelColor }]}
+							variant={TYPOGRAPHY_VARIANTS.BODY5}
+							testIdSuffix={'label'}>
+							{label}
+						</Typography>
+					)}
+				</Animated.View>
+			</TouchableWithoutFeedback>
+			{hasError && (
+				<Typography variant={TYPOGRAPHY_VARIANTS.BODY5} style={styles.error} testIdSuffix={'error'}>
+					{errorMessage}
+				</Typography>
+			)}
+		</View>
+	);
+};
+
+TextInputOutlined.propTypes = {
+	label: PropTypes.string,
+	errorText: PropTypes.string,
+	value: PropTypes.string,
+	style: PropTypes.object,
+	onBlur: PropTypes.func,
+	onFocus: PropTypes.func,
+	errorMessage: PropTypes.string,
+	placeholder: PropTypes.string,
+	placeholderTextColor: PropTypes.string,
+	isActive: PropTypes.bool,
+};
+
+TextInputOutlined.defaultProps = {
+	label: '',
+	errorText: null,
+	value: '',
+	style: {},
+	onBlur: null,
+	onFocus: null,
+	errorMessage: '',
+	placeholder: '',
+	placeholderTextColor: '#000',
+	isActive: true,
+};
+
+const useStyles = makeStyles((theme) => ({
+	input: {
+		paddingHorizontal: 16,
+		paddingVertical: 14,
+		borderWidth: 1,
+		color: theme.fColors.content.primary,
+		borderRadius: 12,
+		height: 60,
+		fontSize: 20,
+		fontFamily: 'Inter-Regular',
+		lineHeight: 24,
+	},
+	labelContainer: {
+		position: 'absolute',
+		paddingHorizontal: 8,
+		backgroundColor: theme.fColors.baseColor.foreground,
+	},
+	label: {
+		backgroundColor: 'transparent',
+	},
+	error: {
+		marginTop: 4,
+		marginLeft: 16,
+		color: theme.fColors.secondary.lossRed[400],
+	},
+}));
+
+export default TextInputOutlined;
